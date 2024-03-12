@@ -1,0 +1,32 @@
+/*your custom css goes here*/
+
+
+
+@media (max-width: 468px){
+.h_pg_text{
+    font-size: initial !important;
+}
+.h_pg_text1{
+     font-size: 12px !important;
+}
+
+.card-body .card-title{
+    font-size: initial !important;
+    font-weight: bold !important;
+}
+.card-body .card-text{
+    font-size: small !important;
+    margin-bottom: 0px !important;
+}
+.card-body{
+    
+    padding: 10px 10px !important;
+}
+
+.card-img-top{
+    max-height: 140px !important;
+    min-height: 140px !important;
+    
+}
+    
+}
