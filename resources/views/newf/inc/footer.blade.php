@@ -127,22 +127,22 @@
         <ul>
             <li>
                 <a href="#0">
-                    <img src="newfas/img/svg/profile.svg" alt="">
+                    <img src="{{ file_exists(static_asset('newfas/img/svg/profile.svg')) ? static_asset('newfas/img/svg/profile.svg') : '' }}" alt="">
                 </a>
             </li>
             <li>
                 <a href="#0">
-                    <img src="newfas/img/svg/money-transfering.svg" alt="">
+                    <img src="{{ file_exists(static_asset('newfas/img/svg/money-transfering.svg')) ? static_asset('newfas/img/svg/money-transfering.svg') : '' }}" alt="">
                 </a>
             </li>
             <li>
                 <a href="#0">
-                    <img src="newfas/img/svg/calculator.svg" alt="">
+                    <img src="{{ file_exists(static_asset('newfas/img/svg/calculator.svg')) ? static_asset('newfas/img/svg/calculator.svg') : '' }}" alt="">
                 </a>
             </li>
             <li>
                 <a href="#header">
-                    <img src="newfas/img/svg/arrow.svg" alt="">
+                    <img src="{{ file_exists(static_asset('newfas/img/svg/arrow.svg')) ? static_asset('newfas/img/svg/arrow.svg') : '' }} " alt="">
                 </a>
             </li>
         </ul>

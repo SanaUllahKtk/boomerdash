@@ -152,8 +152,8 @@
         });
 
         // initialize live clock
-        const clock = new Clock();
-        clock.start();
+        // const clock = new Clock();
+        // clock.start();
 
         // invest package select
         var planIcon = $('.plan-icon');

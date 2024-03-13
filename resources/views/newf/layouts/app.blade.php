@@ -20,7 +20,7 @@
     <!-- fontawesome icon  -->
     <link rel="stylesheet" href="{{ static_asset('newfas/css/fontawesome.min.css') }}">
     <!-- flaticon css -->
-    <link rel="stylesheet" href="newfas/fonts/flaticon.css') }}">
+    <link rel="stylesheet" href="{{ static_asset('newfas/fonts/flaticon.css') }}">
     <!-- animate.css -->
     <link rel="stylesheet" href="{{ static_asset('newfas/css/animate.css') }}">
     <!-- magnific popup -->
@@ -34,6 +34,7 @@
     <link rel="stylesheet" href="{{ static_asset('newfas/css/style.css') }}">
     <!-- responsive -->
     <link rel="stylesheet" href="{{ static_asset('newfas/css/responsive.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <style>
 ul li a.dul{
@@ -148,8 +149,8 @@ ul li a.dul:hover{
     @yield('modal')
 
     <!-- SCRIPTS -->
-    <script src="{{ static_asset('newfas/js/vendors.js') }}"></script>
-    <script src="{{ static_asset('newfas/js/aiz-core.js') }}"></script>
+    <script src="{{ file_exists(static_asset('newfas/js/vendors.js')) ? static_asset('newfas/js/vendors.js') : '' }}"></script>
+    <script src="{{ file_exists(static_asset('newfas/js/aiz-core.js')) ? static_asset('newfas/js/aiz-core.js') : '' }}"></script>
 
 
 
