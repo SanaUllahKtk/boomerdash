@@ -52,6 +52,31 @@
                     @endif
                 @endif
 
+
+                <!-- Store -->
+                @if(Auth::user()->user_type == 'admin' || in_array('2', json_decode(Auth::user()->staff->role->permissions)))
+                    <li class="aiz-side-nav-item">
+                        <a href="#" class="aiz-side-nav-link">
+                            <i class="las la-shopping-cart aiz-side-nav-icon"></i>
+                            <span class="aiz-side-nav-text">{{translate('Stores')}}</span>
+                            <span class="aiz-side-nav-arrow"></span>
+                        </a>
+                        <!--Submenu-->
+                        <ul class="aiz-side-nav-list level-2">
+                            <li class="aiz-side-nav-item">
+                                <a class="aiz-side-nav-link" href="{{route('products.create')}}">
+                                    <span class="aiz-side-nav-text">{{translate('Add New Store')}}</span>
+                                </a>
+                            </li>
+                            <li class="aiz-side-nav-item">
+                                <a href="{{route('stores.index')}}" class="aiz-side-nav-link">
+                                    <span class="aiz-side-nav-text">{{translate('All Stores')}}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+
                 <!-- Product -->
                 @if(Auth::user()->user_type == 'admin' || in_array('2', json_decode(Auth::user()->staff->role->permissions)))
                     <li class="aiz-side-nav-item">

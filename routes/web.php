@@ -20,6 +20,7 @@ use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\StoreController;
 
 use App\Http\Controllers\EmailController;
 
@@ -106,6 +107,10 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/users/registration', 'registration')->name('user.registration');
     Route::post('/users/login/cart', 'cart_login')->name('cart.login.submit');
     Route::get('/', 'new_page')->name('home');
+
+// Store for frontend
+Route::get('/all-stores', [StoreController::class, 'allStores'])->name('stores.all');
+Route::get('/store-show/{id}', [StoreController::class, 'show'])->name('stores.show');
 
 
 

@@ -99,6 +99,11 @@
                                 <li class="list-inline-item mr-0">
                                     <a href="https://boomerdash.com/search" class="dul opacity-60 fs-14 px-3 py-2 d-inline-block fw-600 hov-opacity-100 text-reset">Shop</a>
                                 </li>
+
+                                <li class="list-inline-item mr-0">
+                                    <a href="{{ route('stores.all') }}" class="dul opacity-60 fs-14 px-3 py-2 d-inline-block fw-600 hov-opacity-100 text-reset">Stores</a>
+                                </li>
+
                                 <li class="list-inline-item mr-0">
                                     <a href="https://boomerdash.com/videos" class="dul opacity-60 fs-14 px-3 py-2 d-inline-block fw-600 hov-opacity-100 text-reset">Watch</a>
                                 </li>

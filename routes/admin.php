@@ -44,6 +44,7 @@ use App\Http\Controllers\SupportTicketController;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\UpdateController;
 use App\Http\Controllers\WebsiteController;
+use App\Http\Controllers\StoreController;
 
 
 /*
@@ -64,8 +65,8 @@ Route::controller(UpdateController::class)->group(function () {
 });
 
 Route::get('/admin', [AdminController::class, 'admin_dashboard'])->name('admin.dashboard')->middleware(['auth', 'admin']);
-Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function() {
-    
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
+
     // category
     Route::resource('categories', CategoryController::class);
     Route::controller(CategoryController::class)->group(function () {
@@ -74,8 +75,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::delete('/categories/{id}', 'destroy')->name('categories.destroy');
         Route::post('/categories/featured', 'updateFeatured')->name('categories.featured');
     });
-    
-        
+
+
     // videos
     Route::resource('videos', VideoController::class);
     Route::controller(VideoController::class)->group(function () {
@@ -85,12 +86,23 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::post('/videos/search', 'search')->name('videos.search');
         Route::get('/videos/excel/{id}', 'excelexpo')->name('videos.excel');
     });
-    
+
     // Brand
     Route::resource('brands', BrandController::class);
     Route::controller(BrandController::class)->group(function () {
         Route::get('/brands/edit/{id}', 'edit')->name('brands.edit');
         Route::get('/brands/destroy/{id}', 'destroy')->name('brands.destroy');
+    });
+
+    //Stores
+    Route::controller(StoreController::class)->group(function () {
+        Route::get('/stores', 'index')->name('stores.index');
+        Route::get('/stores/create', 'create')->name('stores.create');
+        Route::post('/stores/store/', 'store')->name('stores.store');
+        Route::get('/edit/{id}', 'edit')->name('stores.edit');
+        Route::post('/stores/{id}/updated', 'update')->name('stores.update');
+        Route::delete('/stores/{id}', 'destroy')->name('stores.destroy');
+        Route::post('/bulk-stores-delete', 'bulk_store_delete')->name('bulk-stores-delete');
     });
 
     // Products
@@ -112,7 +124,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         // Route::get('/products/destroy/{id}', 'destroy')->name('products.destroy');
         Route::delete('/products/{id}', 'destroy')->name('products.destroy');
         Route::post('/bulk-product-delete', 'bulk_product_delete')->name('bulk-product-delete');
-    
+
         Route::post('/products/sku_combination', 'sku_combination')->name('products.sku_combination');
         Route::post('/products/sku_combination_edit', 'sku_combination_edit')->name('products.sku_combination_edit');
         Route::post('/products/add-more-choice-option', 'add_more_choice_option')->name('products.add-more-choice-option');
@@ -129,19 +141,19 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     Route::controller(ProductBulkUploadController::class)->group(function () {
         //Product Export
         Route::get('/product-bulk-export', 'export')->name('product_bulk_export.index');
-        
+
         //Product Bulk Upload
         Route::get('/product-bulk-upload/index', 'index')->name('product_bulk_upload.index');
         Route::post('/bulk-product-upload', 'bulk_upload')->name('bulk_product_upload');
         Route::get('/product-csv-download/{type}', 'import_product')->name('product_csv.download');
         Route::get('/vendor-product-csv-download/{id}', 'import_vendor_product')->name('import_vendor_product.download');
-        Route::group(['prefix' => 'bulk-upload/download'], function() {
+        Route::group(['prefix' => 'bulk-upload/download'], function () {
             Route::get('/category', 'pdf_download_category')->name('pdf.download_category');
             Route::get('/brand', 'pdf_download_brand')->name('pdf.download_brand');
             Route::get('/seller', 'pdf_download_seller')->name('pdf.download_seller');
         });
     });
-    
+
     // Seller
     Route::resource('sellers', SellerController::class);
     Route::controller(SellerController::class)->group(function () {
@@ -246,7 +258,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::post('/currency/currency_edit', 'edit')->name('currency.edit');
         Route::post('/currency/update_status', 'update_status')->name('currency.update_status');
     });
-    
+
     //Tax
     Route::resource('tax', TaxController::class);
     Route::controller(TaxController::class)->group(function () {
@@ -254,7 +266,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::get('/tax/destroy/{id}', 'destroy')->name('tax.destroy');
         Route::post('tax-status', 'change_tax_status')->name('taxes.tax-status');
     });
-    
+
     // Language
     Route::resource('/languages', LanguageController::class);
     Route::controller(LanguageController::class)->group(function () {
@@ -270,10 +282,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::post('/languages/app-translations/key_value_store', 'storeAppTranlsation')->name('app-translations.store');
         Route::get('/languages/app-translations/export/{id}', 'exportARBFile')->name('app-translations.export');
     });
-    
+
 
     // website setting
-    Route::group(['prefix' => 'website'], function() {
+    Route::group(['prefix' => 'website'], function () {
         Route::controller(WebsiteController::class)->group(function () {
             Route::get('/footer', 'footer')->name('website.footer');
             Route::get('/header', 'header')->name('website.header');
@@ -295,7 +307,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::get('/roles/edit/{id}', 'edit')->name('roles.edit');
         Route::get('/roles/destroy/{id}', 'destroy')->name('roles.destroy');
     });
-    
+
     // Staff
     Route::resource('staffs', StaffController::class);
     Route::get('/staffs/destroy/{id}', [StaffController::class, 'destroy'])->name('staffs.destroy');
@@ -310,13 +322,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::post('/flash_deals/product_discount', 'product_discount')->name('flash_deals.product_discount');
         Route::post('/flash_deals/product_discount_edit', 'product_discount_edit')->name('flash_deals.product_discount_edit');
     });
-    
+
     //Subscribers
     Route::controller(SubscriberController::class)->group(function () {
         Route::get('/subscribers', 'index')->name('subscribers.index');
         Route::get('/subscribers/destroy/{id}', 'destroy')->name('subscriber.destroy');
     });
-    
+
     // Order
     Route::resource('orders', OrderController::class);
     Route::controller(OrderController::class)->group(function () {
@@ -350,7 +362,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         //Delivery Boy Assign
         Route::post('/orders/delivery-boy-assign', 'assign_delivery_boy')->name('orders.delivery-boy-assign');
     });
-    
+
     Route::post('/pay_to_seller', [CommissionController::class, 'pay_to_seller'])->name('commissions.pay_to_seller');
 
     //Reports
@@ -380,7 +392,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     Route::resource('coupon', CouponController::class);
     Route::controller(CouponController::class)->group(function () {
         Route::get('/coupon/destroy/{id}', 'destroy')->name('coupon.destroy');
-    
+
         //Coupon Form
         Route::post('/coupon/get_form', 'get_coupon_form')->name('coupon.get_coupon_form');
         Route::post('/coupon/get_form_edit', 'get_coupon_form_edit')->name('coupon.get_coupon_form_edit');
@@ -409,8 +421,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     //conversation of seller customer
     Route::controller(ConversationController::class)->group(function () {
         Route::get('conversations', 'admin_index')->name('conversations.admin_index');
-        Route::get('conversations/{id}/show','admin_show')->name('conversations.admin_show');
-
+        Route::get('conversations/{id}/show', 'admin_show')->name('conversations.admin_show');
     });
 
     // product Queries show on Admin panel
@@ -421,17 +432,17 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     });
 
     // Product Attribute
-    Route::resource('attributes', AttributeController::class );
+    Route::resource('attributes', AttributeController::class);
     Route::controller(AttributeController::class)->group(function () {
         Route::get('/attributes/edit/{id}', 'edit')->name('attributes.edit');
         Route::get('/attributes/destroy/{id}', 'destroy')->name('attributes.destroy');
-    
+
         //Attribute Value
         Route::post('/store-attribute-value', 'store_attribute_value')->name('store-attribute-value');
         Route::get('/edit-attribute-value/{id}', 'edit_attribute_value')->name('edit-attribute-value');
         Route::post('/update-attribute-value/{id}', 'update_attribute_value')->name('update-attribute-value');
         Route::get('/destroy-attribute-value/{id}', 'destroy_attribute_value')->name('destroy-attribute-value');
-    
+
         //Colors
         Route::get('/colors', 'colors')->name('colors');
         Route::post('/colors/store', 'store_color')->name('colors.store');
@@ -463,7 +474,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
 
     // States
     Route::resource('states', StateController::class);
-	Route::post('/states/status', [StateController::class, 'updateStatus'])->name('states.status');
+    Route::post('/states/status', [StateController::class, 'updateStatus'])->name('states.status');
 
     Route::resource('cities', CityController::class);
     Route::controller(CityController::class)->group(function () {
@@ -481,7 +492,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::any('/uploaded-files/file-info', 'file_info')->name('uploaded-files.info');
         Route::get('/uploaded-files/destroy/{id}', 'destroy')->name('uploaded-files.destroy');
     });
-    
+
     Route::get('/all-notification', [NotificationController::class, 'index'])->name('admin.all-notification');
 
     Route::get('/clear-cache', [AdminController::class, 'clearCache'])->name('cache.clear');
