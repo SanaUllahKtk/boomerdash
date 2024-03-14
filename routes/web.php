@@ -111,6 +111,7 @@ Route::controller(HomeController::class)->group(function () {
 
 // Store for frontend
 Route::get('/all-stores', [StoreController::class, 'allStores'])->name('stores.all');
+Route::get('/seller/all-stores', [StoreController::class, 'allSellerStores'])->name('stores.seller.all');
 Route::get('/store-show/{id}', [StoreController::class, 'show'])->name('stores.show');
 
 Route::get('/store/favorite', [StoreController::class, 'favorite'])->name('store-favorite');

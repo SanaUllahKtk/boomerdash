@@ -4,7 +4,7 @@
     <div class="term">
         <div class="container">
             <h1 class="title">PRIVACY NOTICE</h1>
-            <p class="date">Last updated March 05, 2024</p>
+            <strong>Last updated March 5, 2024</strong>
             <p>This privacy notice for Pro Prospecting LLC (<b>we</b>, <b>us</b>, or <b>our</b>), describes how and why we
                 might collect,
                 store, use, and/or share <b>(process)</b> your information when you use our services <b>(Services)</b>, such

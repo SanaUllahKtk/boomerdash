@@ -187,16 +187,26 @@
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('user_favorite') }}" class="aiz-side-nav-link {{ areActiveRoutes(['earnng_point_for_user'])}}">
                                 <i class="las la-dollar-sign aiz-side-nav-icon"></i>
-                                <span class="aiz-side-nav-text">{{translate('Favorite')}}</span>
+                                <span class="aiz-side-nav-text">{{translate('Favorites')}}</span>
                             </a>
                         </li>
 
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('search') }}" class="aiz-side-nav-link">
                                 <i class="las la-atom aiz-side-nav-icon"></i>
+                                <span class="aiz-side-nav-text">{{translate('Boomer Receipts')}}</span>
+                            </a>
+                        </li>
+
+
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('stores.seller.all') }}" class="aiz-side-nav-link">
+                                <i class="las la-atom aiz-side-nav-icon"></i>
                                 <span class="aiz-side-nav-text">{{translate('Shop')}}</span>
                             </a>
                         </li>
+
+
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('videos') }}" class="aiz-side-nav-link">
                                  <i class="las la-atom aiz-side-nav-icon"></i>

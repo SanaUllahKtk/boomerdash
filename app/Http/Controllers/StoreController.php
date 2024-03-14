@@ -167,6 +167,32 @@ class StoreController extends Controller
         return view('frontend.stores', compact('popular_stores', 'new_stores', 'categories', 'favorites'));
     }
 
+    public function allSellerStores(Request $request){
+        $popular_stores_query = Store::query();
+        $new_stores_query = Store::query();
+
+        // Check if category_id is provided in the request
+        if ($request->has('category_id')) {
+            $category_id = $request->input('category_id');
+            $popular_stores_query->where('store_category_id', $category_id);
+            $new_stores_query->where('store_category_id', $category_id);
+        }
+
+        // Get filtered popular stores and new stores
+        $popular_stores = $popular_stores_query->whereIn('stores.type', ['popular', 'both'])->get();
+        $new_stores = $new_stores_query->whereIn('stores.type', ['new', 'both'])->get();
+
+
+        $categories = StoreCategory::pluck('name', 'id')->toArray();
+
+        $favorites = StoreFavorite::where('user_id', \Auth::user()->id)->pluck('store_id', 'id')->toArray();
+
+        // echo "<pre>";
+        // print_r($favorites);
+        // die();
+        return view('frontend.stores.index', compact('popular_stores', 'new_stores', 'categories', 'favorites'));
+    }
+
     public function favorite(Request $request)
     {
         $store_id = $request->store_id;

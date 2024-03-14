@@ -4,7 +4,7 @@
     <div class="term">
         <div class="container">
             <h1 class="title">TERMS OF USE</h1>
-            <p class="date">Last updated March 5, 2024</p>
+            <strong>Last updated March 5, 2024</strong>
 
             <h2>AGREEMENT TO OUR LEGAL TERMS</h2>
 
