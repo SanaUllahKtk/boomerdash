@@ -50,6 +50,38 @@
                     </div>
                 </div>
             </div>
+
+            <div class="card-body">
+                <div class="form-group row">
+                    <label class="col-md-3 col-from-label">{{ translate('Category') }} <span
+                            class="text-danger">*</span></label>
+                    <div class="col-md-8">
+                        <select name="category_id" id="" class="form form-control select2">
+                            <option value="">Select Category</option>
+                            @forelse ($categories as $key => $category)
+                                <option value="{{ $key }}" {{ $store->store_category_id == $key ? 'selected' : ''}}>{{ $category }}</option>
+                            @empty
+                            @endforelse
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="card-body">
+                <div class="form-group row">
+                    <label class="col-md-3 col-from-label">{{ translate('Type') }} <span
+                            class="text-danger">*</span></label>
+                    <div class="col-md-8">
+                        <select name="type" id="" class="form form-control select2">
+                            <option value="">Select Type</option>
+                            <option value="both" {{ $store->type == 'both' ? 'selected' : ''}}>Both</option>
+                            <option value="popular" {{ $store->type == 'popular' ? 'selected' : ''}}>Popular</option>
+                            <option value="new" {{ $store->type == 'new' ? 'selected' : ''}}>New</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="card">
@@ -113,5 +145,9 @@
 			$(".action-btn").attr("attempted", 'true');
 		}
     });
+
+    $(document).ready(function() {
+            $('.select2').select2();
+        });
 </script>
 @endsection

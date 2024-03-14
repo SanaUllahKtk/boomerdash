@@ -51,7 +51,7 @@
                                 <h4><strong>{{ $store->name }}</strong></h4>
                                 <strong class="text-success mt-1">Cashback: {{ number_format($store->cashback, 2) }}
                                     %</strong> <br>
-                                <a href="{{ $store->url }}" class="btn btn-primary mt-1">Earn Cash Back</a>
+                                <a href="{{ $store->url }}" target="_blank" class="btn btn-primary mt-1">Earn Cash Back</a>
 
 
                                 <!-- Button trigger modal -->

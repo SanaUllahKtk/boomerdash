@@ -9,12 +9,12 @@
     <div class="aiz-titlebar text-left mt-2 mb-3">
         <div class="row align-items-center">
             <div class="col-auto">
-                <h1 class="h3">{{ translate('All Stores') }}</h1>
+                <h1 class="h3">{{ translate('All Categories') }}</h1>
             </div>
             @if (\Auth::user()->user_type == 'admin')
                 <div class="col text-right">
-                    <a href="{{ route('stores.create') }}" class="btn btn-circle btn-info">
-                        <span>{{ translate('Add New Store') }}</span>
+                    <a href="{{ route('store-categories.create') }}" class="btn btn-circle btn-info">
+                        <span>{{ translate('Add New Category') }}</span>
                     </a>
                 </div>
             @endif
@@ -27,7 +27,7 @@
         <form class="" id="sort_stores" action="" method="GET">
             <div class="card-header row gutters-5">
                 <div class="col">
-                    <h5 class="mb-md-0 h6">{{ translate('All Stores') }}</h5>
+                    <h5 class="mb-md-0 h6">{{ translate('All Categories') }}</h5>
                 </div>
 
                 <div class="dropdown mb-2 mb-md-0">
@@ -60,43 +60,33 @@
                         </th>
 
                         <th>{{ translate('Name') }}</th>
-                        <th>{{ translate('Cashback') }}</th>
-                        <th>{{ translate('Category') }}</th>
-                        <th>{{ translate('Type') }}</th>
-                        <th>{{ translate('url') }}</th>
                         <th>{{ translate('Action') }}</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    @forelse ($stores as $store)
+                    @forelse ($categories as $category)
                         <tr>
                             <td>
                                 <div class="form-group d-inline-block">
                                     <label class="aiz-checkbox">
-                                        <input type="checkbox" class="check-one" name="id[]"
-                                            value="{{ $store->id }}">
+                                        <input type="checkbox" class="check-one" name="id[]" value="{{ $category->id }}">
                                         <span class="aiz-square-check"></span>
                                     </label>
                                 </div>
                             </td>
-                            <td>{{ $store->name }}</td>
-                            <td>{{ $store->cashback }}</td>
-                            <td>{{ $categories[$store->store_category_id] ?? ''}}</td>
-                            <td>{{ $store->type ?? ''}}</td>
-                            <td><a href="{{ $store->url }}" target="_blank">{{ translate('Store Url') }}</a></td>
+                            <td>{{ $category->name }}</td>
                             <td>
                                 @if (\Auth::user()->user_type == 'admin')
                                     <a class="btn btn-soft-primary btn-icon btn-circle btn-sm"
-                                        href="{{ route('stores.edit', ['id' => $store->id, 'lang' => env('DEFAULT_LANGUAGE')]) }}"
+                                        href="{{ route('store-categories.edit', ['store_category' => $category->id, 'lang' => env('DEFAULT_LANGUAGE')]) }}"
                                         title="{{ translate('Edit') }}">
                                         <i class="las la-edit"></i>
                                     </a>
 
                                     <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete"
-                                        id="confirm-delete"
-                                        data-store-id="{{ $store->id }}"
-                                        data-url="{{ route('stores.destroy', $store->id) }}"
+                                        id="confirm-delete" data-category-id="{{ $category->id }}"
+                                        data-url="{{ route('store-categories.destroy', $category->id) }}"
                                         title="{{ translate('Delete') }}">
                                         <i class="las la-trash"></i>
                                     </a>
@@ -134,34 +124,38 @@
 
 
         function bulk_delete() {
-            var selectedIds = [];
-            $('.check-one:checked').each(function() {
-                selectedIds.push($(this).val());
-            });
+            // Confirm deletion
+            if (confirm("Are you sure you want to delete selected categories?")) {
+                var selectedIds = [];
+                $('.check-one:checked').each(function() {
+                    selectedIds.push($(this).val());
+                });
 
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: "{{ route('bulk-stores-delete') }}",
-                type: 'POST',
-                data: {
-                    ids: selectedIds
-                }, // Pass selectedIds array as data
-                success: function(response) {
-                    if (response == 1) {
-                        location.reload();
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: "{{ route('bulk-category-delete') }}",
+                    type: 'POST',
+                    data: {
+                        ids: selectedIds
+                    }, // Pass selectedIds array as data
+                    success: function(response) {
+                        if (response == 1) {
+                            location.reload();
+                        }
                     }
-                }
-            });
+                });
+            }
         }
 
+
         $(document).ready(function() {
-          // Attach a click event handler to the delete button
-            $(document).on("click","#confirm-delete", function(e) {
+            // Attach a click event handler to the delete button
+            $(document).on("click", "#confirm-delete", function(e) {
                 e.preventDefault(); // Prevent the default link behavior
 
-                var storeId = $(this).data("store-id"); // Get the product ID from the data attribute
+                var storeId = $(this).data("category-id"); // Get the product ID from the data attribute
                 var deleteUrl = $(this).data("url"); // Get the DELETE URL from the data attribute
 
                 // Show a confirmation dialog

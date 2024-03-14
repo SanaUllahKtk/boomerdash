@@ -113,6 +113,9 @@ Route::controller(HomeController::class)->group(function () {
 Route::get('/all-stores', [StoreController::class, 'allStores'])->name('stores.all');
 Route::get('/store-show/{id}', [StoreController::class, 'show'])->name('stores.show');
 
+Route::get('/store/favorite', [StoreController::class, 'favorite'])->name('store-favorite');
+Route::get('/store/user/favorite', [StoreController::class, 'userFavorite'])->name('user_favorite');
+
 
 //Cashback Request
 Route::get('/cashbackrequest/', [CashbackRequestController::class, 'index'])->name('cashbackrequest.index');

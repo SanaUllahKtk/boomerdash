@@ -45,7 +45,7 @@ use App\Http\Controllers\TaxController;
 use App\Http\Controllers\UpdateController;
 use App\Http\Controllers\WebsiteController;
 use App\Http\Controllers\StoreController;
-
+use App\Http\Controllers\StoreCategoryController;
 
 /*
   |--------------------------------------------------------------------------
@@ -93,6 +93,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::get('/brands/edit/{id}', 'edit')->name('brands.edit');
         Route::get('/brands/destroy/{id}', 'destroy')->name('brands.destroy');
     });
+
+    //Store Category
+    Route::resource('store-categories', StoreCategoryController::class);
+    Route::post('/bulk-categories-delete', [StoreCategoryController::class, 'bulk_category_delete'])->name('bulk-category-delete');
+
 
     //Stores
     Route::controller(StoreController::class)->group(function () {
