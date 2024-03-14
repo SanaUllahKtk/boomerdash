@@ -90,12 +90,14 @@
                                     </a>
 
                                     <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete"
+                                        id="confirm-delete"
                                         data-store-id="{{ $store->id }}"
                                         data-url="{{ route('stores.destroy', $store->id) }}"
                                         title="{{ translate('Delete') }}">
                                         <i class="las la-trash"></i>
                                     </a>
                                 @endif
+
 
 
                             </td>
@@ -149,5 +151,36 @@
                 }
             });
         }
+
+        $(document).ready(function() {
+          // Attach a click event handler to the delete button
+            $(document).on("click","#confirm-delete", function(e) {
+                e.preventDefault(); // Prevent the default link behavior
+
+                var storeId = $(this).data("store-id"); // Get the product ID from the data attribute
+                var deleteUrl = $(this).data("url"); // Get the DELETE URL from the data attribute
+
+                // Show a confirmation dialog
+                if (confirm("Are you sure you want to delete this store?")) {
+                    // Send a DELETE request to delete the product
+                    $.ajax({
+                        type: "DELETE",
+                        url: deleteUrl,
+                        data: {
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function(response) {
+                            // Handle the success response here (e.g., reload the page or remove the deleted element)
+                            alert("Store deleted successfully");
+                            location.reload(); // Reload the page
+                        },
+                        error: function(error) {
+                            // Handle any errors here
+                            alert("Error deleting store");
+                        }
+                    });
+                }
+            });
+        });
     </script>
 @endsection

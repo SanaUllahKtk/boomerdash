@@ -208,7 +208,7 @@
                                     <a href="{{ url('/about-us') }}" class="opacity-60 fs-14 px-3 py-2 d-inline-block fw-600 hov-opacity-100 text-reset">About us</a>
                                 </li>
                                 <li class="list-inline-item mr-0">
-                                    <a href="{{ url('/search') }}" class="opacity-60 fs-14 px-3 py-2 d-inline-block fw-600 hov-opacity-100 text-reset">Boomer Reciepts</a>
+                                    <a href="{{ url('/search') }}" class="opacity-60 fs-14 px-3 py-2 d-inline-block fw-600 hov-opacity-100 text-reset">Boomer Receipts</a>
                                 </li>
 
                                 <li class="list-inline-item mr-0">

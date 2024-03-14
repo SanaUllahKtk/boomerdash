@@ -64,7 +64,7 @@
                         <!--Submenu-->
                         <ul class="aiz-side-nav-list level-2">
                             <li class="aiz-side-nav-item">
-                                <a class="aiz-side-nav-link" href="{{route('products.create')}}">
+                                <a class="aiz-side-nav-link" href="{{route('stores.create')}}">
                                     <span class="aiz-side-nav-text">{{translate('Add New Store')}}</span>
                                 </a>
                             </li>

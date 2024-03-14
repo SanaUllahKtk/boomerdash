@@ -49,7 +49,7 @@ class StoreController extends Controller
         $store->cashback = $request->cashback;
         $store->url = $request->url;
         $store->description = $request->description;
-        $store->logo = $request->photo;
+        $store->logo = $request->photos;
         $store->created_by = \Auth::user()->id;
         $store->created_at = date('Y-m-d h:i:s');
         $store->updated_at = date('Y-m-d h:i:s');
@@ -116,6 +116,8 @@ class StoreController extends Controller
     public function destroy($id)
     {
         //
+        Store::findOrFail($id)->delete();
+        return 1;
     }
 
     public function bulk_store_delete(Request $request){

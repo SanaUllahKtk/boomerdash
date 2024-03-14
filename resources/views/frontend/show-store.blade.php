@@ -40,7 +40,7 @@
         </div>
         <div class="row m-0">
             <div class="col-lg-4 left-side-product-box pb-3">
-                <img src="{{ uploaded_asset($store->logo) }}" class="border p-3" style="min-height: 100%; min-width: 100%;">
+                <img src="{{ uploaded_asset($store->logo) }}" class="border p-3" style="min-width: 100%;">
             </div>
             
             

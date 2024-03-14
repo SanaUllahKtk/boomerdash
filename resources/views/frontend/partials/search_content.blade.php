@@ -54,7 +54,7 @@
 @if(get_setting('vendor_system_activation') == 1)
     <div class="">
         @if (count($shops) > 0)
-            <div class="px-2 py-1 text-uppercase fs-10 text-right text-muted bg-soft-secondary">{{translate('Shops')}}</div>
+            <div class="px-2 py-1 text-uppercase fs-10 text-right text-muted bg-soft-secondary">{{translate('Shop')}}</div>
             <ul class="list-group list-group-raw">
                 @foreach ($shops as $key => $shop)
                     <li class="list-group-item">
