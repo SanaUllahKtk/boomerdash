@@ -49,6 +49,7 @@ use App\Http\Controllers\Payment\PaykuController;
 use App\Http\Controllers\ProductQueryController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\CashbackRequestController;
 
 /*
   |--------------------------------------------------------------------------
@@ -112,6 +113,11 @@ Route::controller(HomeController::class)->group(function () {
 Route::get('/all-stores', [StoreController::class, 'allStores'])->name('stores.all');
 Route::get('/store-show/{id}', [StoreController::class, 'show'])->name('stores.show');
 
+
+//Cashback Request
+Route::get('/cashbackrequest/', [CashbackRequestController::class, 'index'])->name('cashbackrequest.index');
+Route::post('/cashbackrequest/pay', [CashbackRequestController::class, 'pay'])->name('cashbackrequest.pay');
+Route::post('/cashback-redeem-request', [CashbackRequestController::class, 'store'])->name('cashback-redeem-request');
 
 
     Route::group(['middleware' => ['auth']], function() {

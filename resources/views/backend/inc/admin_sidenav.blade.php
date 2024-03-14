@@ -75,6 +75,13 @@
                             </li>
                         </ul>
                     </li>
+
+                    <li class="aiz-side-nav-item">
+                        <a href="{{ route('cashbackrequest.index') }}" class="aiz-side-nav-link">
+                            <i class="las la-shopping-cart aiz-side-nav-icon"></i>
+                            <span class="aiz-side-nav-text">{{translate('Cash Back Requests')}}</span>
+                        </a>
+                    </li>
                 @endif
 
                 <!-- Product -->
