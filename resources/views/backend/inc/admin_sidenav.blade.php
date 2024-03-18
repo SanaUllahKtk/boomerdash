@@ -99,8 +99,16 @@
 
                     <li class="aiz-side-nav-item">
                         <a href="{{ route('cashbackrequest.index') }}" class="aiz-side-nav-link">
-                            <i class="las la-shopping-cart aiz-side-nav-icon"></i>
+                            <i class="las la-award aiz-side-nav-icon"></i>
                             <span class="aiz-side-nav-text">{{translate('Cash Back Requests')}}</span>
+                        </a>
+                    </li>
+
+
+                    <li class="aiz-side-nav-item">
+                        <a href="{{ route('activitylog.index') }}" class="aiz-side-nav-link">
+                            <i class="as la-file-alt aiz-side-nav-icon"></i>
+                            <span class="aiz-side-nav-text">{{translate('Activity Log')}}</span>
                         </a>
                     </li>
                 @endif

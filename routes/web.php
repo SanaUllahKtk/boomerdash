@@ -50,6 +50,7 @@ use App\Http\Controllers\ProductQueryController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\CashbackRequestController;
+use App\Http\Controllers\ExportController;
 
 /*
   |--------------------------------------------------------------------------
@@ -376,6 +377,9 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/addresses/set_default/{id}', 'set_default')->name('addresses.set_default');
     });
 Route::resource('shops', ShopController::class);
+
+Route::get('/export/log', [ ExportController::class, 'exportLog'])->name('exportLog.csv');
+Route::get('/export/customers', [ ExportController::class, 'exportCustomerLog'])->name('exporCustomertLog.csv');
 
 Route::get('/instamojo/payment/pay-success', [InstamojoController::class, 'success'])->name('instamojo.success');
 

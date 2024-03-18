@@ -46,7 +46,7 @@ use App\Http\Controllers\UpdateController;
 use App\Http\Controllers\WebsiteController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\StoreCategoryController;
-
+use App\Http\Controllers\ActivityLogController;
 /*
   |--------------------------------------------------------------------------
   | Admin Routes
@@ -187,6 +187,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::post('/withdraw_request/payment_modal', 'payment_modal')->name('withdraw_request.payment_modal');
         Route::post('/withdraw_request/message_modal', 'message_modal')->name('withdraw_request.message_modal');
     });
+
+    Route::get('activitylog',[ActivityLogController::class, 'index'])->name('activitylog.index');
+    Route::delete('activitylog/destroy/{id}',[ActivityLogController::class, 'destroy'])->name('activitylog.destroy');
+    Route::post('activitylog/bulkdelete', [ActivityLogController::class, 'bulkdelete'])->name('activitylog.bulkDelete');
 
     // Customer
     Route::resource('customers', CustomerController::class);

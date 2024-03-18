@@ -8,6 +8,7 @@ use Socialite;
 use App\Models\User;
 use App\Models\Customer;
 use App\Models\Cart;
+use App\Models\LoginActivity;
 use Session;
 use Illuminate\Http\Request;
 use CoreComponentRepository;
@@ -178,7 +179,7 @@ class LoginController extends Controller
      * Check user's role and redirect user based on their role
      * @return
      */
-    public function authenticated()
+    public function authenticated(Request $request)
     {
         if (session('temp_user_id') != null) {
             Cart::where('temp_user_id', session('temp_user_id'))
@@ -191,14 +192,37 @@ class LoginController extends Controller
 
             Session::forget('temp_user_id');
         }
+            
 
         if (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff') {
             // CoreComponentRepository::instantiateShopRepository();
+            $login = new LoginActivity();
+            $login->user_id = \Auth::user()->id;
+            $login->activity = 'Login';
+            $login->ip = $request->ip();
+            $login->created_at = date('Y-m-d h:i:s');
+            $login->updated_at = date('Y-m-d h:i:s');
+            $login->save();
+            
+
             return redirect()->route('admin.dashboard');
         } elseif (auth()->user()->user_type == 'seller') {
+            $login = new LoginActivity();
+            $login->user_id = \Auth::user()->id;
+            $login->activity = 'Login';
+            $login->ip = $request->ip();
+            $login->created_at = date('Y-m-d h:i:s');
+            $login->updated_at = date('Y-m-d h:i:s');
+            $login->save();
             return redirect()->route('seller.dashboard');
         } else {
-
+            $login = new LoginActivity();
+            $login->user_id = \Auth::user()->id;
+            $login->activity = 'Login';
+            $login->ip = $request->ip();
+            $login->created_at = date('Y-m-d h:i:s');
+            $login->updated_at = date('Y-m-d h:i:s');
+            $login->save();
             if (session('link') != null) {
                 return redirect(session('link'));
             } else {

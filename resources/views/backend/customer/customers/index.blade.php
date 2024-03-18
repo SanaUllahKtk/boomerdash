@@ -25,14 +25,15 @@
                 </div>
             </div>
             
-            <div class="col-md-3">
-                <div class="form-group mb-0">
+            <div class="col-md-5">
+                <div class="form-group mb-0 d-flex">
                     <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Type email or name & Enter') }}">
+                    <a href="{{ route('exporCustomertLog.csv') }}" class="btn btn-primary mx-1">Export</a>
                 </div>
             </div>
         </div>
     
-        <div class="card-body">
+        <div class="card-body" style="overflow-x: scroll; width: 100%;">
             <table class="table aiz-table mb-0">
                 <thead>
                     <tr>
@@ -48,10 +49,16 @@
                             </div>
                         </th>
                         <th>{{translate('Name')}}</th>
-                        <th data-breakpoints="lg">{{translate('Email Address')}}</th>
-                        <th data-breakpoints="lg">{{translate('Phone')}}</th>
-                        <th data-breakpoints="lg">{{translate('Package')}}</th>
-                        <th data-breakpoints="lg">{{translate('Wallet Balance')}}</th>
+                        <th>{{translate('Email Address')}}</th>
+                        <th>{{translate('Phone')}}</th>
+                        <th>{{translate('Date of Birth')}}</th>
+                        <th>{{translate('Country')}}</th>
+                        <th>{{translate('State')}}</th>
+                        <th>{{translate('City')}}</th>
+                        <th>{{translate('Postal Code')}}</th>
+                        <th>{{translate('Address')}}</th>
+                        <th class="d-none">{{translate('Package')}}</th>
+                        <th class="d-none">{{translate('Wallet Balance')}}</th>
                         <th>{{translate('Options')}}</th>
                     </tr>
                 </thead>
@@ -73,12 +80,18 @@
                                 <td>@if($user->banned == 1) <i class="fa fa-ban text-danger" aria-hidden="true"></i> @endif {{$user->name}}</td>
                                 <td>{{$user->email}}</td>
                                 <td>{{$user->phone}}</td>
-                                <td>
+                                <td>{{$user->dob}}</td>
+                                <td>{{$user->country}}</td>
+                                <td>{{$user->state}}</td>
+                                <td>{{$user->city}}</td>
+                                <td>{{$user->postal_cod}}</td>
+                                <td>{{$user->address}}</td>
+                                <td class="d-none">
                                     @if ($user->customer_package != null)
                                     {{$user->customer_package->getTranslation('name')}}
                                     @endif
                                 </td>
-                                <td>{{single_price($user->balance)}}</td>
+                                <td class="d-none">{{single_price($user->balance)}}</td>
                                 <td class="text-right">
                                     <a href="{{route('customers.login', encrypt($user->id))}}" class="btn btn-soft-primary btn-icon btn-circle btn-sm" title="{{ translate('Log in as this Customer') }}">
                                         <i class="las la-edit"></i>
