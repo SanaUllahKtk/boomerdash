@@ -53,7 +53,7 @@ class ExportController extends Controller
         // Create CSV content
         $csv = 'Name, Email, Country, State, City, Postal Code, Address' . PHP_EOL;
         foreach ($users as $user) {
-            $csv .= '"' . $user->name . '","' . $user->email . '",' . ($countries[$user->country] ?? '') . ',"' . ($states[$user->state] ?? '') . '","' . ($cities[$user->city] ?? '') . '","' . $user->postal_code . '","' . str_replace('"', '""', $user->address) . '"' . PHP_EOL;
+            $csv .= '"' . $user->name . '","' . $user->email . '",' . ($countries[$user->country] ?? '') . ',"' . ($states[$user->state] ?? '') . '","' . ($cities[$user->city] ?? '') . '","' . $user->postal_code . '","' . str_replace('"', '""', $user->st_address) . '"' . PHP_EOL;
         }
 
         // Set the headers to force download the CSV file

@@ -76,6 +76,28 @@
                         </ul>
                     </li>
 
+
+                    <li class="aiz-side-nav-item">
+                        <a href="#" class="aiz-side-nav-link">
+                            <i class="las la-shopping-cart aiz-side-nav-icon"></i>
+                            <span class="aiz-side-nav-text">{{translate('Posts')}}</span>
+                            <span class="aiz-side-nav-arrow"></span>
+                        </a>
+                        <!--Submenu-->
+                        <ul class="aiz-side-nav-list level-2">
+                            <li class="aiz-side-nav-item">
+                                <a class="aiz-side-nav-link" href="{{route('posts.create')}}">
+                                    <span class="aiz-side-nav-text">{{translate('Add New Post')}}</span>
+                                </a>
+                            </li>
+                            <li class="aiz-side-nav-item">
+                                <a href="{{route('posts.index')}}" class="aiz-side-nav-link">
+                                    <span class="aiz-side-nav-text">{{translate('All Post')}}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-shopping-cart aiz-side-nav-icon"></i>

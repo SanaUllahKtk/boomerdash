@@ -47,6 +47,8 @@ use App\Http\Controllers\WebsiteController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\StoreCategoryController;
 use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\PostController;
+
 /*
   |--------------------------------------------------------------------------
   | Admin Routes
@@ -506,3 +508,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
 
     Route::get('/clear-cache', [AdminController::class, 'clearCache'])->name('cache.clear');
 });
+
+
+Route::resource('posts', PostController::class);

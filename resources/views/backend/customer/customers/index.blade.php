@@ -81,11 +81,11 @@
                                 <td>{{$user->email}}</td>
                                 <td>{{$user->phone}}</td>
                                 <td>{{$user->dob}}</td>
-                                <td>{{$user->country}}</td>
-                                <td>{{$user->state}}</td>
-                                <td>{{$user->city}}</td>
-                                <td>{{$user->postal_cod}}</td>
-                                <td>{{$user->address}}</td>
+                                <td>{{$countries[$user->country] ?? ''}}</td>
+                                <td>{{$states[$user->state] ?? ''}}</td>
+                                <td>{{$cities[$user->city] ?? ''}}</td>
+                                <td>{{$user->postal_code}}</td>
+                                <td>{{$user->st_address}}</td>
                                 <td class="d-none">
                                     @if ($user->customer_package != null)
                                     {{$user->customer_package->getTranslation('name')}}
@@ -105,7 +105,7 @@
                                         <i class="las la-user-check"></i>
                                     </a>
                                     @endif
-                                    <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('customers.destroy', $user->id)}}" title="{{ translate('Delete') }}">
+                                    <a class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-deletes" href="{{route('customers.destroy', $user->id)}}" title="{{ translate('Delete') }}">
                                         <i class="las la-trash"></i>
                                     </a>
                                 </td>
@@ -211,5 +211,35 @@
                 }
             });
         }
+
+
+        $(document).ready(function() {
+          // Attach a click event handler to the delete button
+            $(document).on("click",".confirm-delete", function(e) {
+                e.preventDefault(); // Prevent the default link behavior
+
+                 var deleteUrl = $(this).data("url"); // Get the DELETE URL from the data attribute
+                // Show a confirmation dialog
+                if (confirm("Are you sure you want to delete this store?")) {
+                    // Send a DELETE request to delete the product
+                    $.ajax({
+                        type: "DELETE",
+                        url: deleteUrl,
+                        data: {
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function(response) {
+                            // Handle the success response here (e.g., reload the page or remove the deleted element)
+                            alert("Customer deleted successfully");
+                            location.reload(); // Reload the page
+                        },
+                        error: function(error) {
+                            // Handle any errors here
+                            alert("Error deleting store");
+                        }
+                    });
+                }
+            });
+        });
     </script>
 @endsection

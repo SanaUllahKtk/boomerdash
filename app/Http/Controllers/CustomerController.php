@@ -10,6 +10,9 @@ use App\Models\User;
 use Redirect;
 use App\Models\WithdrawalHistoryUser;
 use App\Models\Order;
+use App\Models\City;
+use App\Models\Country;
+use App\Models\State;
 
 class CustomerController extends Controller
 {
@@ -29,7 +32,13 @@ class CustomerController extends Controller
             });
         }
         $users = $users->paginate(15);
-        return view('backend.customer.customers.index', compact('users', 'sort_search'));
+
+        $countries = Country::pluck('name', 'id')->toArray();
+        $states = State::pluck('name', 'id')->toArray();
+        $cities = City::pluck('name', 'id')->toArray();
+
+
+        return view('backend.customer.customers.index', compact('users', 'sort_search', 'countries', 'states', 'cities'));
     }
     
     public function withdraw_history(Request $request)

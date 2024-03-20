@@ -20,6 +20,7 @@ use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\StoreController;
 
 use App\Http\Controllers\EmailController;
@@ -86,6 +87,10 @@ Route::controller(AizUploadController::class)->group(function () {
     Route::post('/aiz-uploader/get_file_by_ids', 'get_preview_files');
     Route::get('/aiz-uploader/download/{id}', 'attachment_download')->name('download_attachment');
 });
+
+Route::get('/allposts', [PostController::class, 'allPosts'])->name('all_posts');
+Route::get('/singlepost/{id}', [PostController::class, 'singlePost'])->name('single_post');
+Route::post('/savePoints', [PostController::class, 'savePoints'])->name('savePoints');
 
 Auth::routes(['verify' => true]);
 
@@ -466,5 +471,7 @@ Route::controller(PageController::class)->group(function () {
     //Custom page
     Route::get('/{slug}', 'show_custom_page')->name('custom-pages.show_custom_page');
 });
+
+
 
 
