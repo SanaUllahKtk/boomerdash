@@ -101,6 +101,7 @@
                             </span>
                         </a>
                     </li>
+                    
                 @else
 
                     @php
@@ -188,6 +189,15 @@
                             <a href="{{ route('user_favorite') }}" class="aiz-side-nav-link {{ areActiveRoutes(['earnng_point_for_user'])}}">
                                 <i class="las la-dollar-sign aiz-side-nav-icon"></i>
                                 <span class="aiz-side-nav-text">{{translate('Favorites')}}</span>
+                            </a>
+                        </li>
+
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('all_posts_mobile') }}" class="aiz-side-nav-link {{ areActiveRoutes(['all_posts'])}}">
+                                <i class="las la-comment-dollar aiz-side-nav-icon"></i>
+                                <span class="aiz-side-nav-text">
+                                    {{ translate('Discover') }}
+                                </span>
                             </a>
                         </li>
 

@@ -38,6 +38,20 @@
                     </div>
                 </div>
 
+
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-from-label">{{ translate('Type') }} <span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-8">
+                            <select name="type" id="" class="form form-control">
+                                <option value="">Select type</option>
+                                <option value="latest" {{ $post->type == 'latest' ? 'selected' : ''}}>Latest</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="card-body">
                     <div class="form-group row">
                         <label class="col-md-3 col-from-label">{{ translate('Description') }}</label>
@@ -127,7 +141,7 @@
             <div class="col-12">
                 <div class="btn-toolbar float-right mb-3" role="toolbar" aria-label="Toolbar with button groups">
                     <div class="btn-group mr-2" role="group" aria-label="Third group">
-                        <button type="submit" class="btn btn-primary">{{ translate('Create') }}</button>
+                        <button type="submit" class="btn btn-primary">{{ translate('Update') }}</button>
                     </div>
                 </div>
             </div>

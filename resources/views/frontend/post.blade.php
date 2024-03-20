@@ -1,4 +1,4 @@
-@extends('newf.layouts.app')
+@extends('frontend.layouts.app')
 <style>
     .hero-section img {
         width: 100%;
@@ -62,52 +62,68 @@
 
 </style>
 @section('content')
-    <div class="row" style="position: relative;">
-        <div class="col-md-8 mx-auto">
-            <!-- Hero Section -->
-            <section class="hero-section">
-                <img src="{{ uploaded_asset($post->photo) }}" alt="">
-            </section>
 
-            <section class="post-content mt-1">
-                <div class="container">
-                    {!! $post->content !!}
-                </div>
-            </section>
+<section class="py-5">
+    <div class="container">
+        <div class="d-flex align-items-start">
+            @include('frontend.inc.user_side_nav')
 
-
-            <!-- Products Carousel Section -->
-            <section class="products-carousel">
-                <div class="container">
-                    <h2 class="text-center mb-4">Latest Blog</h2>
-                    <div class="slick-carousel" style="height: 274px;">
-
-                        <!-- Product Cards -->
-                        @forelse($posts as $post)
-                            <div class="product-card">
-                                <a href="{{ route('single_post', $post->id) }}">
-                                    <div class="product-image">
-                                        <img src="{{ uploaded_asset($post->photo) }}" alt="Product 1 Image">
-                                        <div class="overlay"></div>
-                                        <h3>{{ $post->title }}</h3>
+            <div class="aiz-user-panel">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row" style="position: relative;">
+                            <div class="col-md-12 mx-auto">
+                                <!-- Hero Section -->
+                                <section class="hero-section">
+                                    <img src="{{ uploaded_asset($post->photo) }}" alt="">
+                                </section>
+                    
+                                <section class="post-content mt-1">
+                                    <div class="container">
+                                        <h5 class="text-center"><strong>{{$post->title }}</strong></h5>
+                                        {!! $post->content !!}
                                     </div>
-                                </a>
+                                </section>
+                    
+                    
+                                <!-- Products Carousel Section -->
+                                <section class="products-carousel">
+                                    <div class="container">
+                                        <h2 class="text-center mb-4">Latest Blog</h2>
+                                        <div class="slick-carousel" style="height: 274px;">
+                    
+                                            <!-- Product Cards -->
+                                            @forelse($posts as $post)
+                                                <div class="product-card">
+                                                    <a href="{{ route('single_post', $post->id) }}">
+                                                        <div class="product-image">
+                                                            <img src="{{ uploaded_asset($post->photo) }}" alt="Product 1 Image">
+                                                            <div class="overlay"></div>
+                                                            <h3>{{ $post->title }}</h3>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            @empty
+                                                <div class="">
+                                                    <h2>No Product Found</h2>
+                                                </div>
+                                            @endforelse
+                                        </div>
+                                    </div>
+                                </section>
+                    
                             </div>
-                        @empty
-                            <div class="">
-                                <h2>No Product Found</h2>
+                    
+                            <div id="timer" class="text-right d-none"
+                                style="position: fixed; top: 100px; right: 20px; background-color: rgba(0, 0, 0, 0.5); color: white; padding: 10px; font-size: 16px; border-radius: 5px;">
                             </div>
-                        @endforelse
+                    
+                        </div>
+
                     </div>
                 </div>
-            </section>
-
+            </div>
         </div>
-
-        <div id="timer" class="text-right d-none"
-            style="position: fixed; top: 100px; right: 20px; background-color: rgba(0, 0, 0, 0.5); color: white; padding: 10px; font-size: 16px; border-radius: 5px;">
-        </div>
-
     </div>
 @endsection
 

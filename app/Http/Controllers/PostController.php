@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ClubPoint;
 use App\Models\Post;
 use App\Models\Product;
+use App\Models\UserReaderPost;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -116,6 +117,7 @@ class PostController extends Controller
         $new = Post::findOrFail($id);
         $new->title = $request->title;
         $new->slug = $request->slug;
+        $new->type = $request->type;
         $new->content = $request->description;
         $new->status = 1;
         $new->photo = $request->photos;
@@ -158,19 +160,62 @@ class PostController extends Controller
     }
 
     public function allPosts(){
-        $posts = Post::get();
-        $products = Product::get();
+        $page = \App\Models\PostPage::first();
+        $posts = Post::select(['posts.*'])->leftJoin('user_reader_posts', 'user_reader_posts.post_id', '=', 'posts.id')
+        ->whereNull('posts.type')
+        ->whereNull('user_reader_posts.post_id')
+        ->get();
 
-        return view('newf.posts', compact('posts', 'products'));
+        $latest_posts = Post::select(['posts.*'])->leftJoin('user_reader_posts', 'user_reader_posts.post_id', '=', 'posts.id')
+             ->whereNotNull('posts.type')
+             ->whereNull('user_reader_posts.post_id')
+             ->get();
+
+        $products = Product::get();
+        return view('newf.posts', compact('posts', 'page' ,'latest_posts' ,'products'));
     }
 
     public function singlePost($id){
         $post = Post::findOrFail($id);
-        $posts = Post::get();
+        $posts = Post::select(['posts.*'])->leftJoin('user_reader_posts', 'user_reader_posts.post_id', '=', 'posts.id')
+        ->whereNull('posts.type')
+        ->whereNull('user_reader_posts.post_id')
+        ->get();
         return view('newf.post', compact('post', 'posts'));
     }
 
+
+    public function singlePostForMobile($id){
+        $post = Post::findOrFail($id);
+        $posts = Post::select(['posts.*'])->leftJoin('user_reader_posts', 'user_reader_posts.post_id', '=', 'posts.id')
+        ->whereNull('posts.type')
+        ->whereNull('user_reader_posts.post_id')
+        ->get();
+        return view('frontend.post', compact('post', 'posts'));
+    }
+
+    public function allPostsForMobile(){
+        $page = \App\Models\PostPage::first();
+        $posts = Post::select(['posts.*'])->leftJoin('user_reader_posts', 'user_reader_posts.post_id', '=', 'posts.id')
+        ->whereNull('posts.type')
+        ->whereNull('user_reader_posts.post_id')
+        ->get();
+
+        $latest_posts = Post::select(['posts.*'])->leftJoin('user_reader_posts', 'user_reader_posts.post_id', '=', 'posts.id')
+             ->whereNotNull('posts.type')
+             ->whereNull('user_reader_posts.post_id')
+             ->get();
+
+        $products = Product::get();
+        return view('frontend.posts', compact('posts', 'page' ,'latest_posts' ,'products'));
+    }
+
     public function savePoints(Request $request){
+
+        $is_read = UserReaderPost::where('user_id', \Auth::user()->id)->where('post_id', $request->id)->first();
+        if($is_read){
+            return 0;
+        }
        $point = new ClubPoint();
        $point->user_id = \Auth::user()->id;
        $point->point_type = 'Blog Reading';
@@ -180,6 +225,13 @@ class PostController extends Controller
        $point->created_at = date('Y-m-d h:i:s');
        $point->updated_at = date('Y-m-d h:i:s');
        $point->save();
+
+       $reader = new UserReaderPost();
+       $reader->user_id = \Auth::user()->id;
+       $reader->post_id = $request->id;
+       $reader->created_at = date('Y-m-d h:i:s');
+       $reader->updated_at = date('Y-m-d h:i:s');
+       $reader->save();
 
        return 1;
     }

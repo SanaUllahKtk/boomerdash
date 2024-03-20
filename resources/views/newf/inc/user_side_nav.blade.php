@@ -99,6 +99,7 @@
                             </span>
                         </a>
                     </li>
+
                 @else
 
                     @php
@@ -176,6 +177,7 @@
                                 <span class="aiz-side-nav-text">{{translate('My Wallet')}}</span>
                             </a>
                         </li>
+
                     
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('earnng_point_for_user') }}" class="aiz-side-nav-link {{ areActiveRoutes(['earnng_point_for_user'])}}">

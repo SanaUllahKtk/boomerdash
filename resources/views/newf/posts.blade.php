@@ -1,34 +1,6 @@
 @extends('newf.layouts.app')
 <style>
-    /* Style for the hero section */
-    .hero-section {
-        position: relative;
-        width: 100%;
-        height: 400px;
-        /* Adjust height as needed */
-        background-image: url('https://pic.616pic.com/bg_w1180/00/05/78/MCZQ9zdcRF.jpg');
-        /* Placeholder image URL */
-        background-size: cover;
-        background-position: center;
-        color: white;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 30px;
-        /* Add margin to separate sections */
-    }
-
-    .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.3);
-    }
-
+    
     h2 {
         font-weight: 700;
     }
@@ -115,16 +87,25 @@
     }
 </style>
 @section('content')
-    <!-- Hero Section -->
-    <section class="hero-section">
 
+<!-- Hero Section -->
+<section class="hero-section" style="position: relative; height: 100vh; display: flex; justify-content: center; align-items: center;">
+    <img src="{{ uploaded_asset($page->banner ?? '') }}" alt="" style="position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -1; min-height: 100vh;">
 
-        <div class="overlay"></div>
-        <div style="z-index: 500;">
-            <h2>Welcome to Our Blog</h2>
-            <p>Explore the latest articles and insights</p>
-        </div>
-    </section>
+    <div class="overlay" style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 0;
+    "></div>
+    <div style="position: relative; z-index: 1; text-align: center; color: white;">
+        <h2>{{ $page->heading1 }}</h2>
+        <p>{{ $page->sub_heading }}</p>
+    </div>
+</section>
 
 
 
@@ -162,7 +143,7 @@
         <div class="container">
             <h2 class="text-center mb-4">Latest Blog</h2>
             <div class="row">
-                @forelse($posts as $post)
+                @forelse($latest_posts as $post)
                     <!-- Blog Cards -->
                     <div class="col-md-3 mb-4">
                         <a href="{{ route('single_post', $post->id) }}">
@@ -185,7 +166,7 @@
     </section>
 
     <!-- Products Carousel Section -->
-    <section class="products-carousel">
+    <section class="products-carousel d-none">
         <div class="container">
             <h2 class="text-center mb-4">Products</h2>
             <div class="slick-carousel" style="height: 274px;">
