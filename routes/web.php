@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\AizUploadController;
 use App\Http\Controllers\Auth\LoginController;
@@ -95,7 +96,9 @@ Route::post('/savePoints', [PostController::class, 'savePoints'])->name('savePoi
 
 Route::get('/allposts/mobile', [PostController::class, 'allPostsForMobile'])->name('all_posts_mobile');
 Route::get('/singlemobilepost/{id}', [PostController::class, 'singlePostForMobile'])->name('single_post_mobile');
-
+Route::get('/clickscount/{id}', [AdController::class, 'AddClick'])->name('addClick');
+Route::post('/upload/image', [AdController::class, 'uploadImage'])->name('upload.image');
+Route::post('/upload-video', [AdController::class, 'uploadVideo'])->name('upload.video');
 
 
 

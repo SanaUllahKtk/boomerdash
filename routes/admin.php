@@ -47,6 +47,7 @@ use App\Http\Controllers\WebsiteController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\StoreCategoryController;
 use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\AdController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostPageController;
 
@@ -513,3 +514,4 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
 
 Route::resource('posts', PostController::class);
 Route::resource('postpages', PostPageController::class);
+Route::resource('ads', AdController::class);

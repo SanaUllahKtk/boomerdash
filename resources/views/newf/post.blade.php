@@ -62,14 +62,19 @@
 
 </style>
 @section('content')
-    <div class="row" style="position: relative;">
+    <div class="row">
         <div class="col-md-8 mx-auto">
             <!-- Hero Section -->
             <section class="hero-section">
                 <img src="{{ uploaded_asset($post->photo) }}" alt="">
             </section>
-
+        </div>
+    </div>
+    <div class="row" style="position: relative;">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 mx-auto">
             <section class="post-content mt-1">
+                <h2 class="text-center">{{ $post->title }}</h2>
                 <div class="container">
                     {!! $post->content !!}
                 </div>
@@ -85,7 +90,7 @@
                         <!-- Product Cards -->
                         @forelse($posts as $post)
                             <div class="product-card">
-                                <a href="{{ route('single_post', $post->id) }}">
+                                <a href="{{ route('single_post', $post->slug) }}">
                                     <div class="product-image">
                                         <img src="{{ uploaded_asset($post->photo) }}" alt="Product 1 Image">
                                         <div class="overlay"></div>
@@ -103,6 +108,46 @@
             </section>
 
         </div>
+        
+
+        <div class="col-md-2">
+            @forelse($ads as $ad)
+                @php 
+                    $randomValue = rand(0, 1);
+                @endphp 
+
+                @if($randomValue == 0)
+                    <a href="{{ $ad->link }}" class="addClick" data-ad-id="{{ $ad->id }}" target="_blank" style="display: block; border: 1px solid #ccc; padding: 5px; border-radius: 5px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); margin-top: 1rem;">
+                        <img src="{{ uploaded_asset($ad->photo ) }}" alt="Advertisement" style="width: 100%; height: auto;">
+                        <small class="text-dark">{{ $ad->title }}</small>
+                    </a>
+                @else 
+                    <a href="{{ $ad->link }}" class="addClick" data-ad-id="{{ $ad->id }}">
+                        <video autoplay loop muted playsinline style="display: block; margin-top: 10px; width: 100%; border-radius: 5px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); margin-top: 1rem;">
+                            <source src="{{ static_asset($ad->video) }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <small class="text-dark">{{ $ad->title }}</small>
+                    </a>
+                @endif
+
+
+            @empty 
+
+            @endforelse 
+        
+        </div>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+
 
         <div id="timer" class="text-right d-none"
             style="position: fixed; top: 100px; right: 20px; background-color: rgba(0, 0, 0, 0.5); color: white; padding: 10px; font-size: 16px; border-radius: 5px;">
@@ -220,5 +265,21 @@ window.onload = startTimer;
                     }
                 ]
             });
+
+            $(document).on("click", '.addClick' ,function() {
+                var ad_id = $(this).data('ad-id');
+                $.ajax({
+                    method: 'GET',
+                    url: '/clickscount/' + ad_id,
+                    success: function(data) {
+                        // Handle success response here
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error response here
+                    }
+                });
+            });
+
+
         });
     </script>

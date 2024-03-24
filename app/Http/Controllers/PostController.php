@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ad;
 use App\Models\ClubPoint;
 use App\Models\Post;
 use App\Models\Product;
 use App\Models\UserReaderPost;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
@@ -28,7 +30,9 @@ class PostController extends Controller
     public function create()
     {
         //
-        return view('backend.posts.create');
+        $categories = getBlogCategory();
+
+        return view('backend.posts.create', compact('categories'));
     }
 
     /**
@@ -44,12 +48,39 @@ class PostController extends Controller
         // print_r($request->input());
         // die();
 
+        // Validation rules
+        $rules = [
+            'title' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:posts,slug', // Assuming 'posts' is your table name
+            'description' => 'required',
+            'category_id' => 'required',
+        ];
+
+        // Custom error messages
+        $messages = [
+            'slug.unique' => 'The slug must be unique.', // Custom message for uniqueness validation
+        ];
+
+        // Validate the request
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        // If validation fails, redirect back with errors
+        if ($validator->fails()) {
+            flash(translate($validator->errors()->first()))->error();
+            return redirect()->back();
+        }
+         
+
+        // If validation passes, proceed with further processing
+
+
         $new = new Post();
         $new->user_id = \Auth::user()->id;
         $new->title = $request->title;
         $new->slug = $request->slug;
         $new->content = $request->description;
         $new->type = $request->type;
+        $new->category_id = $request->category_id;
         $new->status = 1;
         $new->photo = $request->photos;
         $new->timer = $request->timer;
@@ -122,6 +153,7 @@ class PostController extends Controller
         $new->status = 1;
         $new->photo = $request->photos;
         $new->timer = $request->timer;
+        $new->category_id = $request->category_id;
         $new->points = $request->points;
         
         if ($request->has('videolink')) {
@@ -159,55 +191,72 @@ class PostController extends Controller
         return 1;
     }
 
-    public function allPosts(){
+    public function allPosts(Request $request){
         $page = \App\Models\PostPage::first();
-        $posts = Post::select(['posts.*'])->leftJoin('user_reader_posts', 'user_reader_posts.post_id', '=', 'posts.id')
-        ->whereNull('posts.type')
-        ->whereNull('user_reader_posts.post_id')
-        ->get();
+        $postsQuery = Post::select(['posts.*'])->whereNull('posts.type');
 
-        $latest_posts = Post::select(['posts.*'])->leftJoin('user_reader_posts', 'user_reader_posts.post_id', '=', 'posts.id')
-             ->whereNotNull('posts.type')
-             ->whereNull('user_reader_posts.post_id')
-             ->get();
+        if (request()->has('cat_id')) {
+            $postsQuery->where('category_id', $request->cat_id);
+        }
+        $posts = $postsQuery->get();
+
+
+        $latestpostQuery = Post::select(['posts.*'])->whereNotNull('posts.type');
+
+        if (request()->has('cat_id')) {
+            $latestpostQuery->where('category_id', $request->cat_id);
+        }
+        $latest_posts = $latestpostQuery->get();
 
         $products = Product::get();
-        return view('newf.posts', compact('posts', 'page' ,'latest_posts' ,'products'));
+        $ads = Ad::where('status', 'active')->paginate(3);
+        $categories = getBlogCategory();
+
+        return view('newf.posts', compact('posts', 'page' ,'latest_posts' ,'products', 'ads', 'categories'));
     }
 
     public function singlePost($id){
-        $post = Post::findOrFail($id);
+        $post = Post::where('slug', $id)->first();
         $posts = Post::select(['posts.*'])->leftJoin('user_reader_posts', 'user_reader_posts.post_id', '=', 'posts.id')
         ->whereNull('posts.type')
         ->whereNull('user_reader_posts.post_id')
         ->get();
-        return view('newf.post', compact('post', 'posts'));
+
+        $ads = Ad::where('status', 'active')->paginate(3);
+
+        return view('newf.post', compact('post', 'posts', 'ads'));
     }
 
 
     public function singlePostForMobile($id){
-        $post = Post::findOrFail($id);
-        $posts = Post::select(['posts.*'])->leftJoin('user_reader_posts', 'user_reader_posts.post_id', '=', 'posts.id')
-        ->whereNull('posts.type')
-        ->whereNull('user_reader_posts.post_id')
+        $post = Post::where('slug', $id)->first();
+        $posts = Post::select(['posts.*'])->whereNull('posts.type')
         ->get();
         return view('frontend.post', compact('post', 'posts'));
     }
 
-    public function allPostsForMobile(){
+    public function allPostsForMobile(Request $request){
         $page = \App\Models\PostPage::first();
-        $posts = Post::select(['posts.*'])->leftJoin('user_reader_posts', 'user_reader_posts.post_id', '=', 'posts.id')
-        ->whereNull('posts.type')
-        ->whereNull('user_reader_posts.post_id')
-        ->get();
+        $postsQuery = Post::select(['posts.*'])->whereNull('posts.type');
 
-        $latest_posts = Post::select(['posts.*'])->leftJoin('user_reader_posts', 'user_reader_posts.post_id', '=', 'posts.id')
-             ->whereNotNull('posts.type')
-             ->whereNull('user_reader_posts.post_id')
-             ->get();
+        if (request()->has('cat_id')) {
+            $postsQuery->where('category_id', $request->cat_id);
+        }
+        $posts = $postsQuery->get();
+
+
+        $latestpostQuery = Post::select(['posts.*'])->whereNotNull('posts.type');
+
+        if (request()->has('cat_id')) {
+            $latestpostQuery->where('category_id', $request->cat_id);
+        }
+        $latest_posts = $latestpostQuery->get();
 
         $products = Product::get();
-        return view('frontend.posts', compact('posts', 'page' ,'latest_posts' ,'products'));
+        $ads = Ad::where('status', 'active')->paginate(3);
+        $categories = getBlogCategory();
+
+        return view('frontend.posts', compact('posts', 'page' ,'latest_posts' ,'products', 'ads', 'categories'));
     }
 
     public function savePoints(Request $request){

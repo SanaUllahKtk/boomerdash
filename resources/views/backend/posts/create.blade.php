@@ -1,5 +1,4 @@
 @extends('backend.layouts.app')
-
 @section('content')
     <div class="aiz-titlebar text-left mt-2 mb-3">
         <h5 class="mb-0 h6">{{ translate('Add New Post') }}</h5>
@@ -39,6 +38,24 @@
 
                 <div class="card-body">
                     <div class="form-group row">
+                        <label class="col-md-3 col-from-label">{{ translate('Category') }} <span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-8">
+                            <select name="category_id" id="" class="form form-control">
+                                <option value="">Select Category</option>
+                               @forelse ($categories as $key => $category)
+                               <option value="{{ $key }}">{{ $category }}</option>
+                               @empty
+                                   
+                               @endforelse
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card-body">
+                    <div class="form-group row">
                         <label class="col-md-3 col-from-label">{{ translate('Type') }} <span
                                 class="text-danger">*</span></label>
                         <div class="col-md-8">
@@ -54,7 +71,7 @@
                     <div class="form-group row">
                         <label class="col-md-3 col-from-label">{{ translate('Description') }}</label>
                         <div class="col-md-8">
-                            <textarea class="aiz-text-editor" name="description"></textarea>
+                            <textarea class="" id="summernote" name="description"></textarea>
                         </div>
                     </div>
                 </div>
@@ -75,7 +92,11 @@
                         </div>
                     </div>
                 </div>
-
+                <style>
+                    .note-modal .note-group-select-from-files{
+                        display: block !important;
+                    }
+                </style>
                 <div class="card-body">
                     <div class="form-group row">
                         <label class="col-md-3 col-from-label">{{ translate('Points') }} <span
@@ -135,7 +156,6 @@
                 </div>
             </div>
 
-
             <div class="col-12">
                 <div class="btn-toolbar float-right mb-3" role="toolbar" aria-label="Toolbar with button groups">
                     <div class="btn-group mr-2" role="group" aria-label="Third group">
@@ -147,10 +167,39 @@
     </div>
 @endsection
 
-@section('script')
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('.select2').select2();
-        });
-    </script>
-@endsection
+
+@section("script")
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+<script>
+     $('#summernote').summernote({
+        //imageUploadUrl: '{{ route("upload.image") }}'
+        height: ($(window).height() - 300),
+            // callbacks: {
+            //     onImageUpload: function(files) {
+            //         uploadImage(files[0]);
+            //     }
+            // }
+        
+     });
+
+     function uploadImage(image) {
+            var data = new FormData();
+            data.append("image", image);
+            $.ajax({
+                url: 'Your url to deal with your image',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: data,
+                type: "post",
+                success: function(url) {
+                    var image = $('<img>').attr('src', url);
+                    $('#summernote').summernote("insertNode", image[0]);
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+            });
+        }
+</script>
+@endsection 

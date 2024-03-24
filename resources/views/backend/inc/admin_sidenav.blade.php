@@ -95,6 +95,12 @@
                                     <span class="aiz-side-nav-text">{{translate('All Post')}}</span>
                                 </a>
                             </li>
+
+                            <li class="aiz-side-nav-item">
+                                <a href="{{ route('postpages.index') }}" class="aiz-side-nav-link">
+                                    <span class="aiz-side-nav-text">{{translate('Post Page')}}</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
 
@@ -120,6 +126,27 @@
                     </li>
 
                     <li class="aiz-side-nav-item">
+                        <a href="#" class="aiz-side-nav-link">
+                            <i class="las la-shopping-cart aiz-side-nav-icon"></i>
+                            <span class="aiz-side-nav-text">{{translate('Ads')}}</span>
+                            <span class="aiz-side-nav-arrow"></span>
+                        </a>
+                        <!--Submenu-->
+                        <ul class="aiz-side-nav-list level-2">
+                            <li class="aiz-side-nav-item">
+                                <a class="aiz-side-nav-link" href="{{route('ads.create')}}">
+                                    <span class="aiz-side-nav-text">{{translate('Add Ad')}}</span>
+                                </a>
+                            </li>
+                            <li class="aiz-side-nav-item">
+                                <a href="{{route('ads.index')}}" class="aiz-side-nav-link">
+                                    <span class="aiz-side-nav-text">{{translate('All Ads')}}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="aiz-side-nav-item">
                         <a href="{{ route('cashbackrequest.index') }}" class="aiz-side-nav-link">
                             <i class="las la-award aiz-side-nav-icon"></i>
                             <span class="aiz-side-nav-text">{{translate('Cash Back Requests')}}</span>
@@ -132,7 +159,7 @@
                             <i class="as la-file-alt aiz-side-nav-icon"></i>
                             <span class="aiz-side-nav-text">{{translate('Activity Log')}}</span>
                         </a>
-                    </li>
+                    </li>                    
                 @endif
 
                 <!-- Product -->

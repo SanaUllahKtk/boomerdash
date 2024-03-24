@@ -1154,4 +1154,14 @@ if (!function_exists('get_url_params')) {
         
         return $query_params[$key] ?? '';
     }
+
+    function getBlogCategory(){
+        return ([
+            '1' => 'Health',
+            '2' => 'Beauty',
+            '3' => 'Lifestyle',
+            '4' => 'Personal Finance',
+            '5' => 'Shopping '
+        ]);
+    }
 }

@@ -95,7 +95,7 @@
                                             <!-- Product Cards -->
                                             @forelse($posts as $post)
                                                 <div class="product-card">
-                                                    <a href="{{ route('single_post', $post->id) }}">
+                                                    <a href="{{ route('single_post', $post->slug) }}">
                                                         <div class="product-image">
                                                             <img src="{{ uploaded_asset($post->photo) }}" alt="Product 1 Image">
                                                             <div class="overlay"></div>

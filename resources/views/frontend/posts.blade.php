@@ -13,7 +13,7 @@
 
     /* Style for card title */
     .card-title {
-        font-size: 14px;
+        font-size: 16px;
         font-weight: bold;
     }
 
@@ -86,6 +86,7 @@
     }
 </style>
 @section('content')
+
     <section class="py-5">
         <div class="container">
             <div class="d-flex align-items-start">
@@ -94,6 +95,54 @@
                 <div class="aiz-user-panel">
                     <div class="card">
                         <div class="card-body">
+                            <style>
+                                .categories {
+                                    display: flex;
+                                    flex-wrap: wrap;
+                                    justify-content: space-between;
+                                    border-bottom: 1px solid #ccc;
+                                    /* Add border between options */
+                                    padding: 10px 0;
+                                    /* Add padding for spacing */
+                                }
+                        
+                                .categories>div {
+                                    flex: 1;
+                                    text-align: center;
+                                }
+                        
+                                .categories>div:not(:last-child) {
+                                    margin-right: 10px;
+                                    /* Add margin between options */
+                                }
+                        
+                                .categories a {
+                                    text-decoration: none;
+                                    color: #333;
+                                    display: block;
+                                    padding: 5px 0;
+                                    transition: color 0.3s ease;
+                                }
+                        
+                                .categories a:hover {
+                                    color: #007bff;
+                                    /* Change color on hover */
+                                }
+                            </style>
+                        
+                            <div class="categories">
+                                <div>
+                                    <a href="/allposts" class="">All Blogs</a>
+                                </div>
+                                @forelse($categories as $key => $cat)
+                                <div>
+                                    <a href="/allposts?cat_id={{$key}}" class="">{{ $cat }}</a>
+                                </div>
+                                @empty 
+                                @endforelse
+                            </div>
+
+
                             <!-- Hero Section -->
                             <section class="hero-section"
                                 style="position: relative; height: 50vh; display: flex; justify-content: center; align-items: center;">
@@ -127,12 +176,22 @@
                                             <!-- Blog Cards -->
 
                                             <div class="col-md-4 mb-4">
-                                                <a href="{{ route('single_post_mobile', $post->id) }}">
+                                                <a href="{{ route('single_post_mobile', $post->slug) }}">
                                                     <div class="card">
                                                         <img src="{{ uploaded_asset($post->photo) }}" class="card-img-top"
                                                             alt="Blog Image" width="100%" height="200px">
                                                         <div class="card-body" style="height: 150px !important;">
-                                                            <h5 class="card-title">{{ $post->title }}</h5>
+                                                           <h5 class="card-title">
+                                                                @if(strlen($post->title) > 100)
+                                                                    {{ substr($post->title, 0, 100) . '...' }}
+                                                                @else
+                                                                    {{ $post->title }}
+                                                                @endif
+                                                            </h5>
+                                                        </div>
+
+                                                        <div class="card-footer text-center" style="background-color: linear-gradient(90deg, rgba(125, 37, 140, 1) 12%, rgba(38, 99, 242, 1) 32%, rgba(54, 115, 255, 1) 42%, rgba(250, 237, 46, 1) 66%, rgba(245, 153, 41, 1) 81%, rgba(217, 36, 37, 1) 99%) !important;">
+                                                            <span >Earn {{ $post->points ?  number_format($post->points, 2) : '0.00' }} Points</span>
                                                         </div>
                                                     </div>
                                                 </a>
@@ -155,12 +214,22 @@
                                         @forelse($latest_posts as $post)
                                             <!-- Blog Cards -->
                                             <div class="col-md-4 mb-4">
-                                                <a href="{{ route('single_post_mobile', $post->id) }}">
+                                                <a href="{{ route('single_post_mobile', $post->slug) }}">
                                                     <div class="card">
                                                         <img src="{{ uploaded_asset($post->photo) }}" class="card-img-top"
                                                             alt="Blog Image" width="100%" height="200px">
                                                         <div class="card-body" style="height: 150px !important;">
-                                                            <h5 class="card-title">{{ $post->title }}</h5>
+                                                           <h5 class="card-title">
+                                                                @if(strlen($post->title) > 100)
+                                                                    {{ substr($post->title, 0, 100) . '...' }}
+                                                                @else
+                                                                    {{ $post->title }}
+                                                                @endif
+                                                            </h5>
+                                                        </div>
+
+                                                        <div class="card-footer text-center" style="background-color: linear-gradient(90deg, rgba(125, 37, 140, 1) 12%, rgba(38, 99, 242, 1) 32%, rgba(54, 115, 255, 1) 42%, rgba(250, 237, 46, 1) 66%, rgba(245, 153, 41, 1) 81%, rgba(217, 36, 37, 1) 99%) !important;">
+                                                            <span >Earn {{ $post->points ?  number_format($post->points, 2) : '0.00' }} Points</span>
                                                         </div>
                                                     </div>
                                                 </a>

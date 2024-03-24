@@ -2,18 +2,18 @@
 
 @section('content')
     <div class="aiz-titlebar text-left mt-2 mb-3">
-        <h5 class="mb-0 h6">{{ translate('Add New Post') }}</h5>
+        <h5 class="mb-0 h6">{{ translate('Edit ad') }}</h5>
     </div>
 
     <div class="">
-        <form class="form form-horizontal mar-top" action="{{ route('posts.update', $post->id) }}" method="POST"
+        <form class="form form-horizontal mar-top" action="{{ route('ads.update', ['ad' => $ad->id]) }}" method="POST"
             enctype="multipart/form-data" id="post_form">
             @csrf
-            @method('PUT') 
+            @method('PUT')
 
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0 h6">{{ translate('Post Information') }}</h5>
+                    <h5 class="mb-0 h6">{{ translate('Ad Information') }}</h5>
                 </div>
 
                 <div class="card-body">
@@ -21,44 +21,32 @@
                         <label class="col-md-3 col-from-label">{{ translate('Title') }} <span
                                 class="text-danger">*</span></label>
                         <div class="col-md-8">
-                            <input type="text" class="form-control" name="title" placeholder="{{ translate('Title') }}"
-                               value="{{ $post->title }}" required>
+                            <input type="text" class="form-control" name="title" value="{{ $ad->title }}" placeholder="{{ translate('Title') }}"
+                                required>
                         </div>
                     </div>
                 </div>
 
                 <div class="card-body">
                     <div class="form-group row">
-                        <label class="col-md-3 col-from-label">{{ translate('Slug') }} <span
+                        <label class="col-md-3 col-from-label">{{ translate('Link') }} <span
                                 class="text-danger">*</span></label>
                         <div class="col-md-8">
-                            <input type="text" class="form-control" name="slug" placeholder="{{ translate('Slug') }}"
-                            value="{{ $post->slug }}"  required>
+                            <input type="text" class="form-control" name="link" value="{{ $ad->link }}" placeholder="{{ translate('Link') }}"
+                                required>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-8">
-                    <select name="category_id" id="" class="form form-control">
-                        <option value="">Select Category</option>
-                       @forelse ($categories as $key => $category)
-                       <option value="{{ $key }}">{{ $category }}</option>
-                       @empty
-                           
-                       @endforelse
-                    </select>
-                </div>
-
-
-
                 <div class="card-body">
                     <div class="form-group row">
-                        <label class="col-md-3 col-from-label">{{ translate('Type') }} <span
+                        <label class="col-md-3 col-from-label">{{ translate('Status') }} <span
                                 class="text-danger">*</span></label>
                         <div class="col-md-8">
-                            <select name="type" id="" class="form form-control">
-                                <option value="">Select type</option>
-                                <option value="latest" {{ $post->type == 'latest' ? 'selected' : ''}}>Latest</option>
+                            <select name="status" id="" required class="form form-control">
+                                <option value="">Select Status</option>
+                                <option value="active" {{ $ad->status == 'active' ? 'selected' : ''}}>Active</option>
+                                <option value="inactive" {{ $ad->status == 'inactive' ? 'selected' : ''}}>Inactive</option>
                             </select>
                         </div>
                     </div>
@@ -66,9 +54,10 @@
 
                 <div class="card-body">
                     <div class="form-group row">
-                        <label class="col-md-3 col-from-label">{{ translate('Description') }}</label>
+                        <label class="col-md-3 col-from-label">{{ translate('Expire at') }} <span
+                                class="text-danger">*</span></label>
                         <div class="col-md-8">
-                            <textarea class="aiz-text-editor" name="description">{!! $post->content !!}</textarea>
+                            <input type="datetime-local" class="form-control" value="{{ $ad->expire }}" name="expire" placeholder="{{ translate('Expire at') }}" required>
                         </div>
                     </div>
                 </div>
@@ -76,49 +65,21 @@
 
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0 h6">{{ translate('Time & Points') }}</h5>
+                    <h5 class="mb-0 h6">{{ translate('Ad Image') }}</h5>
                 </div>
 
                 <div class="card-body">
                     <div class="form-group row">
-                        <label class="col-md-3 col-from-label">{{ translate('Time in Seconds') }} <span
-                                class="text-danger">*</span></label>
+                        <label class="col-md-3 col-form-label" for="signinSrEmail">{{ translate('Ad Image') }}
+                            </label>
                         <div class="col-md-8">
-                            <input type="number" class="form-control" name="timer" placeholder="{{ translate('Seconds') }}"
-                            value="{{ $post->timer }}" required>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <div class="form-group row">
-                        <label class="col-md-3 col-from-label">{{ translate('Points') }} <span
-                                class="text-danger">*</span></label>
-                        <div class="col-md-8">
-                            <input type="number" class="form-control" name="points" placeholder="{{ translate('Points') }}"
-                            value="{{ $post->points }}"  required>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0 h6">{{ translate('Blog Images') }}</h5>
-                </div>
-
-                <div class="card-body">
-                    <div class="form-group row">
-                        <label class="col-md-3 col-form-label" for="signinSrEmail">{{ translate('Gallery Images') }}
-                            <small>(600x600)</small></label>
-                        <div class="col-md-8">
-                            <div class="input-group" data-toggle="aizuploader" data-type="image" data-multiple="true">
+                            <div class="input-group" data-toggle="aizuploader" data-type="image" >
                                 <div class="input-group-prepend">
                                     <div class="input-group-text bg-soft-secondary font-weight-medium">
                                         {{ translate('Browse') }}</div>
                                 </div>
                                 <div class="form-control file-amount">{{ translate('Choose File') }}</div>
-                                <input type="hidden" name="photos" class="selected-files" value="{{ $post->photo }}">
+                                <input type="hidden" name="photos" value="{{ $ad->photo }}" class="selected-files">
                             </div>
                             <div class="file-preview box sm">
                             </div>
@@ -132,7 +93,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0 h6">{{ translate('Blog Video') }}</h5>
+                    <h5 class="mb-0 h6">{{ translate('Ad Video') }}</h5>
                 </div>
 
                 <div class="card-body">

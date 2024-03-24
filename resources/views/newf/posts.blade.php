@@ -1,6 +1,5 @@
 @extends('newf.layouts.app')
 <style>
-    
     h2 {
         font-weight: 700;
     }
@@ -14,7 +13,7 @@
 
     /* Style for card title */
     .card-title {
-        font-size: 24px;
+        font-size: 16px;
         font-weight: bold;
     }
 
@@ -87,83 +86,188 @@
     }
 </style>
 @section('content')
+    <style>
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            border-bottom: 1px solid #ccc;
+            /* Add border between options */
+            padding: 10px 0;
+            /* Add padding for spacing */
+        }
 
-<!-- Hero Section -->
-<section class="hero-section" style="position: relative; height: 100vh; display: flex; justify-content: center; align-items: center;">
-    <img src="{{ uploaded_asset($page->banner ?? '') }}" alt="" style="position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -1; min-height: 100vh;">
+        .categories>div {
+            flex: 1;
+            text-align: center;
+        }
 
-    <div class="overlay" style="
+        .categories>div:not(:last-child) {
+            margin-right: 10px;
+            /* Add margin between options */
+        }
+
+        .categories a {
+            text-decoration: none;
+            color: #333;
+            display: block;
+            padding: 5px 0;
+            transition: color 0.3s ease;
+        }
+
+        .categories a:hover {
+            color: #007bff;
+            /* Change color on hover */
+        }
+    </style>
+
+    <div class="categories">
+        <div>
+            <a href="/allposts" class="">All Blogs</a>
+        </div>
+        @forelse($categories as $key => $cat)
+        <div>
+            <a href="/allposts?cat_id={{$key}}" class="">{{ $cat }}</a>
+        </div>
+        @empty 
+        @endforelse
+    </div>
+
+
+    <!-- Hero Section -->
+    <section class="hero-section"
+        style="position: relative; height: 70vh; display: flex; justify-content: center; align-items: center;">
+        <img src="{{ uploaded_asset($page->banner ?? '') }}" alt=""
+            style="position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
+
+        <div class="overlay"
+            style="
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 0;
-    "></div>
-    <div style="position: relative; z-index: 1; text-align: center; color: white;">
-        <h2>{{ $page->heading1 }}</h2>
-        <p>{{ $page->sub_heading }}</p>
+        background: rgba(0, 0, 0, 1);
+        z-index: 2;
+    ">
+        </div>
+        <div style="position: relative; z-index: 3; text-align: center; color: white;">
+            <h2>{{ $page->heading1 }}</h2>
+            <p>{{ $page->sub_heading }}</p>
+        </div>
+    </section>
+
+
+    <div class="row" style="background: #f8f9fa">
+        <div class="col-md-10">
+            <!-- Blogs Section -->
+            <section class="card-section">
+                <div class="container">
+                    <h2 class="text-center mb-4">Blogs</h2>
+                    <div class="row">
+                        @forelse($posts as $post)
+                            <!-- Blog Cards -->
+
+                            <div class="col-md-3 mb-4">
+                                <a href="{{ route('single_post', $post->slug) }}">
+                                    <div class="card">
+                                        <img src="{{ uploaded_asset($post->photo) }}" class="card-img-top" alt="Blog Image"
+                                            width="100%" height="150px">
+                                        <div class="card-body" style="height: 150px !important;">
+                                            <h5 class="card-title">
+                                                @if(strlen($post->title) > 100)
+                                                    {{ substr($post->title, 0, 100) . '...' }}
+                                                @else
+                                                    {{ $post->title }}
+                                                @endif
+                                            </h5>
+                                        </div>
+                                        <div class="card-footer text-center" style="background-color: white; color: purple;">
+                                            <span>Earn {{ $post->points ?  number_format($post->points, 2) : '0.00' }} Points</span>
+                                        </div>
+                                        
+                                    </div>
+                                </a>
+                            </div>
+
+                        @empty
+                            <div class="12">
+                                <h3 class="text-center">No Blog Found !!!</h3>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
+            </section>
+
+            <!-- Latest Blog Section -->
+            <section class="card-section">
+                <div class="container">
+                    <h2 class="text-center mb-4">Latest Blog</h2>
+                    <div class="row">
+                        @forelse($latest_posts as $post)
+                            <!-- Blog Cards -->
+                            <div class="col-md-3 mb-4">
+                                <a href="{{ route('single_post', $post->slug) }}">
+                                    <div class="card">
+                                        <img src="{{ uploaded_asset($post->photo) }}" class="card-img-top" alt="Blog Image"
+                                            width="100%" height="150px">
+                                        <div class="card-body" style="height: 150px !important;">
+                                            <h5 class="card-title">
+                                                @if(strlen($post->title) > 100)
+                                                    {{ substr($post->title, 0, 100) . '...' }}
+                                                @else
+                                                    {{ $post->title }}
+                                                @endif
+                                            </h5>
+                                        </div>
+
+                                        <div class="card-footer text-center" style="background-color: linear-gradient(90deg, rgba(125, 37, 140, 1) 12%, rgba(38, 99, 242, 1) 32%, rgba(54, 115, 255, 1) 42%, rgba(250, 237, 46, 1) 66%, rgba(245, 153, 41, 1) 81%, rgba(217, 36, 37, 1) 99%) !important;">
+                                            <span >Earn {{ $post->points ?  number_format($post->points, 2) : '0.00' }} Points</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        @empty
+                            <div class="12">
+                                <h3 class="text-center">No Blog Found !!!</h3>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="col-md-2 card-section">
+
+            <h2 class="" style="visibility: hidden">Blog</h2>
+            @forelse($ads as $ad)
+                @php 
+                    $randomValue = rand(0, 1);
+                @endphp
+
+                @if($randomValue == 0)
+                    <a href="{{ $ad->link }}" class="addClick" data-ad-id="{{ $ad->id }}" target="_blank" style="display: block; border: 1px solid #ccc; padding: 5px; border-radius: 5px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); margin-top: 1rem;">
+                        <img src="{{ uploaded_asset($ad->photo ) }}" alt="Advertisement" style="width: 100%; height: auto;">
+                        <small class="text-dark">{{ $ad->title }}</small>
+                    </a>
+                @else 
+                    <a href="{{ $ad->link }}" class="addClick" data-ad-id="{{ $ad->id }}">
+                        <video autoplay loop muted playsinline style="display: block; margin-top: 10px; width: 100%; border-radius: 5px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); margin-top: 1rem;">
+                            <source src="{{ static_asset($ad->video) }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <small class="text-dark">{{ $ad->title }}</small>
+                    </a>
+                @endif
+
+
+            @empty 
+
+            @endforelse
+        </div>
     </div>
-</section>
 
 
 
-    <!-- Blogs Section -->
-    <section class="card-section">
-        <div class="container">
-            <h2 class="text-center mb-4">Blogs</h2>
-            <div class="row">
-                @forelse($posts as $post)
-                    <!-- Blog Cards -->
-
-                    <div class="col-md-3 mb-4">
-                        <a href="{{ route('single_post', $post->id) }}">
-                            <div class="card">
-                                <img src="{{ uploaded_asset($post->photo) }}" class="card-img-top" alt="Blog Image"
-                                    width="100%" height="200px">
-                                <div class="card-body" style="height: 150px !important;">
-                                    <h5 class="card-title">{{ $post->title }}</h5>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                @empty
-                    <div class="12">
-                        <h3 class="text-center">No Blog Found !!!</h3>
-                    </div>
-                @endforelse
-            </div>
-        </div>
-    </section>
-
-    <!-- Latest Blog Section -->
-    <section class="card-section">
-        <div class="container">
-            <h2 class="text-center mb-4">Latest Blog</h2>
-            <div class="row">
-                @forelse($latest_posts as $post)
-                    <!-- Blog Cards -->
-                    <div class="col-md-3 mb-4">
-                        <a href="{{ route('single_post', $post->id) }}">
-                        <div class="card">
-                            <img src="{{ uploaded_asset($post->photo) }}" class="card-img-top" alt="Blog Image"
-                                width="100%" height="200px">
-                            <div class="card-body" style="height: 150px !important;">
-                                <h5 class="card-title">{{ $post->title }}</h5>
-                            </div>
-                        </div>
-                        </a>
-                    </div>
-                @empty
-                    <div class="12">
-                        <h3 class="text-center">No Blog Found !!!</h3>
-                    </div>
-                @endforelse
-            </div>
-        </div>
-    </section>
 
     <!-- Products Carousel Section -->
     <section class="products-carousel d-none">
@@ -229,5 +333,20 @@
                 ]
             });
         });
+
+
+        $(document).on("click", '.addClick' ,function() {
+                var ad_id = $(this).data('ad-id');
+                $.ajax({
+                    method: 'GET',
+                    url: '/clickscount/' + ad_id,
+                    success: function(data) {
+                        // Handle success response here
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error response here
+                    }
+                });
+            });
     </script>
 @endsection
