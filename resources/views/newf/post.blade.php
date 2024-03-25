@@ -92,7 +92,7 @@
                             <div class="product-card">
                                 <a href="{{ route('single_post', $post->slug) }}">
                                     <div class="product-image">
-                                        <img src="{{ uploaded_asset($post->photo) }}" alt="Product 1 Image">
+                                        <img src="{{ uploaded_asset($post->photo) }}" alt="Product 1 Image" style="">
                                         <div class="overlay"></div>
                                         <h3>{{ $post->title }}</h3>
                                     </div>

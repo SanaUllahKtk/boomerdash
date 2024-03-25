@@ -131,7 +131,8 @@ class PostController extends Controller
     {
         //
         $post = Post::findOrFail($id);
-        return view('backend.posts.edit', compact('post'));
+        $categories = getBlogCategory();
+        return view('backend.posts.edit', compact('post', 'categories'));
     }
 
     /**

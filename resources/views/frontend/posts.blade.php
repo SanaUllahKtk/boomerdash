@@ -170,7 +170,7 @@
                             <!-- Blogs Section -->
                             <section class="card-section">
                                 <div class="container">
-                                    <h2 class="text-center mb-4">Blogs</h2>
+                                    <h2 class="text-center mb-4">Discover Stories</h2>
                                     <div class="row">
                                         @forelse($posts as $post)
                                             <!-- Blog Cards -->

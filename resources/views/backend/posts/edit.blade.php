@@ -38,15 +38,21 @@
                     </div>
                 </div>
 
-                <div class="col-md-8">
-                    <select name="category_id" id="" class="form form-control">
-                        <option value="">Select Category</option>
-                       @forelse ($categories as $key => $category)
-                       <option value="{{ $key }}">{{ $category }}</option>
-                       @empty
-                           
-                       @endforelse
-                    </select>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-from-label">{{ translate('Category') }} <span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-8">
+                            <select name="category_id" id="" class="form form-control">
+                                <option value="">Select Category</option>
+                               @forelse ($categories as $key => $category)
+                               <option value="{{ $key }}" {{ $post->category_id == $key ? 'selected' : ''}}>{{ $category }}</option>
+                               @empty
+                                   
+                               @endforelse
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
 
@@ -64,11 +70,17 @@
                     </div>
                 </div>
 
+                <style>
+                    .note-modal .note-group-select-from-files{
+                        display: block !important;
+                    }
+                </style>
+
                 <div class="card-body">
                     <div class="form-group row">
                         <label class="col-md-3 col-from-label">{{ translate('Description') }}</label>
                         <div class="col-md-8">
-                            <textarea class="aiz-text-editor" name="description">{!! $post->content !!}</textarea>
+                            <textarea class="" id="summernote" name="description">{!! $post->content !!}</textarea>
                         </div>
                     </div>
                 </div>
@@ -161,10 +173,38 @@
     </div>
 @endsection
 
-@section('script')
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('.select2').select2();
-        });
-    </script>
-@endsection
+@section("script")
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+<script>
+     $('#summernote').summernote({
+        //imageUploadUrl: '{{ route("upload.image") }}'
+        height: ($(window).height() - 300),
+            // callbacks: {
+            //     onImageUpload: function(files) {
+            //         uploadImage(files[0]);
+            //     }
+            // }
+        
+     });
+
+     function uploadImage(image) {
+            var data = new FormData();
+            data.append("image", image);
+            $.ajax({
+                url: 'Your url to deal with your image',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: data,
+                type: "post",
+                success: function(url) {
+                    var image = $('<img>').attr('src', url);
+                    $('#summernote').summernote("insertNode", image[0]);
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+            });
+        }
+</script>
+@endsection 

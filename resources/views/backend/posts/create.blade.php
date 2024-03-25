@@ -171,35 +171,43 @@
 @section("script")
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 <script>
-     $('#summernote').summernote({
+$('#summernote').summernote({
         //imageUploadUrl: '{{ route("upload.image") }}'
         height: ($(window).height() - 300),
-            // callbacks: {
-            //     onImageUpload: function(files) {
-            //         uploadImage(files[0]);
-            //     }
-            // }
+            callbacks: {
+                onImageUpload: function(files) {
+                    uploadImage(files[0]);
+                }
+            }
         
      });
 
      function uploadImage(image) {
-            var data = new FormData();
-            data.append("image", image);
-            $.ajax({
-                url: 'Your url to deal with your image',
-                cache: false,
-                contentType: false,
-                processData: false,
-                data: data,
-                type: "post",
-                success: function(url) {
-                    var image = $('<img>').attr('src', url);
-                    $('#summernote').summernote("insertNode", image[0]);
-                },
-                error: function(data) {
-                    console.log(data);
-                }
-            });
+    var data = new FormData();
+    data.append("image", image);
+
+    // Retrieve CSRF token value from meta tag
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+    $.ajax({
+        url: '/upload/image',
+        type: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
+        },
+        data: data,
+        processData: false,
+        contentType: false,
+        cache: false,
+        success: function(url) {
+            var image = $('<img>').attr('src', url);
+            $('#summernote').summernote("insertNode", image[0]);
+        },
+        error: function(data) {
+            console.log(data);
         }
+    });
+}
+
 </script>
 @endsection 

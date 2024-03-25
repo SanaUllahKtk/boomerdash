@@ -183,7 +183,7 @@
                                             </h5>
                                         </div>
                                         <div class="card-footer text-center" style="background-color: white; color: purple;">
-                                            <span>Earn {{ $post->points ?  number_format($post->points, 2) : '0.00' }} Points</span>
+                                            <span><img src="{{ public_path('logo.png') }}" alt=""> Earn {{ $post->points ?  number_format($post->points, 2) : '0.00' }} Points</span>
                                         </div>
                                         
                                     </div>
@@ -222,7 +222,7 @@
                                         </div>
 
                                         <div class="card-footer text-center" style="background-color: linear-gradient(90deg, rgba(125, 37, 140, 1) 12%, rgba(38, 99, 242, 1) 32%, rgba(54, 115, 255, 1) 42%, rgba(250, 237, 46, 1) 66%, rgba(245, 153, 41, 1) 81%, rgba(217, 36, 37, 1) 99%) !important;">
-                                            <span >Earn {{ $post->points ?  number_format($post->points, 2) : '0.00' }} Points</span>
+                                            <span> <img src="{{ uploaded_asset('logo.png') }}" alt=""> Earn {{ $post->points ?  number_format($post->points, 2) : '0.00' }} Points</span>
                                         </div>
                                     </div>
                                 </a>

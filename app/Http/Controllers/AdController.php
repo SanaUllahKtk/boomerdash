@@ -56,7 +56,7 @@ class AdController extends Controller
             }
             $filename = '_'.time().rand(11111,9999). '.';
             $video_path = $filename.$video_extenstion;
-            $video_url = $video->move('public/uploads/video/', $video_path);
+            $video_url = $video->move('uploads/video/', $video_path);
             $new->video = $video_url;
         }
 
