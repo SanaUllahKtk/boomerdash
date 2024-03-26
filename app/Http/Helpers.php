@@ -1160,7 +1160,7 @@ if (!function_exists('get_url_params')) {
             '1' => 'Health',
             '2' => 'Beauty',
             '3' => 'Lifestyle',
-            '4' => 'Personal Finance',
+            '4' => 'Money',
             '5' => 'Shopping '
         ]);
     }

@@ -86,7 +86,6 @@
     }
 </style>
 @section('content')
-
     <section class="py-5">
         <div class="container">
             <div class="d-flex align-items-start">
@@ -105,17 +104,17 @@
                                     padding: 10px 0;
                                     /* Add padding for spacing */
                                 }
-                        
+
                                 .categories>div {
                                     flex: 1;
                                     text-align: center;
                                 }
-                        
+
                                 .categories>div:not(:last-child) {
                                     margin-right: 10px;
                                     /* Add margin between options */
                                 }
-                        
+
                                 .categories a {
                                     text-decoration: none;
                                     color: #333;
@@ -123,22 +122,23 @@
                                     padding: 5px 0;
                                     transition: color 0.3s ease;
                                 }
-                        
+
                                 .categories a:hover {
                                     color: #007bff;
                                     /* Change color on hover */
                                 }
                             </style>
-                        
+
                             <div class="categories">
                                 <div>
-                                    <a href="/allposts" class="">All Blogs</a>
+                                    <a href="/allposts" class="">All</a>
                                 </div>
                                 @forelse($categories as $key => $cat)
-                                <div>
-                                    <a href="/allposts?cat_id={{$key}}" class="">{{ $cat }}</a>
-                                </div>
-                                @empty 
+                                    <div>
+                                        <a href="/allposts?cat_id={{ $key }}"
+                                            class="">{{ $cat }}</a>
+                                    </div>
+                                @empty
                                 @endforelse
                             </div>
 
@@ -181,8 +181,8 @@
                                                         <img src="{{ uploaded_asset($post->photo) }}" class="card-img-top"
                                                             alt="Blog Image" width="100%" height="200px">
                                                         <div class="card-body" style="height: 150px !important;">
-                                                           <h5 class="card-title">
-                                                                @if(strlen($post->title) > 100)
+                                                            <h5 class="card-title">
+                                                                @if (strlen($post->title) > 100)
                                                                     {{ substr($post->title, 0, 100) . '...' }}
                                                                 @else
                                                                     {{ $post->title }}
@@ -190,8 +190,14 @@
                                                             </h5>
                                                         </div>
 
-                                                        <div class="card-footer text-center" style="background-color: linear-gradient(90deg, rgba(125, 37, 140, 1) 12%, rgba(38, 99, 242, 1) 32%, rgba(54, 115, 255, 1) 42%, rgba(250, 237, 46, 1) 66%, rgba(245, 153, 41, 1) 81%, rgba(217, 36, 37, 1) 99%) !important;">
-                                                            <span >Earn {{ $post->points ?  number_format($post->points, 2) : '0.00' }} Points</span>
+                                                        <div class="card-footer text-center"
+                                                            style="background-color: white; color: purple; position: relative; display: flex; padding: 0px !important;">
+                                                            <img src="{{ static_asset('logo.png') }}" alt=""
+                                                                class="" width="80px"
+                                                                style="padding: 0px !important;">
+                                                            <span style="position: absolute; left: 4rem; top: 29px;">Earn
+                                                                {{ $post->points ? number_format($post->points, 2) : '0.00' }}
+                                                                Points</span>
                                                         </div>
                                                     </div>
                                                 </a>
@@ -199,7 +205,7 @@
 
                                         @empty
                                             <div class="12">
-                                                <h3 class="text-center">No Blog Found !!!</h3>
+                                                <h3 class="text-center">No Discover Stories Found !!!</h3>
                                             </div>
                                         @endforelse
                                     </div>
@@ -209,7 +215,7 @@
                             <!-- Latest Blog Section -->
                             <section class="card-section">
                                 <div class="container">
-                                    <h2 class="text-center mb-4">Latest Blog</h2>
+                                    <h2 class="text-center mb-4">Highlights</h2>
                                     <div class="row">
                                         @forelse($latest_posts as $post)
                                             <!-- Blog Cards -->
@@ -219,8 +225,8 @@
                                                         <img src="{{ uploaded_asset($post->photo) }}" class="card-img-top"
                                                             alt="Blog Image" width="100%" height="200px">
                                                         <div class="card-body" style="height: 150px !important;">
-                                                           <h5 class="card-title">
-                                                                @if(strlen($post->title) > 100)
+                                                            <h5 class="card-title">
+                                                                @if (strlen($post->title) > 100)
                                                                     {{ substr($post->title, 0, 100) . '...' }}
                                                                 @else
                                                                     {{ $post->title }}
@@ -228,15 +234,21 @@
                                                             </h5>
                                                         </div>
 
-                                                        <div class="card-footer text-center" style="background-color: linear-gradient(90deg, rgba(125, 37, 140, 1) 12%, rgba(38, 99, 242, 1) 32%, rgba(54, 115, 255, 1) 42%, rgba(250, 237, 46, 1) 66%, rgba(245, 153, 41, 1) 81%, rgba(217, 36, 37, 1) 99%) !important;">
-                                                            <span >Earn {{ $post->points ?  number_format($post->points, 2) : '0.00' }} Points</span>
+                                                        <div class="card-footer text-center"
+                                                            style="background-color: white; color: purple; position: relative; display: flex; padding: 0px !important;">
+                                                            <img src="{{ static_asset('logo.png') }}" alt=""
+                                                                class="" width="80px"
+                                                                style="padding: 0px !important;">
+                                                            <span style="position: absolute; left: 4rem; top: 29px;">Earn
+                                                                {{ $post->points ? number_format($post->points, 2) : '0.00' }}
+                                                                Points</span>
                                                         </div>
                                                     </div>
                                                 </a>
                                             </div>
                                         @empty
                                             <div class="12">
-                                                <h3 class="text-center">No Blog Found !!!</h3>
+                                                <h3 class="text-center">No Highlights Found !!!</h3>
                                             </div>
                                         @endforelse
                                     </div>

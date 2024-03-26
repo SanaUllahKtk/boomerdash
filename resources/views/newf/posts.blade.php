@@ -121,9 +121,9 @@
         }
     </style>
 
-    <div class="categories">
+    <div class="categories container" style="padding-left: 10px; padding-right: 10px;">
         <div>
-            <a href="/allposts" class="">All Blogs</a>
+            <a href="/allposts" class="">All</a>
         </div>
         @forelse($categories as $key => $cat)
         <div>
@@ -163,7 +163,7 @@
             <!-- Blogs Section -->
             <section class="card-section">
                 <div class="container">
-                    <h2 class="text-center mb-4">Blogs</h2>
+                    <h2 class="text-center mb-4">Discover Stories</h2>
                     <div class="row">
                         @forelse($posts as $post)
                             <!-- Blog Cards -->
@@ -171,8 +171,7 @@
                             <div class="col-md-3 mb-4">
                                 <a href="{{ route('single_post', $post->slug) }}">
                                     <div class="card">
-                                        <img src="{{ uploaded_asset($post->photo) }}" class="card-img-top" alt="Blog Image"
-                                            width="100%" height="150px">
+                                        <img src="{{ uploaded_asset($post->photo) }}" class="card-img-top" alt="Blog Image" width="100%" height="150px">
                                         <div class="card-body" style="height: 150px !important;">
                                             <h5 class="card-title">
                                                 @if(strlen($post->title) > 100)
@@ -182,17 +181,18 @@
                                                 @endif
                                             </h5>
                                         </div>
-                                        <div class="card-footer text-center" style="background-color: white; color: purple;">
-                                            <span><img src="{{ public_path('logo.png') }}" alt=""> Earn {{ $post->points ?  number_format($post->points, 2) : '0.00' }} Points</span>
+                                        <div class="card-footer text-center" style="background-color: white; color: purple; position: relative; display: flex; padding: 0px !important;">
+                                            <img src="{{ static_asset('logo.png') }}" alt="" class="" width="80px" style="padding: 0px !important;">
+                                            <span style="position: absolute; left: 4rem; top: 29px;">Earn {{ $post->points ?  number_format($post->points, 2) : '0.00' }} Points</span>
                                         </div>
-                                        
                                     </div>
                                 </a>
                             </div>
+                            
 
                         @empty
                             <div class="12">
-                                <h3 class="text-center">No Blog Found !!!</h3>
+                                <h3 class="text-center">No Discover Stories Found !!!</h3>
                             </div>
                         @endforelse
                     </div>
@@ -202,7 +202,7 @@
             <!-- Latest Blog Section -->
             <section class="card-section">
                 <div class="container">
-                    <h2 class="text-center mb-4">Latest Blog</h2>
+                    <h2 class="text-center mb-4">Highlights</h2>
                     <div class="row">
                         @forelse($latest_posts as $post)
                             <!-- Blog Cards -->
@@ -221,15 +221,16 @@
                                             </h5>
                                         </div>
 
-                                        <div class="card-footer text-center" style="background-color: linear-gradient(90deg, rgba(125, 37, 140, 1) 12%, rgba(38, 99, 242, 1) 32%, rgba(54, 115, 255, 1) 42%, rgba(250, 237, 46, 1) 66%, rgba(245, 153, 41, 1) 81%, rgba(217, 36, 37, 1) 99%) !important;">
-                                            <span> <img src="{{ uploaded_asset('logo.png') }}" alt=""> Earn {{ $post->points ?  number_format($post->points, 2) : '0.00' }} Points</span>
+                                        <div class="card-footer text-center" style="background-color: white; color: purple; position: relative; display: flex; padding: 0px !important;">
+                                            <img src="{{ static_asset('logo.png') }}" alt="" class="" width="80px" style="padding: 0px !important;">
+                                            <span style="position: absolute; left: 4rem; top: 29px;">Earn {{ $post->points ?  number_format($post->points, 2) : '0.00' }} Points</span>
                                         </div>
                                     </div>
                                 </a>
                             </div>
                         @empty
                             <div class="12">
-                                <h3 class="text-center">No Blog Found !!!</h3>
+                                <h3 class="text-center">No Highlights Found !!!</h3>
                             </div>
                         @endforelse
                     </div>
@@ -250,7 +251,7 @@
                         <small class="text-dark">{{ $ad->title }}</small>
                     </a>
                 @else 
-                    <a href="{{ $ad->link }}" class="addClick" data-ad-id="{{ $ad->id }}">
+                    <a href="{{ $ad->link }}" class="addClick" target="_blank"  data-ad-id="{{ $ad->id }}">
                         <video autoplay loop muted playsinline style="display: block; margin-top: 10px; width: 100%; border-radius: 5px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); margin-top: 1rem;">
                             <source src="{{ static_asset($ad->video) }}" type="video/mp4">
                             Your browser does not support the video tag.

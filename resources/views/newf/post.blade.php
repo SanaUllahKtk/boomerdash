@@ -2,7 +2,7 @@
 <style>
     .hero-section img {
         width: 100%;
-        height: 100vh;
+        height: 70vh;
     }
 </style>
 
@@ -84,7 +84,7 @@
             <!-- Products Carousel Section -->
             <section class="products-carousel">
                 <div class="container">
-                    <h2 class="text-center mb-4">Latest Blog</h2>
+                    <h2 class="text-center mb-4">Highlights</h2>
                     <div class="slick-carousel" style="height: 274px;">
 
                         <!-- Product Cards -->
@@ -92,7 +92,7 @@
                             <div class="product-card">
                                 <a href="{{ route('single_post', $post->slug) }}">
                                     <div class="product-image">
-                                        <img src="{{ uploaded_asset($post->photo) }}" alt="Product 1 Image" style="">
+                                        <img src="{{ uploaded_asset($post->photo) }}" alt="Product 1 Image">
                                         <div class="overlay"></div>
                                         <h3>{{ $post->title }}</h3>
                                     </div>

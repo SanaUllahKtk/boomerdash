@@ -20,62 +20,51 @@
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label">{{ translate('Your Name') }}</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" placeholder="{{ translate('Your Name') }}" name="name" value="{{ Auth::user()->name }}">
+                        <input type="text" class="form-control" placeholder="{{ translate('Your Name') }}" name="name" value="{{ Auth::user()->name ?? ''}}">
                     </div>
                 </div> 
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label">{{ translate('Email') }}</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" placeholder="{{ translate('Email') }}" name="email" value="{{ Auth::user()->email }}">
+                        <input type="text" class="form-control" placeholder="{{ translate('Email') }}" name="email" value="{{ Auth::user()->email ?? ''}}">
                     </div>
                 </div> 
 
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label">{{ translate('Phone') }}</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" placeholder="{{ translate('Phone')}}" name="phone" value="{{ Auth::user()->phone }}">
+                        <input type="text" class="form-control" placeholder="{{ translate('Phone')}}" name="phone" value="{{ Auth::user()->phone ?? '' }}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label">{{ translate('Date Of Birth') }}</label>
                     <div class="col-md-10">
-                        <input type="date" class="form-control" placeholder="{{ translate('Date Of Birth')}}" name="dob" value="{{ Auth::user()->dob }}">
+                        <input type="date" class="form-control" placeholder="{{ translate('Date Of Birth')}}" name="dob" value="{{ Auth::user()->dob ?? ''}}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label">{{ translate('Street Address') }}</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" placeholder="{{ translate('Street Address')}}" name="st_address" value="{{ Auth::user()->st_address }}">
+                        <input type="text" class="form-control" placeholder="{{ translate('Street Address')}}" name="st_address" value="{{ Auth::user()->st_address ?? '' }}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label">{{ translate('country') }}</label>
                     <div class="col-md-10">
-                         <input type="text" class="form-control"  name="countries" disabled value="{{\App\Models\Country::where('id', Auth::user()->country)->first()->name}}">
-                        <!--<select class="form-control aiz-selectpicker" data-live-search="true" data-placeholder="{{ translate('Select your country') }}" name="countries" required>-->
-                           
-                        <!--    <option selected>{{\App\Models\Country::where('id', Auth::user()->country)->first()->name}}</option>-->
-                        
-                        <!--</select>-->
+                         <input type="text" class="form-control"  name="countries" disabled value="{{\App\Models\Country::where('id', Auth::user()->country)->first()->name ?? ''}}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label">{{ translate('State') }}</label>
                     <div class="col-md-10">
-                         <input type="text" class="form-control" name="statez" disabled  value="{{\App\Models\State::where('id', Auth::user()->state)->first()->name}}">
-                    <!--<select class="form-control mb-3 aiz-selectpicker" data-placeholder="{{ translate('Select your State') }}" data-live-search="true" name="statez" required>-->
-                    <!--    <option selected>{{\App\Models\State::where('id', Auth::user()->state)->first()->name}}</option>-->
-                    <!--</select>                    -->
+                         <input type="text" class="form-control" name="statez" disabled  value="{{\App\Models\State::where('id', Auth::user()->state)->first()->name ?? ''}}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label">{{ translate('City') }}</label>
                     <div class="col-md-10">
-                         <input type="text" class="form-control" name="city" disabled  value="{{\App\Models\City::where('id', Auth::user()->city)->first()->name}}">
-<!--<select class="form-control mb-3 aiz-selectpicker"  data-placeholder="{{ translate('Select your City') }}" data-live-search="true" name="city" required>-->
-<!--                        <option selected>{{\App\Models\City::where('id', Auth::user()->city)->first()->name}}</option>-->
-                
-<!--                                                </select>-->
+                         <input type="text" class="form-control" name="city" disabled  value="{{\App\Models\City::where('id', Auth::user()->city)->first()->name ?? ''}}">
+
                                                                </div>
                 </div>
                 
@@ -86,7 +75,7 @@
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label">{{ translate('Postal Code') }}</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" placeholder="{{ translate('Postal Code')}}" name="postal_code" value="{{ Auth::user()->postal_code }}">
+                        <input type="text" class="form-control" placeholder="{{ translate('Postal Code')}}" name="postal_code" value="{{ Auth::user()->postal_code ?? '' }}">
                     </div>
                 </div>
             

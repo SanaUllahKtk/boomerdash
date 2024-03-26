@@ -90,8 +90,9 @@ Route::controller(AizUploadController::class)->group(function () {
 });
 
 Route::get('/allposts', [PostController::class, 'allPosts'])->name('all_posts');
-Route::get('/singlepost/{id}', [PostController::class, 'singlePost'])->name('single_post');
+//Route::get('/singlepost/{id}', [PostController::class, 'singlePost'])->name('single_post');
 Route::post('/savePoints', [PostController::class, 'savePoints'])->name('savePoints');
+Route::get('/discover/{id}', [PostController::class, 'singlePost'])->name('single_post');
 
 
 Route::get('/allposts/mobile', [PostController::class, 'allPostsForMobile'])->name('all_posts_mobile');
