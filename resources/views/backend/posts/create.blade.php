@@ -1,7 +1,7 @@
 @extends('backend.layouts.app')
 @section('content')
     <div class="aiz-titlebar text-left mt-2 mb-3">
-        <h5 class="mb-0 h6">{{ translate('Add New Post') }}</h5>
+        <h5 class="mb-0 h6">{{ translate('Add New Discover Story') }}</h5>
     </div>
 
     <div class="">
@@ -11,7 +11,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0 h6">{{ translate('Post Information') }}</h5>
+                    <h5 class="mb-0 h6">{{ translate('Discover Story Information') }}</h5>
                 </div>
 
                 <div class="card-body">
@@ -111,7 +111,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0 h6">{{ translate('Blog Images') }}</h5>
+                    <h5 class="mb-0 h6">{{ translate('Images') }}</h5>
                 </div>
 
                 <div class="card-body">
@@ -139,7 +139,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0 h6">{{ translate('Blog Video') }}</h5>
+                    <h5 class="mb-0 h6">{{ translate('Video') }}</h5>
                 </div>
 
                 <div class="card-body">

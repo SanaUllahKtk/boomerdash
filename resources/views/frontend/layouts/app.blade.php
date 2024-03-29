@@ -76,6 +76,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
 
+    <!-- Include Dropzone.js library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/dropzone.min.css">
+
 
     <script>
         var AIZ = AIZ || {};
@@ -556,7 +559,8 @@
             }
         }
     </script>
-
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
     @yield('script')
 
     @php

@@ -86,19 +86,47 @@
                         <!--Submenu-->
                         <ul class="aiz-side-nav-list level-2">
                             <li class="aiz-side-nav-item">
+                                <a class="aiz-side-nav-link" href="{{route('r_categories.create')}}">
+                                    <span class="aiz-side-nav-text">{{translate('New Categories')}}</span>
+                                </a>
+                            </li>
+                            <li class="aiz-side-nav-item">
+                                <a href="{{route('r_categories.index')}}" class="aiz-side-nav-link">
+                                    <span class="aiz-side-nav-text">{{translate('All Categories')}}</span>
+                                </a>
+                            </li>
+
+                            <li class="aiz-side-nav-item">
+                                <a href="{{route('admin.rposts.index')}}" class="aiz-side-nav-link">
+                                    <span class="aiz-side-nav-text">{{translate('All Posts')}}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+
+                    <li class="aiz-side-nav-item">
+                        <a href="#" class="aiz-side-nav-link">
+                            <i class="las la-shopping-cart aiz-side-nav-icon"></i>
+                            <span class="aiz-side-nav-text">{{translate('Discover')}}</span>
+                            <span class="aiz-side-nav-arrow"></span>
+                        </a>
+                        <!--Submenu-->
+                        <ul class="aiz-side-nav-list level-2">
+                            <li class="aiz-side-nav-item">
                                 <a class="aiz-side-nav-link" href="{{route('posts.create')}}">
-                                    <span class="aiz-side-nav-text">{{translate('Add New Post')}}</span>
+                                    <span class="aiz-side-nav-text">{{translate('Add New Stories')}}</span>
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
                                 <a href="{{route('posts.index')}}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{translate('All Post')}}</span>
+                                    <span class="aiz-side-nav-text">{{translate('All Stories')}}</span>
                                 </a>
                             </li>
 
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('postpages.index') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{translate('Post Page')}}</span>
+                                    <span class="aiz-side-nav-text">{{translate('Discover Main Page')}}</span>
                                 </a>
                             </li>
                         </ul>

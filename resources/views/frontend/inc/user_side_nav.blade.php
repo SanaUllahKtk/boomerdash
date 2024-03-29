@@ -208,6 +208,13 @@
                             </a>
                         </li>
 
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('r_posts.index') }}" class="aiz-side-nav-link">
+                                <i class="las la-atom aiz-side-nav-icon"></i>
+                                <span class="aiz-side-nav-text">{{translate('Posts')}}</span>
+                            </a>
+                        </li>
+
 
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('stores.seller.all') }}" class="aiz-side-nav-link">

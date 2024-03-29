@@ -54,6 +54,13 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\CashbackRequestController;
 use App\Http\Controllers\ExportController;
 
+use App\Http\Controllers\RCategoryController;
+use App\Http\Controllers\RPostController;
+use App\Http\Controllers\RPostVoteController;
+use App\Http\Controllers\RCommentController;
+use App\Http\Controllers\FileUploadController;
+use App\Http\Controllers\RPostMobileController;
+
 /*
   |--------------------------------------------------------------------------
   | Web Routes
@@ -126,6 +133,25 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/users/registration', 'registration')->name('user.registration');
     Route::post('/users/login/cart', 'cart_login')->name('cart.login.submit');
     Route::get('/', 'new_page')->name('home');
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('r_categories', RCategoryController::class);
+    Route::resource('r_posts', RPostController::class);
+    Route::resource('r_mobile_posts', RPostMobileController::class);
+    Route::resource('r_post_votes', RPostVoteController::class);
+    Route::resource('r_comments', RCommentController::class);
+    Route::get('/r_getposts', [RPostController::class, 'getPosts'])->name('r_getposts');
+    Route::get('/r_upvote/{id}', [RPostController::class, 'upVote'])->name('upVote');
+    Route::get('/r_downvote/{id}', [RPostController::class, 'downVote'])->name('downVote');
+    Route::get('/admin/r_posts/', [RPostController::class, 'adminPosts'])->name('admin.rposts.index');
+    Route::post('/bulk-posts-delete', 'bulk_posts_delete')->name('bulk-posts-delete');
+});
+
+
+// routes/web.php
+
+Route::post('/file-upload', [FileUploadController::class, 'store'])->name('file.upload');
+
 
 // Store for frontend
 Route::get('/all-stores', [StoreController::class, 'allStores'])->name('stores.all');
@@ -483,7 +509,4 @@ Route::controller(PageController::class)->group(function () {
     //Custom page
     Route::get('/{slug}', 'show_custom_page')->name('custom-pages.show_custom_page');
 });
-
-
-
 

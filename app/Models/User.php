@@ -147,4 +147,12 @@ class User extends Authenticatable implements MustVerifyEmail
     public function product_queries(){
         return $this->hasMany(ProductQuery::class,'customer_id');
     }
+
+    /**
+     * Get the posts associated with the user.
+     */
+    public function posts()
+    {
+        return $this->hasMany(RPost::class);
+    }
 }
