@@ -37,6 +37,42 @@
 
                                     <div class="row">
                                         <div class="col-md-6">
+                                            <label for="post-brand">Brands</label>
+                                            <select name="brandId" id="brandId"
+                                                class="form form-control @error('brandId') is-invalid @enderror">
+                                                <option value="">Select Brand</option>
+                                                @foreach ($brands as $key => $brand)
+                                                    <option value="{{ $key }}"
+                                                        @if (old('brandId') == $key) selected @endif>
+                                                        {{ $brand }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('brandId')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+
+
+
+                                        <div class="col-md-6">
+                                            <label for="post-product">Products</label>
+                                            <select name="productId" id="productId"
+                                                class="form form-control @error('productId') is-invalid @enderror">
+                                                <option value="">Select Product</option>
+                                            </select>
+                                            @error('productId')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+
+
+
+
+                                        <div class="col-md-12 mt-2">
                                             <!-- Content for Post tab -->
                                             <div class="form-group">
                                                 <label for="post-title">Title</label>
@@ -51,7 +87,7 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 d-none">
                                             <label for="post-category">Category</label>
                                             <select name="categoryId" id="category"
                                                 class="form form-control @error('categoryId') is-invalid @enderror">
@@ -160,5 +196,23 @@
                 console.error(errorMessage);
             }
         };
+
+
+        $("#brandId").on("change", function(){
+            var brandId = $(this).val();
+            $.ajax({
+                method: 'GET',
+                url: '/getMobileProducts?brand_id=' + brandId,
+                success: function(data) {
+                    data = JSON.parse(data);
+                    console.log(data);
+                    $("#productId").html(data.html);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+
+        })
     </script>
 @endsection

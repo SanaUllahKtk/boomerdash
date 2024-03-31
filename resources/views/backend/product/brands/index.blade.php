@@ -102,9 +102,9 @@
 
 @endsection
 
-@section('modal')
+{{-- @section('modal')
     @include('modals.delete_modal')
-@endsection
+@endsection --}}
 
 @section('script')
 <script type="text/javascript">

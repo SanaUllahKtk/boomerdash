@@ -17,6 +17,7 @@ class BrandController extends Controller
      */
     public function index(Request $request)
     {
+
         $sort_search =null;
         $brands = Brand::orderBy('name', 'asc');
         if ($request->has('search')){
@@ -24,6 +25,7 @@ class BrandController extends Controller
             $brands = $brands->where('name', 'like', '%'.$sort_search.'%');
         }
         $brands = $brands->paginate(15);
+        
         return view('backend.product.brands.index', compact('brands', 'sort_search'));
     }
 

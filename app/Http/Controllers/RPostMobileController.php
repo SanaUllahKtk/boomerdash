@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
+use App\Models\Product;
 use App\Models\RCategory;
 use App\Models\RPost;
+use App\Models\RPostUrlClick;
 use App\Models\RPostVote;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 class RPostMobileController extends Controller
 {
     /**
@@ -19,10 +22,23 @@ class RPostMobileController extends Controller
     public function index()
     {
         //
-        $posts = RPost::all();
+        $posts = RPost::select('r_posts.*')
+                    ->selectSub(function ($query) {
+                        $query->select(DB::raw('COUNT(*)'))
+                            ->from('r_post_votes')
+                            ->whereColumn('r_post_votes.r_post_id', 'r_posts.id')
+                            ->where('r_post_votes.vote', 1);
+                    }, 'total_upvote')
+                    ->groupBy('r_posts.id', 'r_posts.title')
+                    ->orderByDesc('total_upvote')
+                    ->get();
+
         $categories = RCategory::pluck('name', 'id')->toArray();
         $users = User::pluck('name', 'id')->toArray();
-        return view('newf.r_posts.index', compact('posts', 'categories', 'users'));
+        $brands = Brand::pluck('name', 'id')->toArray();
+
+
+        return view('newf.r_posts.index', compact('posts', 'categories', 'users', 'brands'));
     }
 
     /**
@@ -34,7 +50,8 @@ class RPostMobileController extends Controller
     {
         //
         $categories = RCategory::pluck('name', 'id')->toArray();
-        return view('newf.r_posts.create', compact('categories'));
+        $brands = Brand::pluck('name', 'id')->toArray();
+        return view('newf.r_posts.create', compact('categories', 'brands'));
     }
 
     /**
@@ -52,7 +69,8 @@ class RPostMobileController extends Controller
             'post_description' => 'required|string',
             'url' => 'nullable|url',
             'file' => 'required',
-            'categoryId' => 'required'
+            'brandId' => 'required',
+            'productId' => 'required'
             // Add validation rules for dropzone files if required
         ]);
 
@@ -63,7 +81,9 @@ class RPostMobileController extends Controller
         $rPost->url = $request->url;
         $rPost->img = $request->file;
         $rPost->user_id = \Auth::user()->id;
-        $rPost->r_category_id = $request->categoryId;
+        //$rPost->r_category_id = $request->categoryId;
+        $rPost->productId = $request->productId;
+        $rPost->brandId = $request->brandId;
         $rPost->save();
 
         // Redirect back with a success message
@@ -94,7 +114,9 @@ class RPostMobileController extends Controller
     {
         $r_post = $r_mobile_post;
         $categories = RCategory::pluck('name', 'id')->toArray();
-        return view('newf.r_posts.edit', compact('categories', 'r_post'));
+        $brands = Brand::pluck('name', 'id')->toArray();
+        $products = Product::where('brand_id', $r_post->brandId)->pluck('name', 'id')->toArray();
+        return view('newf.r_posts.edit', compact('categories', 'r_post', 'brands', 'products'));
     }
 
     /**
@@ -114,7 +136,8 @@ class RPostMobileController extends Controller
             // 'post_description' => 'required|string',
             // 'url' => 'nullable|url',
             // 'file' => 'required',
-            'categoryId' => 'required'
+            'brandId' => 'required',
+            'productId' => 'required'
             // Add validation rules for dropzone files if required
         ]);
 
@@ -124,7 +147,9 @@ class RPostMobileController extends Controller
         $r_post->url = $request->url;
         $r_post->img = $request->file;
         $r_post->user_id = \Auth::user()->id;
-        $r_post->r_category_id = $request->categoryId;
+        //$r_post->r_category_id = $request->categoryId;
+        $r_post->productId = $request->productId;
+        $r_post->brandId = $request->brandId;
         $r_post->update();
 
         // Redirect back with a success message
@@ -232,5 +257,37 @@ class RPostMobileController extends Controller
         $categories = RCategory::pluck('name', 'id')->toArray();
         $users = User::pluck('name', 'id')->toArray();
         return view('backend.r_posts.index', compact('posts', 'categories', 'users'));        
+    }
+
+    public function getProducts(){
+        $brand_id = $_GET['brand_id'];
+        $products = Product::where('brand_id', $brand_id)->pluck('name', 'id')->toArray();
+
+        $html = '<option value="">Select Product</option>';
+        foreach($products as $key => $product){
+            $html .= '<option value="'.$key.'">'.$product.'</option>';
+        }
+
+        return json_encode([
+            'html' => $html
+        ]); 
+    }
+
+    public function updateUrlCicks(){
+        $postId = $_GET['postId'];
+
+        $is_exist = RPostUrlClick::where('postId', $postId)->where('userId', \Auth::user()->id)->first();
+        if($is_exist){
+            return true;
+        }
+
+        $new = new RPostUrlClick();
+        $new->postId = $postId;
+        $new->userId = \Auth::user()->id;
+        $new->created_at = date('Y-m-d h:i:s');
+        $new->updated_at = date('Y-m-d h:i:s');
+        $new->save();
+
+        return true;
     }
 }

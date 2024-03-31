@@ -60,6 +60,7 @@ use App\Http\Controllers\RPostVoteController;
 use App\Http\Controllers\RCommentController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\RPostMobileController;
+use App\Http\Controllers\RPostReportController;
 
 /*
   |--------------------------------------------------------------------------
@@ -83,7 +84,7 @@ Route::controller(DemoController::class)->group(function () {
     Route::get('/migrate_attribute_values', 'migrate_attribute_values');
 });
 
-Route::get('/refresh-csrf', function() {
+Route::get('/refresh-csrf', function () {
     return csrf_token();
 });
 
@@ -109,8 +110,6 @@ Route::post('/upload/image', [AdController::class, 'uploadImage'])->name('upload
 Route::post('/upload-video', [AdController::class, 'uploadVideo'])->name('upload.video');
 
 
-
-
 Auth::routes(['verify' => true]);
 
 // Login
@@ -125,7 +124,6 @@ Route::controller(VerificationController::class)->group(function () {
     Route::get('/verification-confirmation/{code}', 'verification_confirmation')->name('email.verification.confirmation');
 });
 
-
 Route::controller(HomeController::class)->group(function () {
     Route::get('/email_change/callback', 'email_change_callback')->name('email_change.callback');
     Route::post('/password/reset/email/submit', 'reset_password_with_code')->name('password.update');
@@ -134,45 +132,50 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('/users/login/cart', 'cart_login')->name('cart.login.submit');
     Route::get('/', 'new_page')->name('home');
 
-Route::middleware(['auth'])->group(function () {
-    Route::resource('r_categories', RCategoryController::class);
-    Route::resource('r_posts', RPostController::class);
-    Route::resource('r_mobile_posts', RPostMobileController::class);
-    Route::resource('r_post_votes', RPostVoteController::class);
-    Route::resource('r_comments', RCommentController::class);
-    Route::get('/r_getposts', [RPostController::class, 'getPosts'])->name('r_getposts');
-    Route::get('/r_upvote/{id}', [RPostController::class, 'upVote'])->name('upVote');
-    Route::get('/r_downvote/{id}', [RPostController::class, 'downVote'])->name('downVote');
-    Route::get('/admin/r_posts/', [RPostController::class, 'adminPosts'])->name('admin.rposts.index');
-    Route::post('/bulk-posts-delete', 'bulk_posts_delete')->name('bulk-posts-delete');
-});
+    Route::middleware(['auth'])->group(function () {
+        Route::resource('r_categories', RCategoryController::class);
+        Route::resource('r_posts', RPostController::class);
+        Route::resource('r_mobile_posts', RPostMobileController::class);
+        Route::resource('r_post_votes', RPostVoteController::class);
+        Route::resource('r_comments', RCommentController::class);
+        Route::resource('r_reports', RPostReportController::class);
 
+        Route::get('/r_getposts', [RPostController::class, 'getPosts'])->name('r_getposts');
+        Route::get('/r_upvote/{id}', [RPostController::class, 'upVote'])->name('upVote');
+        Route::get('/r_downvote/{id}', [RPostController::class, 'downVote'])->name('downVote');
+        Route::get('/admin/r_posts/', [RPostController::class, 'adminPosts'])->name('admin.rposts.index');
+        Route::post('/bulk-posts-delete', 'bulk_posts_delete')->name('bulk-posts-delete');
 
-// routes/web.php
-
-Route::post('/file-upload', [FileUploadController::class, 'store'])->name('file.upload');
-
-
-// Store for frontend
-Route::get('/all-stores', [StoreController::class, 'allStores'])->name('stores.all');
-Route::get('/seller/all-stores', [StoreController::class, 'allSellerStores'])->name('stores.seller.all');
-Route::get('/store-show/{id}', [StoreController::class, 'show'])->name('stores.show');
-
-Route::get('/store/favorite', [StoreController::class, 'favorite'])->name('store-favorite');
-Route::get('/store/user/favorite', [StoreController::class, 'userFavorite'])->name('user_favorite');
-
-
-//Cashback Request
-Route::get('/cashbackrequest/', [CashbackRequestController::class, 'index'])->name('cashbackrequest.index');
-Route::post('/cashbackrequest/pay', [CashbackRequestController::class, 'pay'])->name('cashbackrequest.pay');
-Route::post('/cashback-redeem-request', [CashbackRequestController::class, 'store'])->name('cashback-redeem-request');
-
-
-    Route::group(['middleware' => ['auth']], function() {
-    //Home Page
-    Route::get('/home',  [HomeController::class, 'index'])->name('auth');
+        Route::get('/getMobileProducts', [RPostMobileController::class, 'getProducts'])->name('getProducts');
+        Route::get('/updateUrlCicks', [RPostMobileController::class, 'updateUrlCicks'])->name('updateUrlCicks');
     });
- 
+
+
+    // routes/web.php
+
+    Route::post('/file-upload', [FileUploadController::class, 'store'])->name('file.upload');
+
+
+    // Store for frontend
+    Route::get('/all-stores', [StoreController::class, 'allStores'])->name('stores.all');
+    Route::get('/seller/all-stores', [StoreController::class, 'allSellerStores'])->name('stores.seller.all');
+    Route::get('/store-show/{id}', [StoreController::class, 'show'])->name('stores.show');
+
+    Route::get('/store/favorite', [StoreController::class, 'favorite'])->name('store-favorite');
+    Route::get('/store/user/favorite', [StoreController::class, 'userFavorite'])->name('user_favorite');
+
+
+    //Cashback Request
+    Route::get('/cashbackrequest/', [CashbackRequestController::class, 'index'])->name('cashbackrequest.index');
+    Route::post('/cashbackrequest/pay', [CashbackRequestController::class, 'pay'])->name('cashbackrequest.pay');
+    Route::post('/cashback-redeem-request', [CashbackRequestController::class, 'store'])->name('cashback-redeem-request');
+
+
+    Route::group(['middleware' => ['auth']], function () {
+        //Home Page
+        Route::get('/home',  [HomeController::class, 'index'])->name('auth');
+    });
+
     Route::post('/home/section/featured', 'load_featured_section')->name('home.section.featured');
     Route::post('/home/section/best_selling', 'load_best_selling_section')->name('home.section.best_selling');
     Route::post('/home/section/home_categories', 'load_home_categories_section')->name('home.section.home_categories');
@@ -211,9 +214,9 @@ Route::post('/cashback-redeem-request', [CashbackRequestController::class, 'stor
     Route::get('/contact-us', 'contact')->name('contact');
     Route::get('/terms-conditions', 'termscon')->name('termscon');
     Route::get('/privacy-policy', 'privacy')->name('privacy');
-    
-    
-    
+
+
+
     #plyaer_email
     Route::post('/send-email', 'App\Http\Controllers\EmailController@sendEmail')->name('send.email');
 });
@@ -225,7 +228,7 @@ Route::post('/language', [LanguageController::class, 'changeLanguage'])->name('l
 Route::post('/currency', [CurrencyController::class, 'changeCurrency'])->name('currency.change');
 
 
-Route::get('/sitemap.xml', function() {
+Route::get('/sitemap.xml', function () {
     return base_path('sitemap.xml');
 });
 
@@ -301,7 +304,7 @@ Route::controller(CompareController::class)->group(function () {
 // Subscribe
 Route::resource('subscribers', SubscriberController::class);
 
-Route::group(['middleware' => ['user', 'verified', 'unbanned']], function() {
+Route::group(['middleware' => ['user', 'verified', 'unbanned']], function () {
 
     Route::controller(HomeController::class)->group(function () {
         Route::get('/dashboard', 'dashboard')->name('dashboard');
@@ -311,15 +314,14 @@ Route::group(['middleware' => ['user', 'verified', 'unbanned']], function() {
         Route::post('/user/update-profile', 'userProfileUpdate')->name('user.profile.update');
         Route::post('/user/withdrawal', 'withdrawalRequest')->name('user.withdrawalRequest');
     });
-    
-    Route::get('/all-notifications', [NotificationController::class, 'index'])->name('all-notifications');
 
+    Route::get('/all-notifications', [NotificationController::class, 'index'])->name('all-notifications');
 });
 
-Route::group(['middleware' => ['customer', 'verified', 'unbanned']], function() {
+Route::group(['middleware' => ['customer', 'verified', 'unbanned']], function () {
 
     // Checkout Routs
-    Route::group(['prefix' => 'checkout'], function() {
+    Route::group(['prefix' => 'checkout'], function () {
         Route::controller(CheckoutController::class)->group(function () {
             Route::get('/', 'get_shipping_info')->name('checkout.shipping_info');
             Route::any('/delivery_info', 'store_shipping_info')->name('checkout.store_shipping_infostore');
@@ -332,7 +334,7 @@ Route::group(['middleware' => ['customer', 'verified', 'unbanned']], function() 
             Route::post('/remove_coupon_code', 'remove_coupon_code')->name('checkout.remove_coupon_code');
             //Club point
             Route::post('/apply-club-point', 'apply_club_point')->name('checkout.apply_club_point');
-            Route::post('/remove-club-point', 'remove_club_point')->name('checkout.remove_club_point'); 
+            Route::post('/remove-club-point', 'remove_club_point')->name('checkout.remove_club_point');
         });
     });
 
@@ -359,7 +361,7 @@ Route::group(['middleware' => ['customer', 'verified', 'unbanned']], function() 
     Route::post('support_ticket/reply', [SupportTicketController::class, 'seller_store'])->name('support_ticket.seller_store');
 
     // Customer Package
-    Route::post('/customer_packages/purchase',[CustomerPackageController::class, 'purchase_package'])->name('customer_packages.purchase');
+    Route::post('/customer_packages/purchase', [CustomerPackageController::class, 'purchase_package'])->name('customer_packages.purchase');
 
     // Customer Product
     Route::resource('customer_products', CustomerProductController::class);
@@ -377,24 +379,23 @@ Route::group(['middleware' => ['customer', 'verified', 'unbanned']], function() 
     Route::controller(DigitalProductController::class)->group(function () {
         Route::get('/digital-products/download/{id}', 'download')->name('digital-products.download');
     });
-
 });
 
-Route::group(['middleware' => ['auth']], function() {
-    
+Route::group(['middleware' => ['auth']], function () {
+
     Route::get('invoice/{order_id}', [InvoiceController::class, 'invoice_download'])->name('invoice.download');
     Route::post('videopdf', [InvoiceController::class, 'videopdf_download'])->name('videopdf.download');
 
     // Reviews
     Route::resource('/reviews', ReviewController::class);
-    
+
     // Product Conversation
     Route::resource('conversations', ConversationController::class);
     Route::controller(ConversationController::class)->group(function () {
         Route::get('/conversations/destroy/{id}', 'destroy')->name('conversations.destroy');
         Route::post('conversations/refresh', 'refresh')->name('conversations.refresh');
     });
-    
+
     // Product Query
     Route::resource('product-queries', ProductQueryController::class);
 
@@ -410,19 +411,19 @@ Route::group(['middleware' => ['auth']], function() {
     //     Route::get('/addresses/set_default/{id}', 'set_default')->name('addresses.set_default');
     // });
 });
-    //Address
-    Route::resource('addresses', AddressController::class);
-    Route::controller(AddressController::class)->group(function () {
-        Route::post('/get-states', 'getStates')->name('get-state');
-        Route::post('/get-cities', 'getCities')->name('get-city');
-        Route::post('/addresses/update/{id}', 'update')->name('addresses.update');
-        Route::get('/addresses/destroy/{id}', 'destroy')->name('addresses.destroy');
-        Route::get('/addresses/set_default/{id}', 'set_default')->name('addresses.set_default');
-    });
+//Address
+Route::resource('addresses', AddressController::class);
+Route::controller(AddressController::class)->group(function () {
+    Route::post('/get-states', 'getStates')->name('get-state');
+    Route::post('/get-cities', 'getCities')->name('get-city');
+    Route::post('/addresses/update/{id}', 'update')->name('addresses.update');
+    Route::get('/addresses/destroy/{id}', 'destroy')->name('addresses.destroy');
+    Route::get('/addresses/set_default/{id}', 'set_default')->name('addresses.set_default');
+});
 Route::resource('shops', ShopController::class);
 
-Route::get('/export/log', [ ExportController::class, 'exportLog'])->name('exportLog.csv');
-Route::get('/export/customers', [ ExportController::class, 'exportCustomerLog'])->name('exporCustomertLog.csv');
+Route::get('/export/log', [ExportController::class, 'exportLog'])->name('exportLog.csv');
+Route::get('/export/customers', [ExportController::class, 'exportCustomerLog'])->name('exporCustomertLog.csv');
 
 Route::get('/instamojo/payment/pay-success', [InstamojoController::class, 'success'])->name('instamojo.success');
 
@@ -486,8 +487,8 @@ Route::get('/nagad/callback', [NagadController::class, 'verify'])->name('nagad.c
 
 //aamarpay
 Route::controller(AamarpayController::class)->group(function () {
-    Route::post('/aamarpay/success','success')->name('aamarpay.success');
-    Route::post('/aamarpay/fail','fail')->name('aamarpay.fail');
+    Route::post('/aamarpay/success', 'success')->name('aamarpay.success');
+    Route::post('/aamarpay/fail', 'fail')->name('aamarpay.fail');
 });
 
 //Authorize-Net-Payment
@@ -509,4 +510,3 @@ Route::controller(PageController::class)->group(function () {
     //Custom page
     Route::get('/{slug}', 'show_custom_page')->name('custom-pages.show_custom_page');
 });
-

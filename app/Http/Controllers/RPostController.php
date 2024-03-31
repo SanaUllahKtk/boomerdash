@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
+use App\Models\ClubPoint;
+use App\Models\Product;
 use App\Models\RCategory;
 use App\Models\RPost;
+use App\Models\RPostUrlClick;
 use App\Models\RPostVote;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 class RPostController extends Controller
 {
     /**
@@ -19,10 +23,23 @@ class RPostController extends Controller
     public function index()
     {
         //
-        $posts = RPost::all();
+        $posts = RPost::select('r_posts.*')
+                    ->selectSub(function ($query) {
+                        $query->select(DB::raw('COUNT(*)'))
+                            ->from('r_post_votes')
+                            ->whereColumn('r_post_votes.r_post_id', 'r_posts.id')
+                            ->where('r_post_votes.vote', 1);
+                    }, 'total_upvote')
+                    ->groupBy('r_posts.id', 'r_posts.title')
+                    ->orderByDesc('total_upvote')
+                    ->get();
+
         $categories = RCategory::pluck('name', 'id')->toArray();
         $users = User::pluck('name', 'id')->toArray();
-        return view('frontend.r_posts.index', compact('posts', 'categories', 'users'));
+        $brands = Brand::pluck('name', 'id')->toArray();
+
+
+        return view('frontend.r_posts.index', compact('posts', 'categories', 'users', 'brands'));
     }
 
     /**
@@ -34,7 +51,8 @@ class RPostController extends Controller
     {
         //
         $categories = RCategory::pluck('name', 'id')->toArray();
-        return view('frontend.r_posts.create', compact('categories'));
+        $brands = Brand::pluck('name', 'id')->toArray();
+        return view('frontend.r_posts.create', compact('categories', 'brands'));
     }
 
     /**
@@ -52,7 +70,8 @@ class RPostController extends Controller
             'post_description' => 'required|string',
             'url' => 'nullable|url',
             'file' => 'required',
-            'categoryId' => 'required'
+            'brandId' => 'required',
+            'productId' => 'required'
             // Add validation rules for dropzone files if required
         ]);
 
@@ -63,7 +82,9 @@ class RPostController extends Controller
         $rPost->url = $request->url;
         $rPost->img = $request->file;
         $rPost->user_id = \Auth::user()->id;
-        $rPost->r_category_id = $request->categoryId;
+        //$rPost->r_category_id = $request->categoryId;
+        $rPost->productId = $request->productId;
+        $rPost->brandId = $request->brandId;
         $rPost->save();
 
         // Redirect back with a success message
@@ -92,8 +113,11 @@ class RPostController extends Controller
      */
     public function edit(RPost $r_post)
     {
+        $r_post = $r_post;
         $categories = RCategory::pluck('name', 'id')->toArray();
-        return view('frontend.r_posts.edit', compact('categories', 'r_post'));
+        $brands = Brand::pluck('name', 'id')->toArray();
+        $products = Product::where('brand_id', $r_post->brandId)->pluck('name', 'id')->toArray();
+        return view('frontend.r_posts.edit', compact('categories', 'r_post', 'brands', 'products'));
     }
 
     /**
@@ -105,6 +129,7 @@ class RPostController extends Controller
      */
     public function update(Request $request, RPost $r_post)
     {
+        $r_post = $r_post;
         //
         // Validate the incoming request data
         $request->validate([
@@ -112,7 +137,8 @@ class RPostController extends Controller
             // 'post_description' => 'required|string',
             // 'url' => 'nullable|url',
             // 'file' => 'required',
-            'categoryId' => 'required'
+            'brandId' => 'required',
+            'productId' => 'required'
             // Add validation rules for dropzone files if required
         ]);
 
@@ -122,7 +148,9 @@ class RPostController extends Controller
         $r_post->url = $request->url;
         $r_post->img = $request->file;
         $r_post->user_id = \Auth::user()->id;
-        $r_post->r_category_id = $request->categoryId;
+        //$r_post->r_category_id = $request->categoryId;
+        $r_post->productId = $request->productId;
+        $r_post->brandId = $request->brandId;
         $r_post->update();
 
         // Redirect back with a success message
@@ -179,6 +207,18 @@ class RPostController extends Controller
                 $postVote->r_post_id = $id;
                 $postVote->vote = 1;
                 $postVote->save();
+
+                $post = RPost::findOrFail($id);
+                $product = Product::findOrFail($post->productId);
+
+                //adding points to the creator the posts
+                $point = new ClubPoint();
+                $point->user_id = $post->user_id;
+                $point->point_type = 'Post Like';
+                $point->points = $product->earn_point;
+                $point->order_id = 'p'.time();
+                $point->convert_status = 0;
+                $point->save();
             }
         } else {
         }
@@ -230,5 +270,37 @@ class RPostController extends Controller
         $categories = RCategory::pluck('name', 'id')->toArray();
         $users = User::pluck('name', 'id')->toArray();
         return view('backend.r_posts.index', compact('posts', 'categories', 'users'));        
+    }
+
+    public function getProducts(){
+        $brand_id = $_GET['brand_id'];
+        $products = Product::where('brand_id', $brand_id)->pluck('name', 'id')->toArray();
+
+        $html = '<option value="">Select Product</option>';
+        foreach($products as $key => $product){
+            $html .= '<option value="'.$key.'">'.$product.'</option>';
+        }
+
+        return json_encode([
+            'html' => $html
+        ]); 
+    }
+
+    public function updateUrlCicks(){
+        $postId = $_GET['postId'];
+
+        $is_exist = RPostUrlClick::where('postId', $postId)->where('userId', \Auth::user()->id)->first();
+        if($is_exist){
+            return true;
+        }
+
+        $new = new RPostUrlClick();
+        $new->postId = $postId;
+        $new->userId = \Auth::user()->id;
+        $new->created_at = date('Y-m-d h:i:s');
+        $new->updated_at = date('Y-m-d h:i:s');
+        $new->save();
+
+        return true;
     }
 }

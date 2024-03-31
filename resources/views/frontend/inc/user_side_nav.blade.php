@@ -211,7 +211,7 @@
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('r_posts.index') }}" class="aiz-side-nav-link">
                                 <i class="las la-atom aiz-side-nav-icon"></i>
-                                <span class="aiz-side-nav-text">{{translate('Posts')}}</span>
+                                <span class="aiz-side-nav-text">{{translate('Hub')}}</span>
                             </a>
                         </li>
 

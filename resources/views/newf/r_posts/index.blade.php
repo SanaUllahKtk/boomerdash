@@ -15,9 +15,11 @@
                         <div class="card-header d-flex justify-content-between">
                             <h3>Most Popular Posts</h3>
                             
+                            @if(\Auth::user()->isCreatePost == 1)
                             <div class="creat-post">
                                 <a href="{{ route('r_mobile_posts.create') }}" class="btn btn-primary">Create Post</a>
                             </div>
+                            @endif
                         </div>
 
                         <div class="card-body">
@@ -26,17 +28,17 @@
                                     <div class="col-md-12">
                                         <div class="d-flex">
                                             <div class="profile" style="position: relative; display: flex;">
-                                                <i class="las la-user-circle" style="font-size: 60px;"></i>
+                                                <i class="las la-user-circle mx-1" style="font-size: 60px;"></i>
                                                
                                                 <div class="">
-                                                    <span style="font-weight: bold; font-size: 20px;">{{ ucfirst($users[$post->user_id] ?? '') }}</span> <small>{{ $post->created_at->diffForHumans() }}</small> <br> {{ ucfirst($categories[$post->r_category_id ?? '']) }}
+                                                    <span style="font-weight: bold; font-size: 20px;">{{ ucfirst($users[$post->user_id] ?? '') }}</span> <small>{{ $post->created_at->diffForHumans() }}</small> <br> {{ ucfirst($brands[$post->brandId] ?? '') }}
                                                 </div>
                                             </div>
                                         </div>
 
 
                                         <a href="{{ route('r_mobile_posts.show', [$post->id]) }}">
-                                            <h2>{{ $post->title }}</h2>
+                                            <h4>{{ $post->title }}</h4>
                                         </a>
 
                                         <div class="">
@@ -55,21 +57,25 @@
 
                                         <!-- Icons -->
                                         <div class="mt-2">
+                                            @php 
+                                                $vote = \App\Models\RPostVote::where('r_post_id', $post->id)->where('r_user_id', \Auth::user()->id)->first();
+                                            @endphp 
                                             <a href="javascript:void(0)"
-                                                class="mr-3 btn btn-sm bg-success text-white upvote-btn"
+                                                class="mr-3 btn btn-sm {{ isset($vote->vote) && $vote->vote == 1 ? 'bg-primary' : 'bg-success' }} text-white upvote-btn"
                                                 style="font-size: 16px;" data-post-id="{{ $post->id }}"><i
                                                     class="las la-arrow-circle-up"></i><span class="upVoteSpan">{{ \App\Models\RPostVote::where('vote', 1)->where('r_post_id', $post->id)->count() }}</span></a>
+                                            
                                             <a href="javascript:void(0)"
-                                                class="mr-3 btn btn-sm bg-success text-white downvote-btn"
+                                                class="mr-3 btn btn-sm d-none {{ isset($vote->vote) && $vote->vote == 0 ? 'bg-primary' : 'bg-success' }} text-white downvote-btn"
                                                 style="font-size: 16px;" data-post-id="{{ $post->id }}"><i
                                                     class="las la-arrow-circle-down"></i>
                                                 <span class="downVoteSpan">{{ \App\Models\RPostVote::where('vote', 0)->where('r_post_id', $post->id)->count() }} </span></a>
-                                            <a href="javascript:void(0)" class="mr-3 btn btn-sm bg-success text-white d-none"
+                                            <a href="{{ route('r_mobile_posts.show', [$post->id]) }}" class="mr-3 btn btn-sm bg-success text-white"
                                                 style="font-size: 16px;"><i class="las la-comments"></i>
                                                 {{ \App\Models\RComment::where('post_id', $post->id)->count() }}</a>
-                                            <a href="javascript:void(0)"
-                                                class="mr-3 btn btn-sm bg-success text-white d-none"
-                                                style="font-size: 16px;"><i class="las la-share-square"></i></a>
+                                            <a href="{{ route('r_mobile_posts.show', [$post->id]) }}"
+                                                class="mr-3 btn btn-sm bg-success text-white"
+                                                style="font-size: 16px;"><i class="las la-flag"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -98,6 +104,7 @@
     <script>
         $(".upvote-btn").on("click", function() {
             var post_id = $(this).data('post-id');
+            var current_btn = $(this);
 
             $.ajax({
                 method: 'GET',
@@ -105,6 +112,14 @@
                 success: function(response) {
                     response = JSON.parse(response);
                     $(".upVoteSpan").html(response.total);
+
+                    if(current_btn.hasClass('bg-success')){
+                        current_btn.removeClass('bg-success');
+                        current_btn.addClass('bg-primary');
+                    }else{
+                        current_btn.removeClass('bg-primary');
+                        current_btn.addClass('bg-success');
+                    }
                 }
             });
         });

@@ -5,7 +5,7 @@
 
     <section class="py-5">
         <div class="container">
-            <div class="row">
+            <div class="row justify-content-center">
                 <div class="col-md-3">
                     @include('frontend.inc.user_side_nav')
                 </div>
@@ -38,6 +38,44 @@
 
                                     <div class="row">
                                         <div class="col-md-6">
+                                            <label for="post-brand">Brands</label>
+                                            <select name="brandId" id="brandId"
+                                                class="form form-control @error('brandId') is-invalid @enderror">
+                                                <option value="">Select Brand</option>
+                                                @foreach ($brands as $key => $brand)
+                                                    <option value="{{ $key }}"
+                                                        @if (old('brandId', $r_post->brandId) == $key) selected @endif>
+                                                        {{ $brand }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('brandId')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+
+
+
+                                        <div class="col-md-6">
+                                            <label for="post-product">Products</label>
+                                            <select name="productId" id="productId"
+                                                class="form form-control @error('productId') is-invalid @enderror">
+                                                <option value="">Select Product</option>
+                                                @foreach ($products as $key => $product)
+                                                    <option value="{{ $key }}"
+                                                        @if (old('productId', $r_post->productId) == $key) selected @endif>
+                                                        {{ $product }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('productId')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="col-md-12">
                                             <!-- Content for Post tab -->
                                             <div class="form-group">
                                                 <label for="post-title">Title</label>
@@ -52,14 +90,14 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 d-none">
                                             <label for="post-category">Category</label>
                                             <select name="categoryId" id="category"
                                                 class="form form-control @error('categoryId') is-invalid @enderror">
                                                 <option value="">Select Category</option>
                                                 @foreach ($categories as $key => $category)
                                                     <option value="{{ $key }}"
-                                                        @if (old('categoryId', $r_post->category_id) == $key) selected @endif>
+                                                        @if (old('categoryId', $r_post->r_category_id) == $key) selected @endif>
                                                         {{ $category }}
                                                     </option>
                                                 @endforeach
@@ -96,7 +134,7 @@
                                                     $file_extension = pathinfo($r_post->img, PATHINFO_EXTENSION);
                                                     if ($file_extension === 'mp4'):
                                                     ?>
-                                                    <video controls>
+                                                    <video controls autoplay>
                                                         <source src="{{ static_asset($r_post->img) }}" type="video/mp4">
                                                         Your browser does not support the video tag.
                                                     </video>
@@ -109,7 +147,6 @@
                                                         <a href="javascript:void(0)" class="dz-remove-btn" data-dz-remove>Remove</a>
                                                     </div>
                                                 </div>
-                                                
                                                 <div class="dz-message">
                                                     <!-- Message to display if no files are present -->
                                                     <div class="col-12">
@@ -189,5 +226,23 @@
                 $("#dropzone-container").append('<div class="text-danger">' + errorMessage + '</div>');
             }
         };
+
+
+        $("#brandId").on("change", function(){
+            var brandId = $(this).val();
+            $.ajax({
+                method: 'GET',
+                url: '/getMobileProducts?brand_id=' + brandId,
+                success: function(data) {
+                    data = JSON.parse(data);
+                    console.log(data);
+                    $("#productId").html(data.html);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+
+        });
     </script>
 @endsection

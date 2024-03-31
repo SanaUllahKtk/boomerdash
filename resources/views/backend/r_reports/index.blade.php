@@ -4,7 +4,7 @@
     <div class="aiz-titlebar text-left mt-2 mb-3">
         <div class="row align-items-center">
             <div class="col-auto">
-                <h1 class="h3">{{ translate('All Posts') }}</h1>
+                <h1 class="h3">{{ translate('All Reports') }}</h1>
             </div>
         </div>
     </div>
@@ -15,7 +15,7 @@
         <form class="" id="sort_stores" action="" method="GET">
             <div class="card-header row gutters-5">
                 <div class="col">
-                    <h5 class="mb-md-0 h6">{{ translate('All Posts') }}</h5>
+                    <h5 class="mb-md-0 h6">{{ translate('All Reports') }}</h5>
                 </div>
 
                 <div class="dropdown mb-2 mb-md-0">
@@ -47,58 +47,87 @@
                             </div>
                         </th>
 
-                        <th>{{ translate('Title') }}</th>
-                        <th>{{ translate('Brand') }}</th>
-                        <th>{{ translate('Product') }}</th>
-                        <th>{{ translate('Upvote') }}</th>
-                        <th>{{ translate('Url Clicks') }}</th>
+                        <th>{{ translate('Description') }}</th>
+                        <th>{{ translate('Type') }}</th>
+                        <th>{{ translate('Created By') }}</th>
+                        <th>{{ translate('Post') }}</th>
+                        <th>{{ translate('Status') }}</th>
                         <th>{{ translate('Action') }}</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    @forelse ($posts as $post)
+                    @forelse ($reports as $report)
                         <tr>
                             <td>
                                 <div class="form-group d-inline-block">
                                     <label class="aiz-checkbox">
                                         <input type="checkbox" class="check-one" name="id[]"
-                                            value="{{ $post->id }}">
+                                            value="{{ $report->id }}">
                                         <span class="aiz-square-check"></span>
                                     </label>
                                 </div>
                             </td>
-                            <td>{{ $post->title }}</td>
-                            <td>{{ $brands[$post->brandId] ?? ''}}</td>
-                            <td>{{ $products[$post->productId] ?? ''}}</td>
-                            <td>
-                                @php 
-                                    $postUpVote = \App\Models\RPostVote::where('r_post_id', $post->id)->where('vote', 1)->count();
-                                @endphp 
-                                {{ $postUpVote }}
-                            </td>
-
-                            <td>
-                                @php 
-                                    $postClicks = \App\Models\RPostUrlClick::where('postId', $post->id)->count();
-                                @endphp 
-                                {{ $postClicks }}
-                            </td>
-
+                            <td>{{ $report->description }}</td>
+                            <td>{{ $report->type }}</td>
+                            <td>{{ $users[$report->created_by] ?? '' }}</td>
+                            <td>{{ $posts[$report->postId] ?? '' }}</td>
+                            <td>{{ ucfirst($report->status) }}</td>
                             <td>
                                 @if (\Auth::user()->user_type == 'admin')
-                                    
                                     <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete"
-                                        id="confirm-delete"
-                                        data-post-id="{{ $post->id }}"
-                                        data-url="{{ route('r_posts.destroy', ['r_post' => $post]) }}"
+                                        id="confirm-delete" data-report-id="{{ $report->id }}"
+                                        data-url="{{ route('r_reports.destroy', ['r_report' => $report]) }}"
                                         title="{{ translate('Delete') }}">
                                         <i class="las la-trash"></i>
                                     </a>
+
+                                    <!-- Button trigger modal -->
+                                    <button type="button" id="showModal" data-report-id="{{ $report->id }}" class="btn btn-sm btn-circle btn-soft-danger btn-icon" data-toggle="modal"
+                                        data-target="#exampleModal">
+                                        <i class="las la-edit"></i>
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Action</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <form action="{{ route('r_reports.update', ['r_report' => $report])}}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="modal-body">
+                                                    
+                                                         <div class="form-group">
+                                                            <label for="">Action</label>
+                                                            <select name="action" id="" class="form form-control">
+                                                                <option value="">Select Action</option>
+                                                                <option value="reviewCompleted">Review Completed</option>
+                                                                <option value="deletePost">Delete Post</option>
+                                                                <option value="banUser">Ban User</option>
+                                                            </select>
+
+                                                            <input type="hidden" value="" name="reportId" id="reportId">
+                                                         </div>
+                                                    
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                                </div>
+                                            </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @endif
-
-
-
                             </td>
                         </tr>
                     @empty
@@ -152,8 +181,8 @@
         }
 
         $(document).ready(function() {
-          // Attach a click event handler to the delete button
-            $(document).on("click","#confirm-delete", function(e) {
+            // Attach a click event handler to the delete button
+            $(document).on("click", "#confirm-delete", function(e) {
                 e.preventDefault(); // Prevent the default link behavior
 
                 var storeId = $(this).data("store-id"); // Get the product ID from the data attribute
@@ -181,5 +210,11 @@
                 }
             });
         });
+
+
+        $("#showModal").on("click", function(){
+            alert('hi');
+            $("#reportId").val($(this).data('report-id'));
+        })
     </script>
 @endsection

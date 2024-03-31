@@ -55,6 +55,38 @@
 
                 <!-- Store -->
                 @if(Auth::user()->user_type == 'admin' || in_array('2', json_decode(Auth::user()->staff->role->permissions)))
+                <li class="aiz-side-nav-item">
+                    <a href="#" class="aiz-side-nav-link">
+                        <i class="las la-shopping-cart aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">{{translate('Hub')}}</span>
+                        <span class="aiz-side-nav-arrow"></span>
+                    </a>
+                    <!--Submenu-->
+                    <ul class="aiz-side-nav-list level-2">
+                        <li class="aiz-side-nav-item">
+                            <a class="aiz-side-nav-link" href="{{route('brands.index')}}">
+                                <span class="aiz-side-nav-text">{{translate('Brands')}}</span>
+                            </a>
+                        </li>
+
+                        <li class="aiz-side-nav-item">
+                            <a href="{{route('admin.rposts.index')}}" class="aiz-side-nav-link">
+                                <span class="aiz-side-nav-text">{{translate('All Posts')}}</span>
+                            </a>
+                        </li>
+
+                        <li class="aiz-side-nav-item">
+                            <a class="aiz-side-nav-link" href="{{route('r_reports.index')}}">
+                                <span class="aiz-side-nav-text">{{translate('Reports')}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+
+                
+                
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-shopping-cart aiz-side-nav-icon"></i>
@@ -77,7 +109,7 @@
                     </li>
 
 
-                    <li class="aiz-side-nav-item">
+                    <li class="aiz-side-nav- d-none">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-shopping-cart aiz-side-nav-icon"></i>
                             <span class="aiz-side-nav-text">{{translate('Posts')}}</span>
