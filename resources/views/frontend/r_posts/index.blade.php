@@ -7,7 +7,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-3">
-                    @include('newf.inc.user_side_nav')
+                    @include('frontend.inc.user_side_nav')
                 </div>
 
                 <div class="col-md-9">
@@ -24,6 +24,11 @@
 
                         <div class="card-body">
                             @forelse ($posts as $post)
+                                @php 
+                                    $product = \App\Models\RProduct::where('id', $post->productId)->first(); 
+                                    if(!$product)
+                                    continue;
+                                @endphp 
                                 <div class="row justify-content-center">
                                     <div class="col-md-12">
                                         <div class="d-flex">
@@ -38,22 +43,22 @@
 
 
                                         <a href="{{ route('r_posts.show', [$post->id]) }}">
-                                            <h4>{{ $post->title }}</h4>
+                                            <h4>{{ $product->title }}</h4>
                                         </a>
 
                                         <div class="">
-                                            @if (pathinfo($post->img, PATHINFO_EXTENSION) === 'mp4')
+                                            @if (pathinfo($product->img, PATHINFO_EXTENSION) === 'mp4')
                                             <video width="100%" height="400px" autoplay loop muted style="border: 1px solid #ccc; border-radius: 10px;">
-                                                <source src="{{ static_asset($post->img) }}" type="video/mp4">
+                                                <source src="{{ uploaded_asset($product->img) }}" type="video/mp4">
                                                 Your browser does not support the video tag.
                                             </video>
                         
                                             @else
-                                            <img src="{{ static_asset($post->img) }}" alt="Post Image"
+                                            <img src="{{ uploaded_asset($product->img) }}" alt="Post Image"
                                             style="width: 100%; max-height: 540px; border: 1px solid #ccc; border-radius: 10px;">                                       
                                             @endif
                                         </div>
-                                        <p>{!! \Illuminate\Support\Str::words($post->description, 10) !!}</p>
+                                        <p>{!! \Illuminate\Support\Str::words($product->description, 10) !!}</p>
 
                                         <!-- Icons -->
                                         <div class="mt-2">

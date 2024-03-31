@@ -2,7 +2,10 @@
 
 @section('content')
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    @php 
+    $product = \App\Models\RProduct::where('id', $post->productId)->first(); 
+  
+@endphp
     <section class="py-5">
         <div class="container">
             <div class="row justify-content-center">
@@ -14,7 +17,7 @@
                     <div class="aiz-user-panel">
                         <div class="card">
                             <div class="card-header">
-                                <h4>{{ $post->title }}</h4>
+                                <h4>{{ $product->title }}</h4>
                             </div>
 
                             <div class="card-body">
@@ -22,30 +25,30 @@
                                     <div class="alert alert-info">{{ session('message') }}</div>
                                 @endif
 
-                                @if ($post->url)
+                                @if ($product->url)
                                     <div class="mb-2">
-                                        <a href="{{ $post->url }}" target="_blank" class="postUrl" id="postUrl"
-                                            data-post-id={{ $post->id }}>{{ $post->url }}</a>
+                                        <a href="{{ $product->url }}" target="_blank" class="postUrl" id="postUrl"
+                                            data-post-id={{ $post->id }}>{{ $product->url }}</a>
                                     </div>
                                 @endif
 
-                                @if ($post->img)
+                                @if ($product->img)
                                     <div class="">
-                                        @if (pathinfo($post->img, PATHINFO_EXTENSION) === 'mp4')
+                                        @if (pathinfo($product->img, PATHINFO_EXTENSION) === 'mp4')
                                             <video width="100%" height="400px" autoplay loop muted
                                                 style="border: 1px solid #ccc; border-radius: 10px;">
-                                                <source src="{{ static_asset($post->img) }}" type="video/mp4">
+                                                <source src="{{ uploaded_asset($product->img) }}" type="video/mp4">
                                                 Your browser does not support the video tag.
                                             </video>
                                         @else
-                                            <img src="{{ static_asset($post->img) }}" alt="Post Image"
+                                            <img src="{{ uploaded_asset($product->img) }}" alt="Post Image"
                                                 style="width: 100%; max-height: 540px; border: 1px solid #ccc; border-radius: 10px;">
                                         @endif
                                     </div>
                                     <br /><br />
                                 @endif
 
-                                {!! $post->description !!}
+                                {!! $product->description !!}
 
                                 @auth
                                     <hr />
@@ -103,9 +106,9 @@
                                     <hr />
 
                                     @if (\Auth::user()->id == $post->user_id)
-                                        <a href="{{ route('r_mobile_posts.edit', ['r_mobile_post' => $post]) }}"
+                                        {{-- <a href="{{ route('r_mobile_posts.edit', ['r_mobile_post' => $post]) }}"
                                             class="btn btn-sm btn-primary">Edit
-                                            post</a>
+                                            post</a> --}}
 
 
 

@@ -10,11 +10,15 @@
                     @include('frontend.inc.user_side_nav')
                 </div>
 
+                @php 
+                    $product = \App\Models\RProduct::where('id', $post->productId)->first(); 
+                @endphp 
+
                 <div class="col-md-9">
                     <div class="aiz-user-panel">
                         <div class="card">
                             <div class="card-header">
-                                <h4>{{ $post->title }}</h4>
+                                <h4>{{ $product->title }}</h4>
                             </div>
 
                             <div class="card-body">
@@ -22,23 +26,23 @@
                                     <div class="alert alert-info">{{ session('message') }}</div>
                                 @endif
 
-                                @if ($post->url)
+                                @if ($product->url)
                                     <div class="mb-2">
-                                        <a href="{{ $post->url }}" target="_blank" class="postUrl" id="postUrl"
-                                            data-post-id={{ $post->id }}>{{ $post->url }}</a>
+                                        <a href="{{ $product->url }}" target="_blank" class="postUrl" id="postUrl"
+                                            data-post-id={{ $post->id }}>{{ $product->url }}</a>
                                     </div>
                                 @endif
 
-                                @if ($post->img)
+                                @if ($product->img)
                                     <div class="">
-                                        @if (pathinfo($post->img, PATHINFO_EXTENSION) === 'mp4')
+                                        @if (pathinfo($product->img, PATHINFO_EXTENSION) === 'mp4')
                                             <video width="100%" height="400px" autoplay loop muted
                                                 style="border: 1px solid #ccc; border-radius: 10px;">
-                                                <source src="{{ static_asset($post->img) }}" type="video/mp4">
+                                                <source src="{{ uploaded_asset($product->img) }}" type="video/mp4">
                                                 Your browser does not support the video tag.
                                             </video>
                                         @else
-                                            <img src="{{ static_asset($post->img) }}" alt="Post Image"
+                                            <img src="{{ uploaded_asset($product->img) }}" alt="Post Image"
                                                 style="width: 100%; max-height: 540px; border: 1px solid #ccc; border-radius: 10px;">
                                         @endif
                                     </div>
@@ -103,9 +107,9 @@
                                     <hr />
 
                                     @if (\Auth::user()->id == $post->user_id)
-                                        <a href="{{ route('r_posts.edit', ['r_post' => $post]) }}"
+                                        {{-- <a href="{{ route('r_posts.edit', ['r_post' => $post]) }}"
                                             class="btn btn-sm btn-primary">Edit
-                                            post</a>
+                                            post</a> --}}
 
 
 
@@ -116,54 +120,54 @@
                                             <button type="submit" class="btn btn-sm btn-danger"
                                                 onclick="return confirm('Are you sure?')">Delete post</button>
                                         </form>
+                                    @endif
 
-                                        <!-- Button trigger modal -->
-                                        <button type="button" data-post-id="{{ $post->id }}" id="showModal" class="btn btn-sm btn-primary" data-toggle="modal"
-                                            data-target="#reportModal">
-                                            Report
-                                        </button>
+                                    <!-- Button trigger modal -->
+                                    <button type="button" data-post-id="{{ $post->id }}" id="showModal" class="btn btn-sm btn-primary" data-toggle="modal"
+                                        data-target="#reportModal">
+                                        Report
+                                    </button>
 
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="reportModal" tabindex="-1" role="dialog"
-                                            aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Report</h5>
-                                                        <button type="button"class="close" data-dismiss="modal"
-                                                            aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <form action="{{ route('r_reports.store') }}" method="POST">
-                                                    <div class="modal-body">
-                                                         @csrf
-                                                            <div class="form-group">
-                                                                <label for="">Report Type</label>
-                                                                <select name="type" id="" class="form form-control">
-                                                                       <option value="">Select Type</option>
-                                                                       <option value="spam">Spam</option>
-                                                                       <option value="inappropriate">Inappropriate</option> 
-                                                                </select>
-                                                                <input type="hidden" value="" name="postId" id="postId">
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label for="">Description</label>
-                                                                <textarea name="description" class="form form-control" id="" cols="10" rows="3"></textarea>
-                                                            </div>
-                                                        
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-primary">Save changes</button>
-                                                    </div>
-                                                    </form>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="reportModal" tabindex="-1" role="dialog"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Report</h5>
+                                                    <button type="button"class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
                                                 </div>
+                                                <form action="{{ route('r_reports.store') }}" method="POST">
+                                                <div class="modal-body">
+                                                     @csrf
+                                                        <div class="form-group">
+                                                            <label for="">Report Type</label>
+                                                            <select name="type" id="" class="form form-control">
+                                                                   <option value="">Select Type</option>
+                                                                   <option value="spam">Spam</option>
+                                                                   <option value="inappropriate">Inappropriate</option> 
+                                                            </select>
+                                                            <input type="hidden" value="" name="postId" id="postId">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="">Description</label>
+                                                            <textarea name="description" class="form form-control" id="" cols="10" rows="3"></textarea>
+                                                        </div>
+                                                    
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                                </div>
+                                                </form>
                                             </div>
                                         </div>
-                                    @endif
+                                    </div>
                                     {{-- <form action="{{ route('post.report', $post->id) }}" method="POST"
                                         style="display: inline-block">
                                         @csrf

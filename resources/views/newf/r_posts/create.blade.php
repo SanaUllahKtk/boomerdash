@@ -15,7 +15,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3>Create Post</h3>
-                                
+
                                 <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
                                     <li class="nav-item">
                                         <a class="nav-link active" id="post-tab" data-toggle="tab" href="#post"
@@ -71,75 +71,49 @@
 
 
 
+                                    </div>
 
-                                        <div class="col-md-12 mt-2">
+                                    <div class="tab-content mt-3" id="myTabContent">
+                                        <div class="tab-pane fade show active" id="post" role="tabpanel"
+                                            aria-labelledby="post-tab">
                                             <!-- Content for Post tab -->
                                             <div class="form-group">
                                                 <label for="post-title">Title</label>
                                                 <input type="text"
                                                     class="form-control @error('post_title') is-invalid @enderror"
-                                                    id="post-title" name="post_title" placeholder="Enter title"
-                                                    value="{{ old('post_title') }}">
-                                                @error('post_title')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
+                                                    id="post-title" placeholder="Enter title" value="" readonly>
+                                                <input type="hidden" name="post_title" value="">
                                             </div>
-                                        </div>
-                                        <div class="col-md-6 d-none">
-                                            <label for="post-category">Category</label>
-                                            <select name="categoryId" id="category"
-                                                class="form form-control @error('categoryId') is-invalid @enderror">
-                                                <option value="">Select Category</option>
-                                                @foreach ($categories as $key => $category)
-                                                    <option value="{{ $key }}"
-                                                        @if (old('categoryId') == $key) selected @endif>
-                                                        {{ $category }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('categoryId')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
 
-                                    <div class="tab-content" id="myTabContent">
-                                        <div class="tab-pane fade show active" id="post" role="tabpanel"
-                                            aria-labelledby="post-tab">
-                                            <!-- Content for Post tab -->
                                             <div class="form-group">
                                                 <label for="post-description">Description</label>
                                                 <textarea class="aiz-text-editor form-control @error('post_description') is-invalid @enderror" id="post-description"
-                                                    name="post_description" rows="3" placeholder="Enter description">{{ old('post_description') }}</textarea>
-                                                @error('post_description')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
+                                                    readonly row="3" placeholder="Enter description">
+                                                </textarea>
+                                                <input type="hidden" name="post_description" value="">
                                             </div>
                                         </div>
 
                                         <div class="tab-pane fade" id="media" role="tabpanel"
                                             aria-labelledby="media-tab">
-                                            <!-- Content for Image and Video tab -->
-                                            <div id="dropzone-container" class="dropzone">
-                                                <div class="dz-message">
-                                                    <div class="col-12">
-                                                        <div class="message">Drop files here or click to upload.</div>
-                                                    </div>
-                                                </div>
-                                            </div>
 
-                                            <input type="hidden" class="" id="file" name="file"
-                                                value="{{ old('file') }}">
-                                            @error('file')
-                                                <span class="invalid-feedback d-block" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
+                                            <div class="form-group">
+                                                <div class="input-group" data-toggle="aizuploader" data-type="image"
+                                                    data-multiple="true">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text bg-soft-secondary font-weight-medium">
+                                                            {{ translate('Browse') }}</div>
+                                                    </div>
+                                                    <div class="form-control file-amount">{{ translate('Choose File') }}
+                                                    </div>
+                                                    <input type="hidden" name="photos" value=""
+                                                        class="selected-files">
+                                                </div>
+                                                <div class="file-preview box sm">
+                                                </div>
+                                                <small
+                                                    class="text-muted">{{ translate('These images are visible in product details page gallery. Use 600x600 sizes images.') }}</small>
+                                            </div>
                                         </div>
 
                                         <div class="tab-pane fade" id="link" role="tabpanel"
@@ -149,14 +123,11 @@
                                                 <label for="url">URL</label>
                                                 <input type="text"
                                                     class="form-control @error('url') is-invalid @enderror" id="url"
-                                                    name="url" placeholder="Enter URL" value="{{ old('url') }}">
-                                                @error('url')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
+                                                    readonly placeholder="Enter URL" value="">
+                                                <input type="hidden" name="url" value="">
                                             </div>
                                         </div>
+
                                     </div>
 
                                     <div class="form-group mt-3">
@@ -198,7 +169,7 @@
         };
 
 
-        $("#brandId").on("change", function(){
+        $("#brandId").on("change", function() {
             var brandId = $(this).val();
             $.ajax({
                 method: 'GET',
@@ -214,5 +185,149 @@
             });
 
         })
+
+        $("#productId").on("change", function() {
+            var productId = $(this).val();
+            $.ajax({
+                method: 'GET',
+                url: '/getProductDetail?product_id=' + productId,
+                success: function(data) {
+                    data = JSON.parse(data);
+                    console.log(data);
+                    $("#myTabContent").html(data.html);
+                    textEditor();
+                    preview();
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+
+        })
+
+        function textEditor(){
+            $(".aiz-text-editor").each(function (el) {
+                var $this = $(this);
+                var buttons = $this.data("buttons");
+                var minHeight = $this.data("min-height");
+                var placeholder = $this.attr("placeholder");
+                var format = $this.data("format");
+
+                buttons = !buttons
+                    ? [
+                          ["font", ["bold", "underline", "italic", "clear"]],
+                          ["para", ["ul", "ol", "paragraph"]],
+                          ["style", ["style"]],
+                          ["color", ["color"]],
+                          ["table", ["table"]],
+                          ["insert", ["link", "picture", "video"]],
+                          ["view", ["fullscreen", "undo", "redo"]],
+                      ]
+                    : buttons;
+                placeholder = !placeholder ? "" : placeholder;
+                minHeight = !minHeight ? 200 : minHeight;
+                format = (typeof format == 'undefined') ? false : format;
+
+                $this.summernote({
+                    toolbar: buttons,
+                    placeholder: placeholder,
+                    height: minHeight,
+                    callbacks: {
+                        onImageUpload: function (data) {
+                            data.pop();
+                        },
+                        onPaste: function (e) {
+                            if(format){
+                                var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+                                e.preventDefault();
+                                document.execCommand('insertText', false, bufferText);
+                            }
+                        }
+                    }
+                });
+
+                var nativeHtmlBuilderFunc = $this.summernote('module', 'videoDialog').createVideoNode;
+
+                $this.summernote('module', 'videoDialog').createVideoNode =  function(url) 
+                {   
+                    var wrap = $('<div class="embed-responsive embed-responsive-16by9"></div>');
+                    var html = nativeHtmlBuilderFunc(url);
+                        html = $(html).addClass('embed-responsive-item');
+                    return wrap.append(html)[0];
+                };
+            });
+        }
+
+        function preview(){
+            $('[data-toggle="aizuploader"]').each(function () {
+                var $this = $(this);
+                var files = $this.find(".selected-files").val();
+                if(files != ""){
+                    $.post(
+                        AIZ.data.appUrl + "/aiz-uploader/get_file_by_ids",
+                        { _token: AIZ.data.csrf, ids: files },
+                        function (data) {
+                            $this.next(".file-preview").html(null);
+
+                            if (data.length > 0) {
+                                $this.find(".file-amount").html(
+                                    AIZ.uploader.updateFileHtml(data)
+                                );
+                                for (
+                                    var i = 0;
+                                    i < data.length;
+                                    i++
+                                ) {
+                                    var thumb = "";
+                                    if (data[i].type === "image") {
+                                        thumb =
+                                            '<img src="' +
+                                            data[i].file_name +
+                                            '" class="img-fit">';
+                                    } else {
+                                        thumb = '<i class="la la-file-text"></i>';
+                                    }
+                                    var html =
+                                        '<div class="d-flex justify-content-between align-items-center mt-2 file-preview-item" data-id="' +
+                                        data[i].id +
+                                        '" title="' +
+                                        data[i].file_original_name +
+                                        "." +
+                                        data[i].extension +
+                                        '">' +
+                                        '<div class="align-items-center align-self-stretch d-flex justify-content-center thumb">' +
+                                        thumb +
+                                        "</div>" +
+                                        '<div class="col body">' +
+                                        '<h6 class="d-flex">' +
+                                        '<span class="text-truncate title">' +
+                                        data[i].file_original_name +
+                                        "</span>" +
+                                        '<span class="ext flex-shrink-0">.' +
+                                        data[i].extension +
+                                        "</span>" +
+                                        "</h6>" +
+                                        "<p>" +
+                                        AIZ.extra.bytesToSize(
+                                            data[i].file_size
+                                        ) +
+                                        "</p>" +
+                                        "</div>" +
+                                        '<div class="remove">' +
+                                        '<button class="btn btn-sm btn-link remove-attachment" type="button">' +
+                                        '<i class="la la-close"></i>' +
+                                        "</button>" +
+                                        "</div>" +
+                                        "</div>";
+
+                                    $this.next(".file-preview").append(html);
+                                }
+                            } else {
+                                $this.find(".file-amount").html(AIZ.local.choose_file);
+                            }
+                    });
+                }
+            });
+        }
     </script>
 @endsection

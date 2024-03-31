@@ -8,6 +8,7 @@ use App\Models\RCategory;
 use App\Models\RPost;
 use App\Models\RPostUrlClick;
 use App\Models\RPostVote;
+use App\Models\RProduct;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -261,7 +262,7 @@ class RPostMobileController extends Controller
 
     public function getProducts(){
         $brand_id = $_GET['brand_id'];
-        $products = Product::where('brand_id', $brand_id)->pluck('name', 'id')->toArray();
+        $products = RProduct::where('brandId', $brand_id)->pluck('title', 'id')->toArray();
 
         $html = '<option value="">Select Product</option>';
         foreach($products as $key => $product){

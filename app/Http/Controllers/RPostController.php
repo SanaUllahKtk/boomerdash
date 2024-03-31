@@ -9,6 +9,7 @@ use App\Models\RCategory;
 use App\Models\RPost;
 use App\Models\RPostUrlClick;
 use App\Models\RPostVote;
+use App\Models\RProduct;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -69,7 +70,7 @@ class RPostController extends Controller
             'post_title' => 'required|string|max:255',
             'post_description' => 'required|string',
             'url' => 'nullable|url',
-            'file' => 'required',
+            'photos' => 'required',
             'brandId' => 'required',
             'productId' => 'required'
             // Add validation rules for dropzone files if required
@@ -80,7 +81,7 @@ class RPostController extends Controller
         $rPost->title = $request->post_title;
         $rPost->description = $request->post_description;
         $rPost->url = $request->url;
-        $rPost->img = $request->file;
+        $rPost->img = $request->photos;
         $rPost->user_id = \Auth::user()->id;
         //$rPost->r_category_id = $request->categoryId;
         $rPost->productId = $request->productId;
@@ -209,13 +210,13 @@ class RPostController extends Controller
                 $postVote->save();
 
                 $post = RPost::findOrFail($id);
-                $product = Product::findOrFail($post->productId);
+                $product = RProduct::findOrFail($post->productId);
 
                 //adding points to the creator the posts
                 $point = new ClubPoint();
                 $point->user_id = $post->user_id;
                 $point->point_type = 'Post Like';
-                $point->points = $product->earn_point;
+                $point->points = $product->points;
                 $point->order_id = 'p'.time();
                 $point->convert_status = 0;
                 $point->save();
@@ -302,5 +303,16 @@ class RPostController extends Controller
         $new->save();
 
         return true;
+    }
+
+
+    public function getProductDetail(){
+        $productId = $_GET['product_id'];
+        $product = RProduct::findOrFail($productId);
+        $html = view('frontend.productDetail', compact('product'))->render();
+        return json_encode([
+            'status' => 'success',
+            'html' => $html
+        ]);
     }
 }

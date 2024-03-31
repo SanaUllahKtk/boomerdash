@@ -70,6 +70,12 @@
                         </li>
 
                         <li class="aiz-side-nav-item">
+                            <a class="aiz-side-nav-link" href="{{route('r_products.index')}}">
+                                <span class="aiz-side-nav-text">{{translate('Products')}}</span>
+                            </a>
+                        </li>
+
+                        <li class="aiz-side-nav-item">
                             <a href="{{route('admin.rposts.index')}}" class="aiz-side-nav-link">
                                 <span class="aiz-side-nav-text">{{translate('All Posts')}}</span>
                             </a>

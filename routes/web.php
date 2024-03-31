@@ -61,7 +61,7 @@ use App\Http\Controllers\RCommentController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\RPostMobileController;
 use App\Http\Controllers\RPostReportController;
-
+use App\Http\Controllers\RProductController;
 /*
   |--------------------------------------------------------------------------
   | Web Routes
@@ -135,11 +135,13 @@ Route::controller(HomeController::class)->group(function () {
     Route::middleware(['auth'])->group(function () {
         Route::resource('r_categories', RCategoryController::class);
         Route::resource('r_posts', RPostController::class);
+        Route::resource('r_products', RProductController::class);
         Route::resource('r_mobile_posts', RPostMobileController::class);
         Route::resource('r_post_votes', RPostVoteController::class);
         Route::resource('r_comments', RCommentController::class);
         Route::resource('r_reports', RPostReportController::class);
 
+        Route::get('/getProductDetail', [RPostController::class, 'getProductDetail'])->name('getProductDetail');
         Route::get('/r_getposts', [RPostController::class, 'getPosts'])->name('r_getposts');
         Route::get('/r_upvote/{id}', [RPostController::class, 'upVote'])->name('upVote');
         Route::get('/r_downvote/{id}', [RPostController::class, 'downVote'])->name('downVote');
