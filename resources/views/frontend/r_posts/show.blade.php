@@ -34,7 +34,8 @@
                                 @endif
 
                                 @if ($product->img)
-                                    <div class="">
+                                    <div class="row">
+                                        <div class="col-12">
                                         @if (pathinfo($product->img, PATHINFO_EXTENSION) === 'mp4')
                                             <video width="100%" height="400px" autoplay loop muted
                                                 style="border: 1px solid #ccc; border-radius: 10px;">
@@ -46,10 +47,15 @@
                                                 style="width: 100%; max-height: 540px; border: 1px solid #ccc; border-radius: 10px;">
                                         @endif
                                     </div>
+                                     </div>
                                     <br /><br />
                                 @endif
 
-                                {!! $post->description !!}
+                                <div class="row">
+                                   <div class="col-12">
+                                        {!! $product->description !!}
+                                   </div>
+                                </div>
 
                                 @auth
                                     <hr />
