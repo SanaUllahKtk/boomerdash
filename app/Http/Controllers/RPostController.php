@@ -117,7 +117,7 @@ class RPostController extends Controller
         $r_post = $r_post;
         $categories = RCategory::pluck('name', 'id')->toArray();
         $brands = Brand::pluck('name', 'id')->toArray();
-        $products = Product::where('brand_id', $r_post->brandId)->pluck('name', 'id')->toArray();
+        $products = RProduct::where('brandId', $r_post->brandId)->pluck('name', 'id')->toArray();
         return view('frontend.r_posts.edit', compact('categories', 'r_post', 'brands', 'products'));
     }
 
@@ -275,7 +275,7 @@ class RPostController extends Controller
 
     public function getProducts(){
         $brand_id = $_GET['brand_id'];
-        $products = Product::where('brand_id', $brand_id)->pluck('name', 'id')->toArray();
+        $products = RProduct::where('brandId', $brand_id)->pluck('name', 'id')->toArray();
 
         $html = '<option value="">Select Product</option>';
         foreach($products as $key => $product){
