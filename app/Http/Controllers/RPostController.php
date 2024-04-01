@@ -7,10 +7,12 @@ use App\Models\ClubPoint;
 use App\Models\Product;
 use App\Models\RCategory;
 use App\Models\RPost;
+use App\Models\RPostEarningHistory;
 use App\Models\RPostUrlClick;
 use App\Models\RPostVote;
 use App\Models\RProduct;
 use App\Models\User;
+use App\Models\RPostHistoryEarning;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -193,6 +195,8 @@ class RPostController extends Controller
     {
         // Check if the user is authenticated
         if (\Auth::check()) {
+
+            
             // Retrieve the RPostVote record for the given post ID and the current user
             $postVote = RPostVote::where('r_post_id', $id)
                 ->where('r_user_id', \Auth::user()->id)
@@ -203,6 +207,19 @@ class RPostController extends Controller
             if ($postVote) {
                 $postVote->delete();
             } else {
+                $is_exist = RPostEarningHistory::where('user_id', \Auth::user()->id)->where('post_id', $id)->first();
+                if($is_exist){
+                    return json_encode([
+                        'status' => 'success'
+                    ]);
+                }
+
+
+                $history = new RPostEarningHistory();
+                $history->user_id = \Auth::user()->id;
+                $history->post_id = $id;
+                $history->save();
+                
                 $postVote = new RPostVote();
                 $postVote->r_user_id = \Auth::user()->id;
                 $postVote->r_post_id = $id;

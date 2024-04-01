@@ -96,7 +96,6 @@
 
                                         <div class="tab-pane fade" id="media" role="tabpanel"
                                             aria-labelledby="media-tab">
-
                                             <div class="form-group">
                                                 <div class="input-group" data-toggle="aizuploader" data-type="image"
                                                     data-multiple="true">

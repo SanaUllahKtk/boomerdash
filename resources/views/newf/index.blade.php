@@ -110,7 +110,7 @@
                                         <div class="row">
                                             <div class="col-md-12 mb-3">
                                                 Date of Birth
-                                               <input type="date" required class="form-control" placeholder="{{  translate('Date of Birth') }}" name="dob">
+                                               <input type="date" required class="form-control" placeholder="{{  translate('Date of Birth') }}" id="dob" name="dob">
                                             </div>
                                         </div>
                                         
@@ -170,7 +170,7 @@
                                         </div>
 
                                         <div class="mb-5">
-                                        <button type="submit" style="box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19); border:none; display:block; margin:0 auto" class="btn-hyipox-2">Signup</button>
+                                        <button type="submit" id="createBtn" style="box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19); border:none; display:block; margin:0 auto" class="btn-hyipox-2">Signup</button>
                                         </div>
                                     </form>
                                 </div>
@@ -418,6 +418,24 @@ to earn points.</p>
                 }
             });
         }
+
+        $("#dob").on('change', function() {
+            var dob = new Date($(this).val());
+            var today = new Date();
+            var age = today.getFullYear() - dob.getFullYear();
+            var m = today.getMonth() - dob.getMonth();
+
+            if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+                age--;
+            }
+
+            if (age < 50) {
+                toastr.error('Sorry, you cannot sign up at this time. You must be at least 50 years old to register.');
+                $("#createBtn").prop('disabled', true);
+            } else {
+                $("#createBtn").prop('disabled', false);
+            }
+        });
     </script>
 @endsection
 

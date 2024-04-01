@@ -11,6 +11,7 @@ use Redirect;
 use App\Models\WithdrawalHistoryUser;
 use App\Models\Order;
 use App\Models\City;
+use App\Models\ClubPoint;
 use App\Models\Country;
 use App\Models\State;
 
@@ -397,5 +398,22 @@ curl_close($curl);
         return back();
     }
     public function paypal(Request $request){
+    }
+
+    public function rewardPoints(Request $request){
+        
+        $id = $request->customerId;
+        $points = $request->points;
+
+        //adding points to the creator the posts
+        $point = new ClubPoint();
+        $point->user_id = $id;
+        $point->point_type = 'Admin Rewarded';
+        $point->points = $points;
+        $point->order_id = 'p'.time();
+        $point->convert_status = 0;
+        $point->save();
+
+        return redirect()->back()->with('success', 'Points rewarded successfully.');
     }
 }

@@ -82,6 +82,12 @@
                                         <i class="las la-trash"></i>
                                     </a>
 
+                                    <a class="btn btn-soft-primary btn-icon btn-circle btn-sm"
+                                        href="{{ route('r_posts.show', ['r_post' => $report->postId]) }}"
+                                        title="{{ translate('Show Post') }}">
+                                        <i class="las la-eye"></i>
+                                    </a>
+
                                     <!-- Button trigger modal -->
                                     <button type="button" id="showModal" data-report-id="{{ $report->id }}" class="btn btn-sm btn-circle btn-soft-danger btn-icon" data-toggle="modal"
                                         data-target="#exampleModal">

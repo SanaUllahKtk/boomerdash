@@ -62,6 +62,8 @@ use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\RPostMobileController;
 use App\Http\Controllers\RPostReportController;
 use App\Http\Controllers\RProductController;
+use App\Http\Controllers\CustomerController;
+
 /*
   |--------------------------------------------------------------------------
   | Web Routes
@@ -150,6 +152,7 @@ Route::controller(HomeController::class)->group(function () {
 
         Route::get('/getMobileProducts', [RPostMobileController::class, 'getProducts'])->name('getProducts');
         Route::get('/updateUrlCicks', [RPostMobileController::class, 'updateUrlCicks'])->name('updateUrlCicks');
+        
     });
 
 

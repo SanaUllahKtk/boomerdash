@@ -47,16 +47,42 @@
                                         </a>
 
                                         <div class="">
-                                            @if (pathinfo($product->img, PATHINFO_EXTENSION) === 'mp4')
+                                            @if (pathinfo($post->img, PATHINFO_EXTENSION) === 'mp4')
                                             <video width="100%" height="400px" autoplay loop muted style="border: 1px solid #ccc; border-radius: 10px;">
-                                                <source src="{{ uploaded_asset($product->img) }}" type="video/mp4">
+                                                <source src="{{ uploaded_asset($post->img) }}" type="video/mp4">
                                                 Your browser does not support the video tag.
                                             </video>
                         
                                             @else
-                                            <img src="{{ uploaded_asset($product->img) }}" alt="Post Image"
+                                            <img src="{{ uploaded_asset($post->img) }}" alt="Post Image"
                                             style="width: 100%; max-height: 540px; border: 1px solid #ccc; border-radius: 10px;">                                       
                                             @endif
+                                        </div>
+
+
+                                        <div class="row mx-1" style="background: #e2e5ec;">
+                                            <div class="col-md-8 d-flex">
+                                                <div class="">
+                                                    <img src="{{ uploaded_asset($product->img) }}" alt="Product Image" width="100">
+                                                </div>
+                                                <div class="mx-2 my-auto">
+                                                    <h5><b>{{ $product->title }}</b></h5>
+                                                    <p class="">{{ $product->external_link }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 d-flex">
+                                                @php 
+                                                    $brand = \App\Models\Brand::findOrFail($post->brandId);
+                                                @endphp
+                                                
+                                                <div class="">
+                                                    <img src="{{ uploaded_asset($brand->logo) }}" alt="Brand Image" width="100" height="100">
+                                                </div>
+                                                <div class="mx-2 my-auto">
+                                                    <h5><b>{{ $brand->name }}</b></h5>
+                                                </div>
+
+                                            </div>
                                         </div>
                                         <p>{!! \Illuminate\Support\Str::words($product->description, 10) !!}</p>
 

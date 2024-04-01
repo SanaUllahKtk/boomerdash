@@ -21,17 +21,20 @@
         <div class="input-group" data-toggle="aizuploader" data-type="image" data-multiple="true">
             <div class="input-group-prepend">
                 <div class="input-group-text bg-soft-secondary font-weight-medium">
-                    {{ translate('Browse') }}</div>
+                    {{ translate('Browse for main image') }}</div>
             </div>
             <div class="form-control file-amount">{{ translate('Choose File') }}</div>
-            <input type="hidden" name="photos" value="{{ $product->img }}" class="selected-files">
+            <input type="hidden" name="photos" value="" class="selected-files">
         </div>
         <div class="file-preview box sm">
         </div>
         <small
             class="text-muted">{{ translate('These images are visible in product details page gallery. Use 600x600 sizes images.') }}</small>
-
     </div>
+
+    <label for="">Product Image</label>
+    <img src="{{ uploaded_asset($product->img) }}" alt="" width="200px">
+
 </div>
 
 <div class="tab-pane fade" id="link" role="tabpanel" aria-labelledby="link-tab">

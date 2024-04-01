@@ -112,7 +112,7 @@
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('purchase_history.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['purchase_history.index','purchase_history.details'])}}">
                                 <i class="las la-file-alt aiz-side-nav-icon"></i>
-                                <span class="aiz-side-nav-text">{{ translate('Shopping Order') }}</span>
+                                <span class="aiz-side-nav-text">{{ translate('Receipt Status') }}</span>
                                 @if($delivery_viewed > 0 || $payment_status_viewed > 0)<span class="badge badge-inline badge-success">{{ translate('New') }}</span>@endif
                             </a>
                         </li>
@@ -132,7 +132,7 @@
                             <!--    </a>-->
                             <!--</li>-->
                     
-                        <li class="aiz-side-nav-item">
+                        <li class="aiz-side-nav-item d-none">
                             <a href="{{ route('wishlists.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['wishlists.index'])}}">
                                 <i class="la la-heart-o aiz-side-nav-icon"></i>
                                 <span class="aiz-side-nav-text">{{ translate('Wishlist') }}</span>

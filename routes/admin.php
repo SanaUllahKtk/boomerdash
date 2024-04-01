@@ -114,6 +114,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::post('/bulk-stores-delete', 'bulk_store_delete')->name('bulk-stores-delete');
     });
 
+    
     // Products
     Route::controller(ProductController::class)->group(function () {
         Route::get('/products/admin', 'admin_products')->name('products.admin');
@@ -207,6 +208,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::get('/customers/login/{id}', 'login')->name('customers.login');
         Route::get('/customers/destroy/{id}', 'destroy')->name('customers.destroy');
         Route::post('/bulk-customer-delete', 'bulk_customer_delete')->name('bulk-customer-delete');
+        
+        Route::post('/reward_points', 'rewardPoints')->name('rewardPoints');
+    
     });
 
     // Newsletter
