@@ -1,5 +1,4 @@
 @extends('frontend.layouts.app')
-
 @section('content')
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -59,11 +58,12 @@
                                             @endif
                                         </div>
 
+                                        
 
                                         <div class="row mx-1" style="background: #e2e5ec;">
                                             <div class="col-md-8 d-flex">
-                                                <div class="">
-                                                    <img src="{{ uploaded_asset($product->img) }}" alt="Product Image" width="100">
+                                                <div class="my-auto">
+                                                    <img src="{{ uploaded_asset($product->img) }}" alt="Product Image" style="max-height: 100px;" class="img-fluid">
                                                 </div>
                                                 <div class="mx-2 my-auto">
                                                     <h5><b>{{ $product->title }}</b></h5>
@@ -71,16 +71,18 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-4 d-flex">
+                                                @if(!empty($post->brandId))
                                                 @php 
                                                     $brand = \App\Models\Brand::findOrFail($post->brandId);
                                                 @endphp
                                                 
-                                                <div class="">
-                                                    <img src="{{ uploaded_asset($brand->logo) }}" alt="Brand Image" width="100" height="100">
+                                                <div class="my-auto">
+                                                    <img src="{{ uploaded_asset($brand->logo) }}" alt="Brand Image" class="img-fluid" style="max-height: 100px;">
                                                 </div>
                                                 <div class="mx-2 my-auto">
                                                     <h5><b>{{ $brand->name }}</b></h5>
                                                 </div>
+                                                @endif 
 
                                             </div>
                                         </div>
