@@ -25,13 +25,6 @@
                                     <div class="alert alert-info">{{ session('message') }}</div>
                                 @endif
 
-                                @if ($product->url)
-                                    <div class="mb-2">
-                                        <a href="{{ $product->url }}" target="_blank" class="postUrl" id="postUrl"
-                                            data-post-id={{ $post->id }}>{{ $product->url }}</a>
-                                    </div>
-                                @endif
-
                                 @if ($product->img)
                                     <div class="row">
                                         <div class="col-12">
@@ -50,10 +43,17 @@
                                     <br /><br />
                                 @endif
 
+                                <style>
+                                    .description > div:first-child {
+                                        /* Your styles here */
+                                        width: 100% !important;
+                                        margin: 0px !important;
+                                    }
+                                </style>
                                 <div class="row">
-                                    <div class="col-12">
+                                   <div class="col-12 description" style="width: 100%;">
                                         {!! $product->description !!}
-                                    </div>
+                                   </div>
                                 </div>
 
 
@@ -65,9 +65,17 @@
                                         </div>
                                         <div class="mx-2 my-auto">
                                             <h5><b>{{ $product->title }}</b></h5>
-                                            @if(!empty($product->url))
-                                                <a href="{{ $product->url }}" target="_blank" class="text-dark">{{ $product->url }}</a>
-                                            @endif
+                                            @if ($product->url)
+                                                    <div class="">
+                                                        @php
+                                                            $url = $product->url;
+                                                            if (strpos($url, 'https://') !== 0) {
+                                                                $url = 'https://' . $url;
+                                                            }
+                                                        @endphp
+                                                        <a href="{{ $url }}" target="_blank" class="postUrl text-dark" id="postUrl" onclick="updateClick({{ $post->id }})" data-post-id="{{ $post->id }}">{{ $url }}</a>
+                                                    </div>
+                                                @endif
                                         </div>
                                     </div>
                                     <div class="col-md-4 d-flex">
@@ -224,8 +232,8 @@
 
 @section('script')
     <script>
-        $("#postUrl").on("click", function() {
-            var postId = $(this).data('post-id');
+        function updateClick(id){
+            var postId = id;
             $.ajax({
                 method: 'GET',
                 url: '/updateUrlCicks?postId=' + postId,
@@ -236,8 +244,7 @@
                     console.error(error);
                 }
             });
-
-        })
+        }
 
         $("#showModal").on("click", function(){
             $("#postId").val($(this).data('post-id'));

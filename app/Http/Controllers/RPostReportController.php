@@ -17,9 +17,16 @@ class RPostReportController extends Controller
     public function index()
     {
         //
-        $reports = RPostReport::get();
+        if(isset($_GET['status']) && $_GET['status'] == 'completed'){
+            $reports = RPostReport::where('status', 'completed')->get();
+        }else{
+            $reports = RPostReport::where('status', 'pending')->get();
+        }
+       
         $posts = RPost::pluck('title', 'id')->toArray();
         $users = User::pluck('name','id')->toArray();
+
+
         return view('backend.r_reports.index', compact('reports', 'posts', 'users'));
     }
 
@@ -98,7 +105,7 @@ class RPostReportController extends Controller
 
         $report->status = 'completed';
         $report->save();
-
+        
         return redirect()->back()->with('success', 'Your report updated successfully.');
     }
 
@@ -111,5 +118,8 @@ class RPostReportController extends Controller
     public function destroy($id)
     {
         //
+        $report = RPostReport::findOrFail($id);
+        $report->delete();
+        return 1;
     }
 }

@@ -45,7 +45,7 @@
 		                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('brands.edit', ['id'=>$brand->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="{{ translate('Edit') }}">
 		                                <i class="las la-edit"></i>
 		                            </a>
-		                            <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('brands.destroy', $brand->id)}}" title="{{ translate('Delete') }}">
+		                            <a href="{{route('brands.destroy', $brand->id)}}" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-deletes" data-href="{{route('brands.destroy', $brand->id)}}" title="{{ translate('Delete') }}">
 		                                <i class="las la-trash"></i>
 		                            </a>
 		                        </td>
@@ -111,5 +111,35 @@
     function sort_brands(el){
         $('#sort_brands').submit();
     }
+
+
+	// Attach a click event handler to the delete button
+	$(document).on("click", "#confirm-delete", function(e) {
+                e.preventDefault(); // Prevent the default link behavior
+
+                var brandId = $(this).data("brand-id"); // Get the product ID from the data attribute
+                var deleteUrl = $(this).data("url"); // Get the DELETE URL from the data attribute
+
+                // Show a confirmation dialog
+                if (confirm("Are you sure you want to delete this brand?")) {
+                    // Send a DELETE request to delete the product
+                    $.ajax({
+                        type: "DELETE",
+                        url: deleteUrl,
+                        data: {
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function(response) {
+                            // Handle the success response here (e.g., reload the page or remove the deleted element)
+                            alert("Brand deleted successfully");
+                            location.reload(); // Reload the page
+                        },
+                        error: function(error) {
+                            // Handle any errors here
+                            alert("Error deleting brand");
+                        }
+                    });
+                }
+            });
 </script>
 @endsection

@@ -33,6 +33,25 @@
 
 
         <div class="card-body">
+           
+                <div class="filter">
+                    <form action="">
+                         <div class="row">
+                            <div class="form-group col-md-3">
+                                <select name="status" id="" class="form form-control">
+                                    <option value="">Select Status</option>
+                                    <option value="pending" {{ !isset($_GET['status']) || (isset($_GET['status']) && $_GET['status'] == 'pending') ? 'selected' : ''}}>Pending</option>
+                                    <option value="completed" {{ isset($_GET['status']) && $_GET['status'] == 'completed' ? 'selected' : '' }}>Completed</option>
+                                </select>
+                             </div>
+    
+                             <div class="col-md-3">
+                                <input type="submit" value="Submit" class="btn btn-primary">
+                             </div>
+                         </div>
+                    </form>
+                </div>
+          
             <table class="table aiz-table mb-0">
                 <thead>
                     <tr>
@@ -89,50 +108,10 @@
                                     </a>
 
                                     <!-- Button trigger modal -->
-                                    <button type="button" id="showModal" data-report-id="{{ $report->id }}" class="btn btn-sm btn-circle btn-soft-danger btn-icon" data-toggle="modal"
+                                    <button type="button" onclick="showModal({{ $report->id }})" data-report-id="{{ $report->id }}" class="btn btn-sm btn-circle btn-soft-danger btn-icon" data-toggle="modal"
                                         data-target="#exampleModal">
                                         <i class="las la-edit"></i>
                                     </button>
-
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Action</h5>
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <form action="{{ route('r_reports.update', ['r_report' => $report])}}" method="POST">
-                                                @csrf
-                                                @method('PUT')
-                                                <div class="modal-body">
-                                                    
-                                                         <div class="form-group">
-                                                            <label for="">Action</label>
-                                                            <select name="action" id="" class="form form-control">
-                                                                <option value="">Select Action</option>
-                                                                <option value="reviewCompleted">Review Completed</option>
-                                                                <option value="deletePost">Delete Post</option>
-                                                                <option value="banUser">Ban User</option>
-                                                            </select>
-
-                                                            <input type="hidden" value="" name="reportId" id="reportId">
-                                                         </div>
-                                                    
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-primary">Save changes</button>
-                                                </div>
-                                            </form>
-                                            </div>
-                                        </div>
-                                    </div>
                                 @endif
                             </td>
                         </tr>
@@ -142,6 +121,45 @@
             </table>
         </div>
 
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Action</h5>
+                    <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="updateForm" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    
+                         <div class="form-group">
+                            <label for="">Action</label>
+                            <select name="action" id="" class="form form-control">
+                                <option value="">Select Action</option>
+                                <option value="reviewCompleted">Review Completed</option>
+                                <option value="deletePost">Delete Post</option>
+                                <option value="banUser">Ban User</option>
+                            </select>
+
+                            <input type="hidden" value="" name="reportId" id="reportId">
+                         </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
     </div>
 @endsection
 
@@ -191,11 +209,11 @@
             $(document).on("click", "#confirm-delete", function(e) {
                 e.preventDefault(); // Prevent the default link behavior
 
-                var storeId = $(this).data("store-id"); // Get the product ID from the data attribute
+                var reportId = $(this).data("report-id"); // Get the product ID from the data attribute
                 var deleteUrl = $(this).data("url"); // Get the DELETE URL from the data attribute
 
                 // Show a confirmation dialog
-                if (confirm("Are you sure you want to delete this store?")) {
+                if (confirm("Are you sure you want to delete this report?")) {
                     // Send a DELETE request to delete the product
                     $.ajax({
                         type: "DELETE",
@@ -205,12 +223,12 @@
                         },
                         success: function(response) {
                             // Handle the success response here (e.g., reload the page or remove the deleted element)
-                            alert("Store deleted successfully");
+                            alert("Report deleted successfully");
                             location.reload(); // Reload the page
                         },
                         error: function(error) {
                             // Handle any errors here
-                            alert("Error deleting store");
+                            alert("Error deleting report");
                         }
                     });
                 }
@@ -218,9 +236,8 @@
         });
 
 
-        $("#showModal").on("click", function(){
-            alert('hi');
-            $("#reportId").val($(this).data('report-id'));
-        })
+        function showModal(id){
+            $("#updateForm").attr('action', '/r_reports/'+id);
+        }
     </script>
 @endsection

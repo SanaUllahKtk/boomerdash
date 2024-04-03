@@ -6,11 +6,8 @@
     <section class="py-5">
         <div class="container">
             <div class="row justify-content-center">
-                {{-- <div class="col-md-3">
-                    @include('newf.inc.user_side_nav')
-                </div> --}}
-
-                <div class="col-md-9">
+                <div class="col-md-2"></div>
+                <div class="col-md-8 bg-white">
                     <div class="aiz-user-panel card">
                         <div class="card-header d-flex justify-content-between">
                             <h3>Most Popular Posts</h3>
@@ -24,11 +21,12 @@
 
                         <div class="card-body">
                             @forelse ($posts as $post)
-                            @php 
-                                $product = \App\Models\RProduct::where('id', $post->productId)->first(); 
-                                if(!$product)
-                                continue;
-                            @endphp 
+                                @php 
+                                    $product = \App\Models\RProduct::where('id', $post->productId)->first(); 
+                                    if(!$product)
+                                        continue;
+                                @endphp 
+
                                 <div class="row justify-content-center">
                                     <div class="col-md-12">
                                         <div class="d-flex">
@@ -41,52 +39,80 @@
                                             </div>
                                         </div>
 
-
                                         <a href="{{ route('r_mobile_posts.show', [$post->id]) }}">
                                             <h4>{{ $product->title }}</h4>
                                         </a>
 
                                         <div class="">
                                             @if (pathinfo($post->img, PATHINFO_EXTENSION) === 'mp4')
-                                            <video width="100%" height="400px" autoplay loop muted style="border: 1px solid #ccc; border-radius: 10px;">
-                                                <source src="{{ uploaded_asset($post->img) }}" type="video/mp4">
-                                                Your browser does not support the video tag.
-                                            </video>
+                                                <video width="100%" height="auto" autoplay loop muted style="border: 1px solid #ccc; border-radius: 10px;">
+                                                    <source src="{{ uploaded_asset($post->img) }}" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                </video>
                         
                                             @else
-                                            <img src="{{ uploaded_asset($post->img) }}" alt="Post Image"
-                                            style="width: 100%; max-height: 540px; border: 1px solid #ccc; border-radius: 10px;">                                       
+                                            <style>
+                                                /* Default style */
+                                                .post-image {
+                                                    width: 800px;
+                                                    height: 600px;
+                                                    object-fit: cover;
+                                                    border: 1px solid #ccc;
+                                                    border-radius: 10px;
+                                                }
+                                            
+                                                /* Media query for smaller screens */
+                                                @media (max-width: 767px) {
+                                                    .post-image {
+                                                        max-width: 100%;
+                                                        height: auto;
+                                                    }
+                                                }
+                                            </style>
+                                            
+                                            <!-- HTML -->
+                                            <img src="{{ uploaded_asset($post->img) }}" alt="Post Image" class="post-image">
+                                                                                                                           
                                             @endif
                                         </div>
 
                                         <div class="row mx-1" style="background: #e2e5ec;">
-                                            <div class="col-md-8 d-flex">
+                                            <div class="col-md-8 d-flex justify-content-between justify-content-md-start">
                                                 <div class="my-auto">
-                                                    <img src="{{ uploaded_asset($product->img) }}" alt="Product Image" style="max-height: 100px;" class="img-fluid">
+                                                    <img src="{{ uploaded_asset($product->img) }}" alt="Product Image" style="max-height: 75px;" class="img-fluid">
                                                 </div>
                                                 <div class="mx-2 my-auto">
                                                     <h5><b>{{ $product->title }}</b></h5>
-                                                    @if(!empty($product->url))
-                                                    <a href="{{ $product->url }}" target="_blank" class="text-dark">{{ $product->url }}</a>
-                                                    @endif
+                                                    @if ($product->url)
+                                                    <div class="">
+                                                        @php
+                                                            $url = $product->url;
+                                                            if (strpos($url, 'https://') !== 0) {
+                                                                $url = 'https://' . $url;
+                                                            }
+                                                        @endphp
+                                                        <a href="{{ $url }}" target="_blank" class="postUrl text-dark" id="postUrl" onclick="updateClick({{ $post->id }})" data-post-id="{{ $post->id }}">{{ $url }}</a>
+                                                    </div>
+                                                @endif
                                                 </div>
                                             </div>
-                                            <div class="col-md-4 d-flex">
+                                            
+                                            
+                                            <div class="col-md-4 d-flex justify-content-between justify-content-md-start">
                                                 @if(!empty($post->brandId))
-                                                @php 
-                                                    $brand = \App\Models\Brand::findOrFail($post->brandId);
-                                                @endphp
-                                                
-                                                <div class="my-auto">
-                                                    <img src="{{ uploaded_asset($brand->logo) }}" alt="Brand Image" class="img-fluid" style="max-height: 100px;">
-                                                </div>
-                                                <div class="mx-2 my-auto">
-                                                    <h5><b>{{ $brand->name }}</b></h5>
-                                                </div>
+                                                    @php 
+                                                        $brand = \App\Models\Brand::findOrFail($post->brandId);
+                                                    @endphp
+                                                    
+                                                    <div class="my-auto">
+                                                        <img src="{{ uploaded_asset($brand->logo) }}" alt="Brand Image" class="img-fluid" style="max-height: 70px;">
+                                                    </div>
+                                                    <div class="mx-2 my-auto">
+                                                        <h5><b>{{ $brand->name }}</b></h5>
+                                                    </div>
                                                 @endif 
                                             </div>
                                         </div>
-
                                         <p>{!! \Illuminate\Support\Str::words($product->description, 10) !!}</p>
 
                                         <!-- Icons -->
@@ -104,10 +130,10 @@
                                                 style="font-size: 16px;" data-post-id="{{ $post->id }}"><i
                                                     class="las la-arrow-circle-down"></i>
                                                 <span class="downVoteSpan">{{ \App\Models\RPostVote::where('vote', 0)->where('r_post_id', $post->id)->count() }} </span></a>
-                                            <a href="{{ route('r_mobile_posts.show', [$post->id]) }}" class="mr-3 btn btn-sm bg-success text-white"
+                                            <a href="{{ route('r_posts.show', [$post->id]) }}" class="mr-3 btn btn-sm bg-success text-white"
                                                 style="font-size: 16px;"><i class="las la-comments"></i>
                                                 {{ \App\Models\RComment::where('post_id', $post->id)->count() }}</a>
-                                            <a href="{{ route('r_mobile_posts.show', [$post->id]) }}"
+                                            <a href="{{ route('r_posts.show', [$post->id]) }}"
                                                 class="mr-3 btn btn-sm bg-success text-white"
                                                 style="font-size: 16px;"><i class="las la-flag"></i></a>
                                         </div>
@@ -128,6 +154,7 @@
                     </div>
 
                 </div>
+                <div class="col-md-2"></div>
             </div>
         </div>
         </div>
@@ -171,5 +198,20 @@
                 }
             });
         })
+
+       
+       function updateClick(id){
+            var postId = id;
+            $.ajax({
+                method: 'GET',
+                url: '/updateUrlCicks?postId=' + postId,
+                success: function(data) {
+
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
     </script>
 @endsection

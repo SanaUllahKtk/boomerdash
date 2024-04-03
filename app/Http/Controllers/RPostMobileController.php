@@ -63,13 +63,14 @@ class RPostMobileController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->input());
 
         // Validate the incoming request data
         $request->validate([
             'post_title' => 'required|string|max:255',
             'post_description' => 'required|string',
-            'url' => 'nullable|url',
-            'file' => 'required',
+            'url' => 'string',
+            'photos' => 'required',
             'brandId' => 'required',
             'productId' => 'required'
             // Add validation rules for dropzone files if required
@@ -80,7 +81,7 @@ class RPostMobileController extends Controller
         $rPost->title = $request->post_title;
         $rPost->description = $request->post_description;
         $rPost->url = $request->url;
-        $rPost->img = $request->file;
+        $rPost->img = $request->photos;
         $rPost->user_id = \Auth::user()->id;
         //$rPost->r_category_id = $request->categoryId;
         $rPost->productId = $request->productId;
