@@ -158,7 +158,7 @@
                 var deleteUrl = $(this).data("url"); // Get the DELETE URL from the data attribute
 
                 // Show a confirmation dialog
-                if (confirm("Are you sure you want to delete this store?")) {
+                if (confirm("Are you sure you want to delete this product?")) {
                     // Send a DELETE request to delete the product
                     $.ajax({
                         type: "DELETE",
@@ -168,12 +168,12 @@
                         },
                         success: function(response) {
                             // Handle the success response here (e.g., reload the page or remove the deleted element)
-                            alert("Store deleted successfully");
+                            alert("Product deleted successfully");
                             location.reload(); // Reload the page
                         },
                         error: function(error) {
                             // Handle any errors here
-                            alert("Error deleting store");
+                            alert("Error deleting product");
                         }
                     });
                 }

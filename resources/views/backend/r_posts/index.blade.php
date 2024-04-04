@@ -57,6 +57,7 @@
                         <th>{{ translate('Product') }}</th>
                         <th>{{ translate('Upvote') }}</th>
                         <th>{{ translate('Url Clicks') }}</th>
+                        <th>{{ translate('Comments') }}</th>
                         <th>{{ translate('Action') }}</th>
                     </tr>
                 </thead>
@@ -88,6 +89,13 @@
                                     $postClicks = \App\Models\RPostUrlClick::where('postId', $post->id)->count();
                                 @endphp 
                                 {{ $postClicks }}
+                            </td>
+
+                            <td>
+                                @php 
+                                    $comments = \App\Models\RComment::where('post_id', $post->id)->count();
+                                @endphp 
+                                <a href="{{ route('r_mobile_posts.show', $post->id) }}" class="">{{ $comments }}</a>
                             </td>
 
                             <td>
@@ -165,22 +173,23 @@
                 var deleteUrl = $(this).data("url"); // Get the DELETE URL from the data attribute
 
                 // Show a confirmation dialog
-                if (confirm("Are you sure you want to delete this store?")) {
+                if (confirm("Are you sure you want to delete this post?")) {
                     // Send a DELETE request to delete the product
                     $.ajax({
                         type: "DELETE",
                         url: deleteUrl,
                         data: {
-                            _token: "{{ csrf_token() }}"
+                            _token: "{{ csrf_token() }}",
+                            admin: 'admin'
                         },
                         success: function(response) {
                             // Handle the success response here (e.g., reload the page or remove the deleted element)
-                            alert("Store deleted successfully");
+                            alert("Post deleted successfully");
                             location.reload(); // Reload the page
                         },
                         error: function(error) {
                             // Handle any errors here
-                            alert("Error deleting store");
+                            alert("Error deleting post");
                         }
                     });
                 }

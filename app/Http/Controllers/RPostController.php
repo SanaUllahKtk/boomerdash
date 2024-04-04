@@ -167,10 +167,15 @@ class RPostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(RPost $r_post)
+    public function destroy(Request $request, RPost $r_post)
     {
+    
         //
         $r_post->delete();
+
+        if(isset($request->admin)){
+            return 1;
+        }
         return redirect()->back()->with('success', 'Post deleted successfully.');
     }
 

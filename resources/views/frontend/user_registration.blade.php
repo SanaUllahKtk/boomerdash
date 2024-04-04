@@ -158,8 +158,9 @@
                                         <div class="mb-3">
                                             <label class="aiz-checkbox">
                                                 <input type="checkbox" name="checkbox_example_1" required>
-                                                <span
-                                                    class=opacity-60>{{ translate('By signing up you agree to our terms and conditions.') }}</span>
+                                                <span class=opacity-60>
+                                                    By signing up, I  agree to the <a href="https://www.boomerdash.com/terms-conditions" class="">Terms of Use</a> and to receive marketing emails from Boomerdash and I accept the <a href="https://www.boomerdash.com/privacy-policy" class="">Privacy Policy</a>.
+                                                </span>
                                                 <span class="aiz-square-check"></span>
                                             </label>
                                         </div>

@@ -22,6 +22,7 @@
                         </div>
 
                         <div class="card-body">
+                             <div class="row justify-content-center">
                             @forelse ($posts as $post)
                                 @php 
                                     $product = \App\Models\RProduct::where('id', $post->productId)->first(); 
@@ -29,7 +30,7 @@
                                         continue;
                                 @endphp 
 
-                                <div class="row justify-content-center">
+                               
                                     <div class="col-md-12">
                                         <div class="d-flex">
                                             <div class="profile" style="position: relative; display: flex;">
@@ -141,17 +142,16 @@
                                                 style="font-size: 16px;"><i class="las la-flag"></i></a>
                                         </div>
                                     </div>
-                                </div>
+                                
 
                                 <hr>
 
                             @empty 
-                                <div class="row">
                                     <div class="col-12">
                                          <h3 class="text-center">No Post Found !!!</h3>
                                     </div>
-                                </div>
                             @endforelse
+                            </div>
 
                         </div>
                     </div>
