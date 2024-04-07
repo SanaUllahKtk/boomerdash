@@ -14,6 +14,7 @@ use App\Models\City;
 use App\Models\ClubPoint;
 use App\Models\Country;
 use App\Models\State;
+use App\Models\Wallet;
 
 class CustomerController extends Controller
 {
@@ -410,10 +411,29 @@ curl_close($curl);
         $point->user_id = $id;
         $point->point_type = 'Admin Rewarded';
         $point->points = $points;
-        $point->order_id = 'p'.time();
+        $point->order_id = 'Admin Rewarded';
         $point->convert_status = 0;
         $point->save();
 
         return redirect()->back()->with('success', 'Points rewarded successfully.');
     }
+
+    public function addCard(Request $request){
+
+        $user = User::findOrFail($request->customerId);
+        $user->card_photo = $request->photos;
+        $user->save();
+
+        return redirect()->back()->with('success', 'Card added successfully.');
+    }
+
+    public function updateStatus(Request $request){
+        //dd($request->input());
+
+        $wallet = Withdrawal::findOrFail($request->id);
+        $wallet->withdraw_status = $request->status;
+        $wallet->save();
+
+        return redirect()->back()->with('success', 'Withdrawal status updated successfully.');
+    }   
 }

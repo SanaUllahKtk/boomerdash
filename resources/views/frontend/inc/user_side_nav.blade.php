@@ -181,7 +181,7 @@
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('earnng_point_for_user') }}" class="aiz-side-nav-link {{ areActiveRoutes(['earnng_point_for_user'])}}">
                                 <i class="las la-dollar-sign aiz-side-nav-icon"></i>
-                                <span class="aiz-side-nav-text">{{translate('Earning Points')}}</span>
+                                <span class="aiz-side-nav-text">{{translate('My Points')}}</span>
                             </a>
                         </li>
 

@@ -240,7 +240,7 @@ class RPostController extends Controller
                 $point->user_id = $post->user_id;
                 $point->point_type = 'Post Like';
                 $point->points = $product->points;
-                $point->order_id = 'p'.time();
+                $point->order_id =  $post->title ?? 'p'.time();
                 $point->convert_status = 0;
                 $point->save();
             }

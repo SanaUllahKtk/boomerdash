@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\Wallet;
 use App\Utility\NotificationUtility;
 use App\Models\Order;
+use App\Models\Video;
 use Artisan;
 use Auth;
 
@@ -114,12 +115,13 @@ class ClubPointController extends Controller
         if(empty($video)){
         if($request->duration==$request->total_watch){
 
-        
+        $video_obj = Video::findOrFail($request->id);
+
         $club_point = new ClubPoint;
         $club_point->user_id = Auth::user()->id;
         $club_point->points = $request->_pnt;
         $club_point->point_type = "Video Watched";
-        $club_point->order_id = 'v'.$request->_vid;
+        $club_point->order_id =  $video_obj->name ?? 'v'.$request->_vid;
         $club_point->convert_status = 0;
         $club_point->save();
         

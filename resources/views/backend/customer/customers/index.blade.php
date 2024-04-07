@@ -130,6 +130,13 @@
                                             data-target="#exampleModal" title="{{ translate('Reward Points') }}">
                                             <i class="las la-certificate"></i>
                                         </button>
+
+                                        <button type="button" id="addCardModal"
+                                            class="btn btn-soft-danger btn-icon btn-circle btn-sm"
+                                            data-customer-id="{{ $user->id }}" data-toggle="modal"
+                                            data-target="#addCard" title="{{ translate('Add Card') }}">
+                                            <i class="las la-card"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             @endif
@@ -178,6 +185,59 @@
             </div>
         </div>
     </div>
+
+
+    <div class="modal fade" id="addCard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Card</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form action="{{ route('customer.add.card') }}" method="POST" id="addCardForm">
+                    @csrf
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <div class="col-12">
+                                <div class="input-group" data-toggle="aizuploader" data-type="image"
+                                    data-multiple="true">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text bg-soft-secondary font-weight-medium">
+                                            {{ translate('Browse') }}</div>
+                                    </div>
+                                    <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                                    <input type="hidden" name="photos" class="selected-files">
+                                </div>
+                                <div class="file-preview box sm">
+                                </div>
+                                <small
+                                    class="text-muted">{{ translate('These images are visible in product details page gallery. Use 600x600 sizes images.') }}</small>
+                            </div>
+                        </div>
+
+                        <div class="">
+                            <input type="hidden" value="" name="customerId" id="addCustomerId">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" onclick="submitAddCardForm()" class="btn btn-primary">Save
+                            changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
     <div class="modal fade" id="confirm-ban">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -219,9 +279,13 @@
 @section('script')
     <script type="text/javascript">
         $(document).on("click", "#MyModal", function() {
-            alert('hi');
             $("#customerId").val($(this).data('customer-id'));
         })
+
+        $(document).on("click", "#addCardModal", function() {
+            $("#addCustomerId").val($(this).data('customer-id'));
+        })
+
 
 
         $(document).on("change", ".check-all", function() {
@@ -309,6 +373,10 @@
 
         function submitPointForm() {
             $("#PointForm").submit();
+        }
+
+        function submitAddCardForm(){
+            $("#addCardForm").submit();
         }
     </script>
 @endsection

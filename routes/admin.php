@@ -210,6 +210,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::post('/bulk-customer-delete', 'bulk_customer_delete')->name('bulk-customer-delete');
         
         Route::post('/reward_points', 'rewardPoints')->name('rewardPoints');
+        Route::post('/addCustomerCard', 'addCard')->name('customer.add.card');
+
+        Route::post('/update-status', 'updateStatus')->name('update.status');
     
     });
 

@@ -36,7 +36,8 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>{{translate('Order Code')}}</th>
+                                        <th>{{translate('type')}}</th>
+                                        <th>{{translate('Activity')}}</th>
                                         <th data-breakpoints="lg">{{translate('Points')}}</th>
                                         <th data-breakpoints="lg">{{translate('Converted')}}</th>
                                         <th data-breakpoints="lg">{{translate('Date') }}</th>
@@ -47,12 +48,14 @@
                                     @foreach ($club_points as $key => $club_point)
                                         <tr>
                                             <td>{{ $key+1 }}</td>
+                                            <td>{{ $club_point->point_type }}</td>
                                             <td>
-                                            @if ($club_point->order != null)
+                                                {{-- @if ($club_point->order != null)
                                                     {{ $club_point->order->code }}
                                                 @else
                                                     {{ translate('Order not found') }}
-                                                @endif
+                                                @endif --}}
+                                                {{ $club_point->order_id }}
                                             </td>
                                             <td>{{ $club_point->points }} {{ translate(' pts') }}</td>
                                             <td>

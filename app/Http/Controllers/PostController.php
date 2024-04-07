@@ -266,11 +266,15 @@ class PostController extends Controller
         if($is_read){
             return 0;
         }
+
+
+       $post = Post::findOrFail($request->id);
+
        $point = new ClubPoint();
        $point->user_id = \Auth::user()->id;
        $point->point_type = 'Blog Reading';
        $point->points = $request->points;
-       $point->order_id = 'b'.time();
+       $point->order_id = $post->title ?? 'b'.$request->id;
        $point->convert_status = 0;
        $point->created_at = date('Y-m-d h:i:s');
        $point->updated_at = date('Y-m-d h:i:s');

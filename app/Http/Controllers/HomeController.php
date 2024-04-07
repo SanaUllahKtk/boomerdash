@@ -653,6 +653,8 @@ class HomeController extends Controller
         return view('frontend.inhouse_products', compact('products'));
     }
         public function withdrawalRequest(Request $request){
+            //dd($request->input());
+
         $record=Withdrawal::where('user_id',$request->userid)->where('withdraw_status','!=', 1)->first();
         if ( User::where('id', $request->userid)->first()->balance == 0 || User::where('id', $request->userid)->first()->balance < 0)
         {
@@ -662,11 +664,9 @@ class HomeController extends Controller
         else{
         $user = new Withdrawal();
        
-
-
         
         $user->user_name = $request->user_name; 
-        $user->paypal_email = $request->paypal_email;
+        $user->id_card = $request->photos;
         $user->user_id = $request->userid;
         $user->withdraw_amount = $request->amount;
         $user->withdraw_status = "pending";
