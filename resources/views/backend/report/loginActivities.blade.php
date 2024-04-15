@@ -82,6 +82,16 @@
                             <label for="zipcode">Zipcode</label>
                             <input type="text" class="form-control" name="zipcode" value="{{ isset($_GET['zipcode']) ? $_GET['zipcode'] : '' }}">
                         </div>
+
+                        <div class="col-md-2">
+                            <label for="zipcode">Date From</label>
+                            <input type="date" class="form-control" name="date_from" value="{{ isset($_GET['date_from']) ? $_GET['date_from'] : '' }}">
+                        </div>
+
+                        <div class="col-md-2">
+                            <label for="zipcode">Date To</label>
+                            <input type="date" class="form-control" name="date_to" value="{{ isset($_GET['date_to']) ? $_GET['date_to'] : '' }}">
+                        </div>
                 
                         <div class="col-md-2 d-flex">
                             <input type="submit" value="Submit" class="btn btn-primary mt-4">
