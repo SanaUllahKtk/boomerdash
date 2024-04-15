@@ -29,16 +29,22 @@
                                 @if ($product->img)
                                     <div class="row">
                                         <div class="col-12">
-                                        @if (pathinfo($product->img, PATHINFO_EXTENSION) === 'mp4')
-                                            <video width="100%" height="400px" autoplay loop muted
+
+                                            @php    
+                                            $check_file = \App\Models\Upload::where('id',$post->img)->first();
+                                        @endphp 
+
+                                        @if($check_file && ($check_file->extension == 'mp4' || $check_file->extension == 'avi'))
+                                        <video width="100%" height="400px" autoplay loop muted
                                                 style="border: 1px solid #ccc; border-radius: 10px;">
                                                 <source src="{{ uploaded_asset($post->img) }}" type="video/mp4">
                                                 Your browser does not support the video tag.
                                             </video>
-                                        @else
-                                            <img src="{{ uploaded_asset($post->img) }}" alt="Post Image"
+                                        @else 
+                                        <img src="{{ uploaded_asset($post->img) }}" alt="Post Image"
                                                 style="width: 100%; max-height: 540px; border: 1px solid #ccc; border-radius: 10px;">
                                         @endif
+
                                     </div>
                                      </div>
                                     <br /><br />

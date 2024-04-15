@@ -409,9 +409,9 @@ curl_close($curl);
         //adding points to the creator the posts
         $point = new ClubPoint();
         $point->user_id = $id;
-        $point->point_type = 'Admin Rewarded';
+        $point->point_type = 'Boomer Points';
         $point->points = $points;
-        $point->order_id = 'Admin Rewarded';
+        $point->order_id = 'Boomer Points';
         $point->convert_status = 0;
         $point->save();
 

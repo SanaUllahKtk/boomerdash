@@ -225,7 +225,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                     data = JSON.parse(data);
                 }
                 AIZ.uploader.data.allFiles = data.data;
-                AIZ.uploader.allowedFileType();
+               // AIZ.uploader.allowedFileType();
                 AIZ.uploader.addSelectedValue();
                 AIZ.uploader.addHiddenValue();
                 //AIZ.uploader.resetFilter();

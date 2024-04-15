@@ -71,8 +71,16 @@
                                             </style>
                                             
                                             <!-- HTML -->
-                                            <img src="{{ uploaded_asset($post->img) }}" alt="Post Image" class="post-image">
-                                                                                                                           
+                                            @php    
+                                                        $check_file = \App\Models\Upload::where('id',$post->img)->first();
+                                                    @endphp 
+
+                                                    @if($check_file && ($check_file->extension == 'mp4' || $check_file->extension == 'avi'))
+                                                    <video src="{{ uploaded_asset($post->img) }}" width="100%" autoplay loop controls muted></video>
+
+                                                    @else 
+                                                    <img src="{{ uploaded_asset($post->img) }}"alt="Post Image" class="post-image">
+                                                    @endif                                                                             
                                             @endif
                                         </div>
 
