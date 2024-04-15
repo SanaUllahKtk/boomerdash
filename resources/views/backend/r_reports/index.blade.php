@@ -77,6 +77,11 @@
 
                 <tbody>
                     @forelse ($reports as $report)
+                        @php 
+                          if(!isset($posts[$report->postId])){
+                            continue;
+                          }
+                        @endphp 
                         <tr>
                             <td>
                                 <div class="form-group d-inline-block">

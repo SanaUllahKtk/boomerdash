@@ -25,7 +25,7 @@
 
         <div class="col-md-4 mx-auto mb-3">
             @if (!empty(\Auth::user()->card_photo))
-                <img src="{{ upload_asset(\Auth::user()->card_photo) }}" alt="" width="83%" height="100%">
+                <img src="{{ uploaded_asset(\Auth::user()->card_photo) }}" alt="" width="83%" height="100%">
             @else
                 <img src="{{ static_asset('card1.png') }}" alt="" class="" width="83%" height="100%">
             @endif
